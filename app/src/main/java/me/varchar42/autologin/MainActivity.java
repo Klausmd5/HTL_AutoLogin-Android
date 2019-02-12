@@ -63,7 +63,8 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
                 editor.putString("user", inUsername.getText().toString());
                 editor.putString("pw", inPassword.getText().toString());
                 editor.apply();
-                Toast.makeText(getBaseContext(), "Data saved!!", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getBaseContext(), "Data saved!!", Toast.LENGTH_LONG).show();
+                Snackbars.Snackbar(view, "Data saved!", "#00D89B");
 
 
 
@@ -79,12 +80,14 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
             public void onClick(View view) {
                 if(toast != null) toast.cancel();
                 if(connecting) {
-                    toast = Toast.makeText(main, "Be patient!", Toast.LENGTH_LONG);
-                    toast.show();
+                    //toast = Toast.makeText(main, "Be patient!", Toast.LENGTH_LONG);
+                    //toast.show();
+                    Snackbars.Snackbar(view, "Be patient!", "#fc5c65");
                     return;
                 }
-                toast = Toast.makeText(main, "Sending request!", Toast.LENGTH_LONG);
-                toast.show();
+                //toast = Toast.makeText(main, "Sending request!", Toast.LENGTH_LONG);
+                //toast.show();
+                Snackbars.Snackbar(view, "Sending request..", "#7b7b7b");
                 connecting = true;
                 LoginPost.send(inUsername.getText().toString(), inPassword.getText().toString(), main);
 
@@ -114,8 +117,9 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
 
                         wifiManager.reconnect();
                         if(toast != null) toast.cancel();
-                        toast = Toast.makeText(main, "Connecting to "+i.SSID+"...", Toast.LENGTH_LONG);
-                        toast.show();
+                        //toast = Toast.makeText(main, "Connecting to "+i.SSID+"...", Toast.LENGTH_LONG);
+                        //toast.show();
+                        Snackbars.Snackbar(view, "Connecting to "+i.SSID+"...", "#7b7b7b");
 
 
                         break;

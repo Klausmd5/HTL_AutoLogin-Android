@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/AutoLogin.iml" filepath="$PROJECT_DIR$/AutoLogin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HTL_AutoLogin-Android.iml" filepath="$PROJECT_DIR$/HTL_AutoLogin-Android.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

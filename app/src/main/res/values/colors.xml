@@ -1,6 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimaryOld">#3f51b5</color>
+    <color name="colorPrimary">#00dcff</color>
+    <color name="colorPrimaryDarkOld">#303f9f</color>
+    <color name="colorPrimaryDark">#00ccec</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="backgrondColorCyan">#00dcff</color>
+    <color name="backgrondColorSlategrey">#dadada</color>
+    <color name="backgrondColorWhite">#e7e7e7</color>
+    <color name="lighterPurple">#a55eea</color>
+    <color name="gloomyPurple">#8854d0</color>
+    <color name="boyzone">#2d98da</color>
+    <color name="nycTaxi">#f7b731</color>
+    <color name="royalBlue">#3867d6</color>
+    <color name="desire">#eb3b5a</color>
+    <color name="fusionRed">#fc5c65</color>
+    <color name="highBlue">#45aaf2</color>
+    <color name="c64NTSC">#4b6584</color>
+    <color name="amazonCursor">#90DF25</color>
+    <color name="green">#2cd323</color>
+
+    <color name="snackbar">#7b7b7b</color>
+
+    <color name="white">#fff</color>
+
+    <color name="prime_rework">#039be5</color>
+    <color name="light_rework">#63ccff</color>
+    <color name="dark_rework">#006db3</color>
+
+    <color name="colour_highlight_grey">#ff666666</color>
+    <color name="colour_dark_blue">#ff000066</color>
+    <color name="colour_dark_green">#ff006600</color>
 </resources>
