@@ -19,6 +19,8 @@
     <color name="c64NTSC">#4b6584</color>
     <color name="amazonCursor">#90DF25</color>
     <color name="green">#2cd323</color>
+    <color name="backgroundBlack">#1a1a1c</color>
+    <color name="SandroRed">#C3083F</color>
 
     <color name="snackbar">#7b7b7b</color>
 

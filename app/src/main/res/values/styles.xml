@@ -15,11 +15,19 @@
         <item name="android:navigationBarColor">@color/c64NTSC</item>
     </style>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme2" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/prime_rework</item>
         <item name="colorPrimaryDark">@color/dark_rework</item>
         <item name="colorAccent">@color/amazonCursor</item>
         <item name="android:navigationBarColor">@color/prime_rework</item>
+    </style>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/backgroundBlack</item>
+        <item name="colorPrimaryDark">@color/backgroundBlack</item>
+        <item name="colorAccent">@color/SandroRed</item>
+        <item name="android:navigationBarColor">@color/backgroundBlack</item>
+        <item name="android:backgroundDimEnabled">true</item>
     </style>
 
 </resources>

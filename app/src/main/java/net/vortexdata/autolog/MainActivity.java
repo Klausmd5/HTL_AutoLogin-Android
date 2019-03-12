@@ -1,7 +1,7 @@
-package me.varchar42.autologin;
+package net.vortexdata.autolog;
 
 import android.content.Context;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
@@ -12,10 +12,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
-
 
 
 public class MainActivity extends AppCompatActivity implements ResponseReceiver {
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
     private Button saveButton;
     private FloatingActionButton connectButton;
     private Button connectWifi;
+    private ImageView img;
 
 
 
@@ -38,16 +40,18 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
         inUsername = (EditText) findViewById(R.id.inUsername);
         inPassword = findViewById(R.id.inPassword);
         saveButton = findViewById(R.id.savebutton);
-        connectButton = findViewById(R.id.connectButton);
         connectWifi = findViewById(R.id.connectWifi);
+        img = findViewById(R.id.config);
 
         main = this;
         loadData();
         saveButton(saveButton);
-        connectButton(connectButton);
         connectWifi(connectWifi);
 
-
+        img.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), Settings.class);
+            startActivity(intent);
+        });
 
     }
 
@@ -65,6 +69,18 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
                 editor.apply();
                 //Toast.makeText(getBaseContext(), "Data saved!!", Toast.LENGTH_LONG).show();
                 Snackbars.Snackbar(view, "Data saved!", "#00D89B");
+
+                if(connecting) {
+                    //toast = Toast.makeText(main, "Be patient!", Toast.LENGTH_LONG);
+                    //toast.show();
+                    Snackbars.Snackbar(view, "Be patient!", "#fc5c65");
+                    return;
+                }
+                //toast = Toast.makeText(main, "Sending request!", Toast.LENGTH_LONG);
+                //toast.show();
+                Snackbars.Snackbar(view, "Sending request..", "#7b7b7b");
+                connecting = true;
+                LoginPost.send(inUsername.getText().toString(), inPassword.getText().toString(), main);
 
 
 
@@ -144,21 +160,25 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
             public void run() {
                 connecting = false;
                 AlertDialog.Builder builder = new AlertDialog.Builder(main);
-                builder.setMessage(error)
-                        .setTitle("Error!!");
+                View view = getLayoutInflater().inflate(R.layout.errormsg, null);
 
-                builder.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
+                builder.setView(view);
 
-                    }
+                TextView name = view.findViewById(R.id.name);
+                Button btn = view.findViewById(R.id.accept);
+                TextView t = view.findViewById(R.id.error);
+
+                name.setText("Error!!");
+                t.setText(error);
+
+                AlertDialog dialog = builder.create();
+                //dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+
+                btn.setOnClickListener(v ->  {
+                    dialog.dismiss();
                 });
 
 
-
-                builder.setCancelable(false);
-
-
-                AlertDialog dialog = builder.create();
 
                 dialog.show();
 

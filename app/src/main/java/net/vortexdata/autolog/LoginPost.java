@@ -1,4 +1,4 @@
-package me.varchar42.autologin;
+package net.vortexdata.autolog;
 
 import org.apache.http.client.ClientProtocolException;
 
