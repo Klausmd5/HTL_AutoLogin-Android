@@ -39,7 +39,8 @@
         android:id="@+id/textView3"
         android:layout_width="162dp"
         android:layout_height="33dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/version"
         android:textAlignment="center"
         android:textColor="#ffff"
@@ -53,13 +54,14 @@
         android:layout_height="33dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:text="Version:"
         android:textAlignment="center"
         android:textColor="#ffff"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/cardView"
         app:layout_constraintEnd_toStartOf="@+id/textView3"
-        app:layout_constraintHorizontal_bias="0.833"
+        app:layout_constraintHorizontal_bias="0.625"
         app:layout_constraintStart_toStartOf="parent" />
 
     <android.support.v7.widget.CardView
@@ -68,25 +70,50 @@
         android:layout_height="3dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="56dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/name"
-        android:layout_width="182dp"
-        android:layout_height="39dp"
+        android:layout_width="188dp"
+        android:layout_height="30dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="104dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:drawableLeft="@drawable/ic_keyboard_arrow_left_black_24dp"
         android:text="Back to Home"
         android:textAlignment="center"
         android:textColor="#A5B1C2"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+    <TextView
+        android:id="@+id/copyright"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginBottom="16dp"
+        android:text="Copyright © 2019 Vortexdata.NET"
+        android:textColor="#fff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/note"
+        android:layout_width="307dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="8dp"
+        android:text="Please note that you are currently using a beta build of our app."
+        android:textAlignment="center"
+        android:textColor="#fff"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name" />
 </android.support.constraint.ConstraintLayout>

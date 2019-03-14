@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 
@@ -52,6 +54,20 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
             Intent intent = new Intent(getApplicationContext(), Settings.class);
             startActivity(intent);
         });
+
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.MONTH, 2);
+        c.set(Calendar.DATE, 30);
+        c.set(Calendar.YEAR, 2019);
+
+        Date date = new Date();
+        Date lockDate = c.getTime();
+
+        if(date.after(lockDate)) {
+            System.out.println("Time Passet!");
+        } else {
+            System.out.println("Time didn't pass!");
+        }
 
     }
 
