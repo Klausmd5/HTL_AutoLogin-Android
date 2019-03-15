@@ -89,9 +89,6 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
     }
 
 
-
-
-
     private void saveButton(Button b) {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,26 +98,25 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
                 editor.putString("pw", inPassword.getText().toString());
                 editor.apply();
                 //Toast.makeText(getBaseContext(), "Data saved!!", Toast.LENGTH_LONG).show();
-                Snackbars.Snackbar(view, "Data saved!", "#00D89B");
+                Snackbars.Snackbar(view, "Successfully saved cridentials.", "#00D89B");
 
                 if(connecting) {
                     //toast = Toast.makeText(main, "Be patient!", Toast.LENGTH_LONG);
                     //toast.show();
-                    Snackbars.Snackbar(view, "Be patient!", "#fc5c65");
+                    Snackbars.Snackbar(view, "Processing... Please wait.", "#fc5c65");
                     return;
                 }
                 //toast = Toast.makeText(main, "Sending request!", Toast.LENGTH_LONG);
                 //toast.show();
-                //Snackbars.Snackbar(view, "Sending request..", "#7b7b7b");
-                //connecting = true;
-                //LoginPost.send(inUsername.getText().toString(), inPassword.getText().toString(), main);
+                Snackbars.Snackbar(view, "Processing... Please wait.", "#7b7b7b");
+                connecting = true;
+                LoginPost.send(inUsername.getText().toString(), inPassword.getText().toString(), main);
 
 
 
             }
         });
     }
-
 
     private boolean connecting = false;
     private Toast toast;
@@ -137,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
                 }
                 //toast = Toast.makeText(main, "Sending request!", Toast.LENGTH_LONG);
                 //toast.show();
-                Snackbars.Snackbar(view, "Sending request..", "#00D89B");
+                Snackbars.Snackbar(view, "Processing... Please wait.", "#7b7b7b");
                 connecting = true;
                 LoginPost.send(inUsername.getText().toString(), inPassword.getText().toString(), main);
 
@@ -178,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
                 quickconnThread = new Thread(() -> {
                     try {
                         quickconnThread.sleep(6000);
-                        Snackbars.Snackbar(view, "Logging in.. ", "#7b7b7b");
+                        Snackbars.Snackbar(view, "Processing... Please wait.", "#7b7b7b");
                         LoginPost.send(inUsername.getText().toString(), inPassword.getText().toString(), main);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -188,7 +184,6 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
             }
         });
     }
-
 
     private void loadData() {
         SharedPreferences prefs = getSharedPreferences("userData", MODE_PRIVATE);
