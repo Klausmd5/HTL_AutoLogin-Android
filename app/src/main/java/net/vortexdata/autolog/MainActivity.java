@@ -33,6 +33,9 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
     private FloatingActionButton connectButton;
     private Button connectWifi;
     private ImageView img;
+    private ImageView quickConn;
+
+    private Thread quickconnThread;
 
     private ConstraintLayout background;
 
@@ -47,13 +50,13 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
         inUsername = (EditText) findViewById(R.id.inUsername);
         inPassword = findViewById(R.id.inPassword);
         saveButton = findViewById(R.id.savebutton);
-        connectWifi = findViewById(R.id.connectWifi);
         background = findViewById(R.id.background);
         img = findViewById(R.id.config);
+        quickConn = findViewById(R.id.quickConn);
 
         if(Cfg.connectToWifi) {
-            connectWifi.setVisibility(View.VISIBLE);
-            connectWifi(connectWifi);
+            quickConn.setVisibility(View.VISIBLE);
+            connectWifi(quickConn);
         }
 
         main = this;
@@ -108,15 +111,16 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
                 }
                 //toast = Toast.makeText(main, "Sending request!", Toast.LENGTH_LONG);
                 //toast.show();
-                Snackbars.Snackbar(view, "Sending request..", "#7b7b7b");
-                connecting = true;
-                LoginPost.send(inUsername.getText().toString(), inPassword.getText().toString(), main);
+                //Snackbars.Snackbar(view, "Sending request..", "#7b7b7b");
+                //connecting = true;
+                //LoginPost.send(inUsername.getText().toString(), inPassword.getText().toString(), main);
 
 
 
             }
         });
     }
+
 
     private boolean connecting = false;
     private Toast toast;
@@ -133,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
                 }
                 //toast = Toast.makeText(main, "Sending request!", Toast.LENGTH_LONG);
                 //toast.show();
-                Snackbars.Snackbar(view, "Sending request..", "#7b7b7b");
+                Snackbars.Snackbar(view, "Sending request..", "#00D89B");
                 connecting = true;
                 LoginPost.send(inUsername.getText().toString(), inPassword.getText().toString(), main);
 
@@ -141,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
         });
     }
 
-    private void connectWifi(Button b) {
+    private void connectWifi(ImageView b) {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -171,6 +175,16 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
                         break;
                     }
                 }
+                quickconnThread = new Thread(() -> {
+                    try {
+                        quickconnThread.sleep(6000);
+                        Snackbars.Snackbar(view, "Logging in.. ", "#7b7b7b");
+                        LoginPost.send(inUsername.getText().toString(), inPassword.getText().toString(), main);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                });
+                quickconnThread.start();
             }
         });
     }
@@ -286,10 +300,10 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
         saveApkData();
 
         if(Cfg.connectToWifi) {
-            connectWifi.setVisibility(View.VISIBLE);
-            connectWifi(connectWifi);
+            quickConn.setVisibility(View.VISIBLE);
+            connectWifi(quickConn);
         } else {
-            connectWifi.setVisibility(View.GONE);
+            quickConn.setVisibility(View.GONE);
         }
 
         if(Cfg.fancyBackground) {
