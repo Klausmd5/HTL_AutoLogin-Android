@@ -6,10 +6,12 @@ import android.content.SharedPreferences;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -32,6 +34,9 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
     private Button connectWifi;
     private ImageView img;
 
+    private ConstraintLayout background;
+
+    private boolean firstStart = true;
 
 
     @Override
@@ -43,12 +48,20 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
         inPassword = findViewById(R.id.inPassword);
         saveButton = findViewById(R.id.savebutton);
         connectWifi = findViewById(R.id.connectWifi);
+        background = findViewById(R.id.background);
         img = findViewById(R.id.config);
+
+        if(Cfg.connectToWifi) {
+            connectWifi.setVisibility(View.VISIBLE);
+            connectWifi(connectWifi);
+        }
 
         main = this;
         loadData();
+        loadApkData();
         saveButton(saveButton);
-        connectWifi(connectWifi);
+
+        if(Cfg.fancyBackground) Settings.setFancyBackground(background, this);
 
         img.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), Settings.class);
@@ -56,17 +69,18 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
         });
 
         Calendar c = Calendar.getInstance();
-        c.set(Calendar.MONTH, 2);
-        c.set(Calendar.DATE, 30);
-        c.set(Calendar.YEAR, 2019);
+        c.set(Calendar.MONTH, Cfg.expireMonth);
+        c.set(Calendar.DATE, Cfg.expireDay);
+        c.set(Calendar.YEAR, Cfg.expireYear);
 
         Date date = new Date();
         Date lockDate = c.getTime();
 
+        if(firstStart) showMessage("Attention", "This Beta will run out on " + Cfg.expireDay + "." + (Cfg.expireMonth + 1) + "." + Cfg.expireYear);
+
         if(date.after(lockDate)) {
-            System.out.println("Time Passet!");
-        } else {
-            System.out.println("Time didn't pass!");
+            Intent i = new Intent(getApplicationContext(), TimeOut.class);
+            startActivity(i);
         }
 
     }
@@ -169,6 +183,56 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
 
     }
 
+    private void saveApkData() {
+        SharedPreferences.Editor editor = getSharedPreferences("apkData", 0).edit();
+        editor.putBoolean("firstStart", firstStart);
+        editor.putBoolean("easteregg", Cfg.easteregg);
+        editor.putBoolean("fancyBackground", Cfg.fancyBackground);
+        editor.putBoolean("WifiButton", Cfg.connectToWifi);
+        editor.apply();
+    }
+
+    private void loadApkData() {
+        SharedPreferences prefs = getSharedPreferences("apkData", 0);
+        firstStart = prefs.getBoolean("firstStart", true);
+        Cfg.easteregg = prefs.getBoolean("easteregg", false);
+        Cfg.fancyBackground = prefs.getBoolean("fancyBackground", false);
+        Cfg.connectToWifi = prefs.getBoolean("WifiButton", false);
+
+    }
+
+    public void showMessage(String title, String msg) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(main);
+        View view = getLayoutInflater().inflate(R.layout.errormsg, null);
+
+        builder.setView(view);
+
+        TextView name = view.findViewById(R.id.name);
+        Button btn = view.findViewById(R.id.accept);
+        TextView t = view.findViewById(R.id.error);
+
+        name.setText(title);
+        t.setText(msg);
+
+        AlertDialog dialog = builder.create();
+        dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        dialog.getWindow().setDimAmount((float) 0.9);
+
+
+        //final Drawable drawable = new BitmapDrawable(getResources(), fast);
+        //dialog.getWindow().setBackgroundDrawable(drawable);
+
+        btn.setOnClickListener(v ->  {
+            dialog.dismiss();
+            firstStart = false;
+            saveApkData();
+        });
+
+
+
+        dialog.show();
+    }
+
     @Override
     public void error(final String error) {
         runOnUiThread(new Runnable() {
@@ -214,5 +278,24 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
 
 
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        saveApkData();
+
+        if(Cfg.connectToWifi) {
+            connectWifi.setVisibility(View.VISIBLE);
+            connectWifi(connectWifi);
+        } else {
+            connectWifi.setVisibility(View.GONE);
+        }
+
+        if(Cfg.fancyBackground) {
+            Settings.setFancyBackground(background, this);
+        } else {
+            Settings.removeFancyBackground(background, this);
+        }
     }
 }

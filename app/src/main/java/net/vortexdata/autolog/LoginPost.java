@@ -51,7 +51,7 @@ public class LoginPost {
                         response += line+"\n";
                     }
                     int code = ((HttpURLConnection) conn).getResponseCode();
-                    if(code == 302) {
+                    if(code == 300) {
                         m.ok("Successfully logged in!");
                     } else {
                         m.ok("Wrong password or username\nResponse Code: "+code);

@@ -8,7 +8,7 @@
 
     <android.support.v7.widget.CardView
         android:layout_width="368dp"
-        android:layout_height="207dp"
+        android:layout_height="260dp"
         app:cardBackgroundColor="@color/backgroundBlack"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="89dp">
@@ -49,7 +49,7 @@
 
             <TextView
                 android:id="@+id/name"
-                android:layout_width="144dp"
+                android:layout_width="239dp"
                 android:layout_height="37dp"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="16dp"
@@ -62,18 +62,19 @@
                 android:textSize="30sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.4"
+                app:layout_constraintHorizontal_bias="0.15"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/imageView2" />
 
             <TextView
                 android:id="@+id/error"
                 android:layout_width="239dp"
-                android:layout_height="46dp"
+                android:layout_height="92dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="8dp"
                 android:text="err"
+                android:textAlignment="center"
                 android:textColor="#ffff"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
