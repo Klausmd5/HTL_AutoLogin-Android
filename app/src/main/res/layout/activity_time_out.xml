@@ -8,7 +8,7 @@
     tools:context=".TimeOut">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/title"
         android:layout_width="349dp"
         android:layout_height="62dp"
         android:layout_marginStart="8dp"
@@ -32,13 +32,29 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="28dp"
         android:layout_marginEnd="8dp"
-        android:text="The beta version has expired, please update to the release version. You can do so by taping the button below."
+        android:text="The beta version has expired, please update to the release version. You can do so by tapping the button below."
         android:textAlignment="center"
         android:textColor="#fff"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/title" />
+
+    <TextView
+        android:id="@+id/copy"
+        android:layout_width="282dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="8dp"
+        android:text="Copy URL"
+        android:textAlignment="center"
+        android:textColor="#A5B1C2"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/openBrowser" />
 
     <Button
         android:id="@+id/openBrowser"

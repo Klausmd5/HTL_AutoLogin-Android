@@ -18,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import net.vortexdata.autolog.updater.checkWeb;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -59,6 +61,12 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
             connectWifi(quickConn);
         }
 
+        Thread t = new Thread(() -> {
+            new checkWeb(getApplicationContext());
+        });
+        t.start();
+
+
         main = this;
         loadData();
         loadApkData();
@@ -82,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
         if(firstStart) showMessage("Attention", "This Beta will run out on " + Cfg.expireDay + "." + (Cfg.expireMonth + 1) + "." + Cfg.expireYear);
 
         if(date.after(lockDate)) {
+            Cfg.expired = true;
             Intent i = new Intent(getApplicationContext(), TimeOut.class);
             startActivity(i);
         }

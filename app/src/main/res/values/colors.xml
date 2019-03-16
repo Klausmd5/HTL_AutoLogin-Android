@@ -6,7 +6,7 @@
     <color name="colorPrimaryDark">#00ccec</color>
     <color name="colorAccent">#FF4081</color>
     <color name="backgrondColorCyan">#00dcff</color>
-    <color name="backgrondColorSlategrey">#dadada</color>
+    <color name="backgrondColorSlategrey">#DADADA</color>
     <color name="backgrondColorWhite">#e7e7e7</color>
     <color name="lighterPurple">#a55eea</color>
     <color name="gloomyPurple">#8854d0</color>
@@ -30,7 +30,7 @@
     <color name="light_rework">#63ccff</color>
     <color name="dark_rework">#006db3</color>
 
-    <color name="colour_highlight_grey">#ff666666</color>
+    <color name="colour_highlight_grey">#666666</color>
     <color name="colour_dark_blue">#ff000066</color>
     <color name="colour_dark_green">#ff006600</color>
 

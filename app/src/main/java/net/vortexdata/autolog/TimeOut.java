@@ -1,6 +1,9 @@
 package net.vortexdata.autolog;
 
 import android.content.ActivityNotFoundException;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,6 +17,8 @@ import android.widget.TextView;
 public class TimeOut extends AppCompatActivity {
 
     Button b;
+    TextView copy;
+    TextView title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +26,8 @@ public class TimeOut extends AppCompatActivity {
         setContentView(R.layout.activity_time_out);
 
         b = findViewById(R.id.openBrowser);
+        copy = findViewById(R.id.copy);
+        title = findViewById(R.id.title);
 
         b.setOnClickListener(v -> {
 
@@ -34,6 +41,17 @@ public class TimeOut extends AppCompatActivity {
             }
 
         });
+
+        copy.setOnClickListener(v -> {
+            ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText("Upadte URL", Cfg.downloadURL);
+            clipboard.setPrimaryClip(clip);
+
+        });
+
+        if(Cfg.expired) {
+            title.setText("Outdated!");
+        }
     }
 
     public void noBack() {
