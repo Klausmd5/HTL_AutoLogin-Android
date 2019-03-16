@@ -17,6 +17,7 @@ public class Settings extends AppCompatActivity {
     private Switch rgb;
     private Switch wifi;
     private ConstraintLayout background;
+    TextView version;
 
     private int clicked = 0;
 
@@ -30,6 +31,9 @@ public class Settings extends AppCompatActivity {
         rgb = findViewById(R.id.rgbMode);
         background = findViewById(R.id.background);
         wifi = findViewById(R.id.connectToHTBLA);
+        version = findViewById(R.id.version);
+
+        version.setText(Cfg.version);
 
         if(Cfg.fancyBackground) {
             setFancyBackground(background, this);

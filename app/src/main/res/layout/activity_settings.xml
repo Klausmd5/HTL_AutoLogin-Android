@@ -32,19 +32,18 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="12dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView3"
+        app:layout_constraintBottom_toTopOf="@+id/version"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.571"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/version"
         android:layout_width="162dp"
         android:layout_height="33dp"
         android:layout_marginStart="13dp"
         android:layout_marginEnd="52dp"
         android:layout_marginBottom="56dp"
-        android:text="@string/version"
+        android:text="Beta"
         android:textAlignment="center"
         android:textColor="#ffff"
         android:textSize="18sp"
@@ -64,7 +63,7 @@
         android:textColor="#ffff"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/cardView"
-        app:layout_constraintEnd_toStartOf="@+id/textView3"
+        app:layout_constraintEnd_toStartOf="@+id/version"
         app:layout_constraintStart_toStartOf="parent" />
 
     <android.support.v7.widget.CardView
