@@ -102,6 +102,11 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(inUsername.getText().length() < 4 || inPassword.getText().length() < 4) {
+                    Snackbars.Snackbar(view, "No Username and Password detected!", "#eb3b5a");
+                    return;
+                }
+
                 SharedPreferences.Editor editor = getSharedPreferences("userData", MODE_PRIVATE).edit();
                 editor.putString("user", inUsername.getText().toString());
                 editor.putString("pw", inPassword.getText().toString());
@@ -154,6 +159,11 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(inUsername.getText().length() < 4 || inPassword.getText().length() < 4) {
+                    Snackbars.Snackbar(view, "No Username and Password detected!", "#eb3b5a");
+                    return;
+                }
+
                 String networkSSID = "HTBLA";
                 String networkPass = "htlgrieskirchen";
 
