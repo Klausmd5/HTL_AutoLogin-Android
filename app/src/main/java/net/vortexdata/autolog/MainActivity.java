@@ -102,7 +102,20 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if(inUsername.getText().toString().equals("VarChar42")) {
+                    Snackbars.Snackbar(view, "VarChar42 treibt sein unwesen!!!!", "#eb3b5a");
+                    return;
+                }
+
+                if(inUsername.getText().toString().equals("quit")) {
+                    Snackbars.Snackbar(view, "Bye!", "#eb3b5a");
+                    System.exit(0);
+                    return;
+                }
+
                 if(inUsername.getText().length() < 4 || inPassword.getText().length() < 4) {
+
                     Snackbars.Snackbar(view, "No Username and Password detected!", "#eb3b5a");
                     return;
                 }
@@ -112,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
                 editor.putString("pw", inPassword.getText().toString());
                 editor.apply();
                 //Toast.makeText(getBaseContext(), "Data saved!!", Toast.LENGTH_LONG).show();
-                Snackbars.Snackbar(view, "Successfully saved cridentials.", "#00D89B");
+                Snackbars.Snackbar(view, "Successfully saved cridentials.", "#00d873");
 
                 if(connecting) {
                     //toast = Toast.makeText(main, "Be patient!", Toast.LENGTH_LONG);
@@ -156,6 +169,9 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
     }
 
     private void connectWifi(ImageView b) {
+
+        if(firstStart) showMessage("Notify", "On newer Android-Verions (Android Q) you might turn off your mobile data. Because some errors can occur.");
+
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -217,6 +233,7 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
         editor.putBoolean("easteregg", Cfg.easteregg);
         editor.putBoolean("fancyBackground", Cfg.fancyBackground);
         editor.putBoolean("WifiButton", Cfg.connectToWifi);
+        editor.putBoolean("Expired", Cfg.expired);
         editor.apply();
     }
 
@@ -226,7 +243,7 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
         Cfg.easteregg = prefs.getBoolean("easteregg", false);
         Cfg.fancyBackground = prefs.getBoolean("fancyBackground", false);
         Cfg.connectToWifi = prefs.getBoolean("WifiButton", false);
-
+        Cfg.connectToWifi = prefs.getBoolean("Expired", false);
     }
 
     public void showMessage(String title, String msg) {
@@ -267,9 +284,14 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
             @Override
             public void run() {
                 connecting = false;
-                AlertDialog.Builder builder = new AlertDialog.Builder(main);
-                View view = getLayoutInflater().inflate(R.layout.errormsg, null);
+                //AlertDialog.Builder builder = new AlertDialog.Builder(main);
+                //View view = getLayoutInflater().inflate(R.layout.errormsg, null);
+                //View view = getLayoutInflater().inflate(R.layout.activity_main, null);
+                //View view = this.
 
+                Snackbars.Snackbar(getWindow().getDecorView().getRootView(), "Oops! Some connection error occured. Wrong Wifi?", "#eb3b5a");
+
+                /*
                 builder.setView(view);
 
                 TextView name = view.findViewById(R.id.name);
@@ -286,9 +308,8 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
                     dialog.dismiss();
                 });
 
-
-
                 dialog.show();
+                */
 
             }
         });
@@ -300,11 +321,16 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
             @Override
             public void run() {
                 connecting = false;
-                Toast.makeText(main, message, Toast.LENGTH_LONG).show();
+
+                //Toast.makeText(main, message, Toast.LENGTH_LONG).show();
+                if(message.equals("Successfully logged in!")) {
+                    Snackbars.Snackbar(getWindow().getDecorView().getRootView(), message, "#00d873");
+                } else {
+                    Snackbars.Snackbar(getWindow().getDecorView().getRootView(), message, "#eb3b5a");
+                }
+
             }
         });
-
-
 
     }
 
@@ -312,6 +338,11 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
     public void onResume() {
         super.onResume();
         saveApkData();
+
+        Thread t = new Thread(() -> {
+            new checkWeb(getApplicationContext());
+        });
+        t.start();
 
         if(Cfg.connectToWifi) {
             quickConn.setVisibility(View.VISIBLE);

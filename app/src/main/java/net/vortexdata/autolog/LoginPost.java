@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
@@ -36,7 +35,7 @@ public class LoginPost {
 
                     URL url = new URL(htl);
                     URLConnection conn = url.openConnection();
-                    conn.setRequestProperty("User-Agent", "AutoLogin by VarChar42 | "+R.string.version);
+                    conn.setRequestProperty("User-Agent", "AutoLogin by Vortexdata | "+Cfg.version);
                     conn.setConnectTimeout(5000);
                     conn.setDoOutput(true);
 
@@ -50,11 +49,12 @@ public class LoginPost {
                     while ((line = rd.readLine()) != null) {
                         response += line+"\n";
                     }
-                    int code = ((HttpURLConnection) conn).getResponseCode();
-                    if(code == 300) {
+
+                    if(response.equalsIgnoreCase("Anmeldung erfolgreich") || response.contains("erfolgreich")) {
                         m.ok("Successfully logged in!");
                     } else {
-                        m.ok("Wrong password or username\nResponse Code: "+code);
+                        //m.ok("Wrong password or username\nResponse Code: "+code);
+                        m.ok("Wrong password or username!");
                     }
 
 
