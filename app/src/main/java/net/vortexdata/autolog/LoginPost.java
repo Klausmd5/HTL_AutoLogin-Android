@@ -109,4 +109,69 @@ public class LoginPost {
 
 
     }
+
+
+    public static void quickSend(final String username, final String password, final QuickConn c) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    String msg = new String();
+
+
+
+                    String echo = "http://scooterlabs.com/echo";
+                    String htl = "http://10.10.0.251:8002/index.php?zone=cp_htl";
+
+                    String data = URLEncoder.encode("auth_user", "UTF-8") + "=" + URLEncoder.encode(username, "UTF-8");
+                    data += "&" + URLEncoder.encode("auth_pass", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
+                    data += "&" + URLEncoder.encode("accept", "UTF-8") + "=" + URLEncoder.encode("Anmelden", "UTF-8");
+
+
+                    URL url = new URL(htl);
+                    URLConnection conn = url.openConnection();
+                    conn.setRequestProperty("User-Agent", "AutoLogin by Vortexdata | "+Cfg.version);
+                    conn.setConnectTimeout(5000);
+                    conn.setDoOutput(true);
+
+                    OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+                    wr.write(data);
+                    wr.flush();
+
+                    BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    String line;
+                    String response = new String();
+                    while ((line = rd.readLine()) != null) {
+                        response += line+"\n";
+                    }
+
+                    if(response.equalsIgnoreCase("Anmeldung erfolgreich") || response.contains("erfolgreich")) {
+                        c.ok("Successfully logged in!");
+                    } else {
+                        //m.ok("Wrong password or username\nResponse Code: "+code);
+                        c.ok("Wrong password or username!");
+                    }
+
+                    wr.close();
+                    rd.close();
+
+
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                    c.error(e.getMessage());
+                } catch (ClientProtocolException e) {
+                    e.printStackTrace();
+                    c.error(e.getMessage());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    c.error(e.getMessage());
+                }
+
+
+            }
+        });
+        thread.start();
+
+    }
+
 }

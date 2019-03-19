@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
         img = findViewById(R.id.config);
         quickConn = findViewById(R.id.quickConn);
 
-        if(Cfg.connectToWifi) {
+        if(Cfg.qConn) {
             quickConn.setVisibility(View.VISIBLE);
             connectWifi(quickConn);
         }
@@ -232,7 +232,7 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
         editor.putBoolean("firstStart", firstStart);
         editor.putBoolean("easteregg", Cfg.easteregg);
         editor.putBoolean("fancyBackground", Cfg.fancyBackground);
-        editor.putBoolean("WifiButton", Cfg.connectToWifi);
+        editor.putBoolean("qConn", Cfg.qConn);
         editor.putBoolean("Expired", Cfg.expired);
         editor.apply();
     }
@@ -242,8 +242,8 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
         firstStart = prefs.getBoolean("firstStart", true);
         Cfg.easteregg = prefs.getBoolean("easteregg", false);
         Cfg.fancyBackground = prefs.getBoolean("fancyBackground", false);
-        Cfg.connectToWifi = prefs.getBoolean("WifiButton", false);
-        Cfg.connectToWifi = prefs.getBoolean("Expired", false);
+        Cfg.qConn = prefs.getBoolean("qConn", false);
+        Cfg.expired = prefs.getBoolean("Expired", false);
     }
 
     public void showMessage(String title, String msg) {
@@ -262,10 +262,6 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
         AlertDialog dialog = builder.create();
         dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         dialog.getWindow().setDimAmount((float) 0.9);
-
-
-        //final Drawable drawable = new BitmapDrawable(getResources(), fast);
-        //dialog.getWindow().setBackgroundDrawable(drawable);
 
         btn.setOnClickListener(v ->  {
             dialog.dismiss();
@@ -289,7 +285,7 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
                 //View view = getLayoutInflater().inflate(R.layout.activity_main, null);
                 //View view = this.
 
-                Snackbars.Snackbar(getWindow().getDecorView().getRootView(), "Oops! Some connection error occured. Wrong Wifi?", "#eb3b5a");
+                Snackbars.Snackbar(getWindow().getDecorView().getRootView(), Cfg.err, Cfg.err_color);
 
                 /*
                 builder.setView(view);
@@ -344,7 +340,7 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
         });
         t.start();
 
-        if(Cfg.connectToWifi) {
+        if(Cfg.qConn) {
             quickConn.setVisibility(View.VISIBLE);
             connectWifi(quickConn);
         } else {

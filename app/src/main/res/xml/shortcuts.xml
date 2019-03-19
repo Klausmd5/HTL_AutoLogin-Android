@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="qcon"
+        android:enabled="true"
+        android:icon="@drawable/qconn_48dp"
+        android:shortcutShortLabel="@string/q_conn"
+        android:shortcutLongLabel="@string/QuickConnect"
+        android:shortcutDisabledMessage="@string/disabledMsg">
+        <intent
+            android:action="android.intent.actioion.VIEW"
+            android:targetPackage="net.vortexdata.autolog"
+            android:targetClass="net.vortexdata.autolog.QuickConn" />
+
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+    <shortcut
+        android:shortcutId="Settings"
+        android:enabled="true"
+        android:icon="@drawable/ic_settings_black_48dp"
+        android:shortcutShortLabel="@string/Settings"
+        android:shortcutLongLabel="@string/Settings"
+        android:shortcutDisabledMessage="@string/disabledMsg">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="net.vortexdata.autolog"
+            android:targetClass="net.vortexdata.autolog.Settings" />
+        <!-- If your shortcut is associated with multiple intents, include them
+             here. The last intent in the list determines what the user sees when
+             they launch this shortcut. -->
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+</shortcuts>

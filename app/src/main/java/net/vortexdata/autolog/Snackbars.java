@@ -18,6 +18,17 @@ public class Snackbars {
         return;
     }
 
+    public static void SnackbarLong(View view, String txt, String color) {
+
+        Snackbar snackbar;
+        snackbar = Snackbar.make(view, txt, Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundColor(Color.parseColor(color));
+        snackbar.show();
+
+        return;
+    }
+
     public static void LongTextSnackbar(View view, String txt, String BackgroundColor, int lines) {
 
         Snackbar snackbar;

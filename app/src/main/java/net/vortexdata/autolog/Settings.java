@@ -1,6 +1,7 @@
 package net.vortexdata.autolog;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -40,15 +41,15 @@ public class Settings extends AppCompatActivity {
             rgb.setChecked(true);
         }
 
-        if(Cfg.connectToWifi) wifi.setChecked(true);
+        if(Cfg.qConn) wifi.setChecked(true);
 
         wifi.setOnClickListener(v -> {
             if(wifi.isChecked()) {
-                Cfg.connectToWifi = true;
+                Cfg.qConn = true;
             }
 
             if(!wifi.isChecked()) {
-                Cfg.connectToWifi = false;
+                Cfg.qConn = false;
             }
         });
 
@@ -71,7 +72,8 @@ public class Settings extends AppCompatActivity {
 
 
         back.setOnClickListener(view -> {
-
+            Intent i = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(i);
             finish();
 
         });
