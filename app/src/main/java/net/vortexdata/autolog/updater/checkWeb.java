@@ -27,7 +27,7 @@ public class checkWeb {
         System.out.println("Reading Webite..");
 
         try {
-            URL urlLoc = new URL(Cfg.downloadURL + "version.txt");
+            URL urlLoc = new URL(Cfg.checkWeb);
             trustEveryone();
         HttpsURLConnection conexion = (HttpsURLConnection) urlLoc.openConnection();
         conexion.setConnectTimeout(4000);
@@ -48,7 +48,7 @@ public class checkWeb {
         }
 
         String[] response = responseBuffer.toString().trim().split(";");
-            System.out.println("RESPONSE " + response);
+            //System.out.println("RESPONSE " + response);
 
             if(response.length > 1) {
                 if (response[0].contains("outdated") && response[1].contains(Cfg.version)) {
