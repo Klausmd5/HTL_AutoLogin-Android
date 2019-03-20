@@ -72,8 +72,8 @@ public class Settings extends AppCompatActivity {
 
 
         back.setOnClickListener(view -> {
-            Intent i = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(i);
+            //Intent i = new Intent(getApplicationContext(), MainActivity.class);
+            //startActivity(i);
             finish();
 
         });
