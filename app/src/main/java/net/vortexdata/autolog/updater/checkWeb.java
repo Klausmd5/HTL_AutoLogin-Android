@@ -24,7 +24,7 @@ import javax.net.ssl.X509TrustManager;
 public class checkWeb {
 
     public checkWeb(Context c) {
-        System.out.println("Reading Webite..");
+        //System.out.println("Reading Webite..");
 
         try {
             URL urlLoc = new URL(Cfg.checkWeb);
