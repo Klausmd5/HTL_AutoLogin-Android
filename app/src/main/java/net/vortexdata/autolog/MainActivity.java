@@ -63,6 +63,9 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
 
         Thread t = new Thread(() -> {
             new checkWeb(getApplicationContext());
+            if(!Cfg.sentUsage) {
+                checkWeb.sendUsage();
+            }
         });
         t.start();
 
@@ -234,6 +237,7 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
         editor.putBoolean("fancyBackground", Cfg.fancyBackground);
         editor.putBoolean("qConn", Cfg.qConn);
         editor.putBoolean("Expired", Cfg.expired);
+        editor.putBoolean("sentUsage", Cfg.sentUsage);
         editor.apply();
     }
 
@@ -244,6 +248,7 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
         Cfg.fancyBackground = prefs.getBoolean("fancyBackground", false);
         Cfg.qConn = prefs.getBoolean("qConn", false);
         Cfg.expired = prefs.getBoolean("Expired", false);
+        Cfg.sentUsage = prefs.getBoolean("sentUsage", false);
     }
 
     public void showMessage(String title, String msg) {

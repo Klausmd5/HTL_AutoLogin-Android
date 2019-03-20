@@ -6,6 +6,7 @@ public class Cfg {
     public static boolean dev = false;
     public static boolean expired = false;
     public static boolean fancyBackground = false;
+    public static boolean sentUsage = false;
 
     public static boolean qConn = false;
 
@@ -20,5 +21,7 @@ public class Cfg {
 
     public static String downloadURL = "https://projects.vortexdata.net/autologin/";
     public static String checkWeb = "https://projects.vortexdata.net/autologin/v0.1.1.txt";
+    public static String checkForUpdates = "https://projects.vortexdata.net/autologin/changes.txt";
+    public static String sendUsage = "https://projects.vortexdata.net/autologin/stats/usage.php?v=latest";
 
 }
