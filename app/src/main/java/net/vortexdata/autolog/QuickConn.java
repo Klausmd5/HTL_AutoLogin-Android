@@ -10,20 +10,16 @@ import android.widget.ImageView;
 
 import java.util.List;
 
-public class QuickConn extends AppCompatActivity {
+public class QuickConn {
 
     private ImageView quickConn;
     private Thread quickconnThread;
     private String inUsername;
     private String inPassword;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_quick_conn);
+   public QuickConn(Context c) {
 
-        quickConn = findViewById(R.id.quickConn);
-        loadData();
+        loadData(c);
 
         String networkSSID = "HTBLA";
         String networkPass = "htlgrieskirchen";
@@ -31,7 +27,7 @@ public class QuickConn extends AppCompatActivity {
         WifiConfiguration conf = new WifiConfiguration();
         conf.SSID = "\"" + networkSSID + "\"";
         conf.preSharedKey = "\""+ networkPass +"\"";
-        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        WifiManager wifiManager = (WifiManager) c.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         wifiManager.addNetwork(conf);
 
 
@@ -49,11 +45,11 @@ public class QuickConn extends AppCompatActivity {
         }
         quickconnThread = new Thread(() -> {
             try {
-                Snackbars.SnackbarLong(getWindow().getDecorView().getRootView(), "Processing... Please wait.", "#7b7b7b");
+                //Snackbars.SnackbarLong(getWindow().getDecorView().getRootView(), "Processing... Please wait.", "#7b7b7b");
                 quickconnThread.sleep(6000);
-                LoginPost.quickSend(inUsername, inPassword, this);
-                quickconnThread.sleep(200);
-                finish();
+                LoginPost.quickSend(inUsername, inPassword);
+                //quickconnThread.sleep(200);
+                //finish();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -63,37 +59,12 @@ public class QuickConn extends AppCompatActivity {
 
     }
 
-    private void loadData() {
-        SharedPreferences prefs = getSharedPreferences("userData", MODE_PRIVATE);
+    private void loadData(Context context) {
+
+        SharedPreferences prefs = context.getSharedPreferences("userData", 0);
         inUsername = prefs.getString("user", "");
         inPassword = prefs.getString("pw", "");
 
     }
 
-
-    public void error(final String error) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Snackbars.Snackbar(getWindow().getDecorView().getRootView(), "Oops! Some connection error occured. Wrong Wifi?", "#eb3b5a");
-
-            }
-        });
-    }
-
-    public void ok(final String message) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-
-                if(message.equals("Successfully logged in!")) {
-                    Snackbars.Snackbar(getWindow().getDecorView().getRootView(), message, "#00d873");
-                } else {
-                    Snackbars.Snackbar(getWindow().getDecorView().getRootView(), message, "#eb3b5a");
-                }
-
-            }
-        });
-
-    }
 }

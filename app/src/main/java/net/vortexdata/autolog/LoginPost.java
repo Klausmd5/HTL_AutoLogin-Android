@@ -111,7 +111,7 @@ public class LoginPost {
     }
 
 
-    public static void quickSend(final String username, final String password, final QuickConn c) {
+    public static void quickSend(final String username, final String password) {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -145,26 +145,16 @@ public class LoginPost {
                         response += line+"\n";
                     }
 
-                    if(response.equalsIgnoreCase("Anmeldung erfolgreich") || response.contains("erfolgreich")) {
-                        c.ok("Successfully logged in!");
-                    } else {
-                        //m.ok("Wrong password or username\nResponse Code: "+code);
-                        c.ok("Wrong password or username!");
-                    }
-
                     wr.close();
                     rd.close();
 
 
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
-                    c.error(e.getMessage());
                 } catch (ClientProtocolException e) {
                     e.printStackTrace();
-                    c.error(e.getMessage());
                 } catch (IOException e) {
                     e.printStackTrace();
-                    c.error(e.getMessage());
                 }
 
 

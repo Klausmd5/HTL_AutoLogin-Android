@@ -2,6 +2,7 @@ package net.vortexdata.autolog.updater;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 
 import net.vortexdata.autolog.Cfg;
 import net.vortexdata.autolog.TimeOut;
