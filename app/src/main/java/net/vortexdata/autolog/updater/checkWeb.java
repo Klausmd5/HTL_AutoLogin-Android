@@ -50,9 +50,11 @@ public class checkWeb {
         String[] response = responseBuffer.toString().trim().split(";");
             //System.out.println("RESPONSE " + response);
 
-            if(response.length > 1) {
+            if(response.length >= 3) {
                 if (response[0].contains("outdated") && response[1].contains(Cfg.version)) {
                     Cfg.expired = true;
+                    if(response[2].equalsIgnoreCase("allowGoBack")) Cfg.allowGoBackOnTimeout = true;
+
                     Intent i = new Intent(c, TimeOut.class);
                     c.startActivity(i);
                 }

@@ -7,6 +7,7 @@ public class Cfg {
     public static boolean expired = false;
     public static boolean fancyBackground = false;
     public static boolean sentUsage = false;
+    public static boolean allowGoBackOnTimeout = false;
 
     public static boolean qConn = false;
 

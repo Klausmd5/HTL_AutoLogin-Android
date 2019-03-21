@@ -19,6 +19,7 @@ public class TimeOut extends AppCompatActivity {
     Button b;
     TextView copy;
     TextView title;
+    Button okay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,11 @@ public class TimeOut extends AppCompatActivity {
         b = findViewById(R.id.openBrowser);
         copy = findViewById(R.id.copy);
         title = findViewById(R.id.title);
+        okay = findViewById(R.id.accept);
+
+        if(Cfg.allowGoBackOnTimeout) {
+            okay.setVisibility(View.VISIBLE);
+        }
 
         b.setOnClickListener(v -> {
 
@@ -52,6 +58,11 @@ public class TimeOut extends AppCompatActivity {
         if(Cfg.expired) {
             title.setText("Outdated!");
         }
+
+        okay.setOnClickListener(v -> {
+            finish();
+        });
+
     }
 
     public void noBack() {
@@ -84,8 +95,11 @@ public class TimeOut extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        //super.onBackPressed();
-        noBack();
+        if(Cfg.allowGoBackOnTimeout) {
+            super.onBackPressed();
+        } else {
+            noBack();
+        }
     }
 
 }

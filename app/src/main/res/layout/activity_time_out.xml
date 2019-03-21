@@ -7,6 +7,22 @@
     android:background="@color/backgroundBlack"
     tools:context=".TimeOut">
 
+    <Button
+        android:id="@+id/accept"
+        android:layout_width="205dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="132dp"
+        android:background="@drawable/buttonstyleselector"
+        android:text="okay"
+        android:textColor="#fff"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <TextView
         android:id="@+id/title"
         android:layout_width="349dp"
@@ -26,19 +42,15 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/updateMsg"
         android:layout_width="282dp"
         android:layout_height="157dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="8dp"
         android:text="The beta version has expired, please update to the release version. You can do so by tapping the button below."
         android:textAlignment="center"
         android:textColor="#fff"
         android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title" />
+        tools:layout_editor_absoluteX="65dp"
+        tools:layout_editor_absoluteY="198dp" />
 
     <TextView
         android:id="@+id/copy"
@@ -70,5 +82,5 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        app:layout_constraintTop_toBottomOf="@+id/updateMsg" />
 </android.support.constraint.ConstraintLayout>
