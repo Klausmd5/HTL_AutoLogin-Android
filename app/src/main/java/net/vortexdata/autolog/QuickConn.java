@@ -2,12 +2,16 @@ package net.vortexdata.autolog;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.Network;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 
 public class QuickConn {
@@ -16,6 +20,10 @@ public class QuickConn {
     private Thread quickconnThread;
     private String inUsername;
     private String inPassword;
+
+    public String state;
+    public boolean statePositive;
+    public boolean done = false;
 
    public QuickConn(Context c) {
 
@@ -43,11 +51,12 @@ public class QuickConn {
                 break;
             }
         }
+
         quickconnThread = new Thread(() -> {
             try {
                 //Snackbars.SnackbarLong(getWindow().getDecorView().getRootView(), "Processing... Please wait.", "#7b7b7b");
                 quickconnThread.sleep(6000);
-                LoginPost.quickSend(inUsername, inPassword);
+                LoginPost.quickSend(inUsername, inPassword, this);
                 //quickconnThread.sleep(200);
                 //finish();
             } catch (InterruptedException e) {

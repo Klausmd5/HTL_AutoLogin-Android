@@ -10,7 +10,7 @@
         <intent
             android:action="android.intent.actioion.VIEW"
             android:targetPackage="net.vortexdata.autolog"
-            android:targetClass="net.vortexdata.autolog.QuickConn" />
+            android:targetClass="net.vortexdata.autolog.Qconn" />
 
         <categories android:name="android.shortcut.conversation" />
     </shortcut>

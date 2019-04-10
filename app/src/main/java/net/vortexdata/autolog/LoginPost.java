@@ -1,5 +1,9 @@
 package net.vortexdata.autolog;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.Network;
+
 import org.apache.http.client.ClientProtocolException;
 
 import java.io.BufferedReader;
@@ -10,6 +14,15 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.X509TrustManager;
 
 /**
  * Created by mwiesinger17 on 23.11.2018.
@@ -23,10 +36,10 @@ public class LoginPost {
                 try {
                     String msg = new String();
 
-
+                    trustEveryone();
 
                     String echo = "http://scooterlabs.com/echo";
-                    String htl = "http://10.10.0.251:8002/index.php?zone=cp_htl";
+                    String htl = "https://10.10.0.251:8002/index.php?zone=cp_htl";
 
                     String data = URLEncoder.encode("auth_user", "UTF-8") + "=" + URLEncoder.encode(username, "UTF-8");
                     data += "&" + URLEncoder.encode("auth_pass", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
@@ -111,17 +124,17 @@ public class LoginPost {
     }
 
 
-    public static void quickSend(final String username, final String password) {
+    public static void quickSend(final String username, final String password, QuickConn quickConn) {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     String msg = new String();
 
-
+                    trustEveryone();
 
                     String echo = "http://scooterlabs.com/echo";
-                    String htl = "http://10.10.0.251:8002/index.php?zone=cp_htl";
+                    String htl = "https://10.10.0.251:8002/index.php?zone=cp_htl";
 
                     String data = URLEncoder.encode("auth_user", "UTF-8") + "=" + URLEncoder.encode(username, "UTF-8");
                     data += "&" + URLEncoder.encode("auth_pass", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
@@ -145,6 +158,19 @@ public class LoginPost {
                         response += line+"\n";
                     }
 
+                    if(response.equalsIgnoreCase("Anmeldung erfolgreich") || response.contains("erfolgreich")) {
+                        quickConn.state = "Successfully logged in!";
+                        quickConn.statePositive = true;
+                        quickConn.done = true;
+                    } else {
+                        //m.ok("Wrong password or username\nResponse Code: "+code);
+                        quickConn.state = "Wrong password or username!";
+                        quickConn.statePositive = false;
+                        System.out.println("setting to done");
+                        quickConn.done = true;
+                    }
+
+
                     wr.close();
                     rd.close();
 
@@ -155,6 +181,8 @@ public class LoginPost {
                     e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
+                    quickConn.done = true;
+                    quickConn.statePositive = false;
                 }
 
 
@@ -162,6 +190,28 @@ public class LoginPost {
         });
         thread.start();
 
+    }
+
+    private static void trustEveryone() {
+        try {
+            HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier(){
+                public boolean verify(String hostname, SSLSession session) {
+                    return true;
+                }});
+            SSLContext context = SSLContext.getInstance("TLS");
+            context.init(null, new X509TrustManager[]{new X509TrustManager(){
+                public void checkClientTrusted(X509Certificate[] chain,
+                                               String authType) throws CertificateException {}
+                public void checkServerTrusted(X509Certificate[] chain,
+                                               String authType) throws CertificateException {}
+                public X509Certificate[] getAcceptedIssuers() {
+                    return new X509Certificate[0];
+                }}}, new SecureRandom());
+            HttpsURLConnection.setDefaultSSLSocketFactory(
+                    context.getSocketFactory());
+        } catch (Exception e) { // should never happen
+            e.printStackTrace();
+        }
     }
 
 }

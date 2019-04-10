@@ -90,13 +90,13 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
         Date date = new Date();
         Date lockDate = c.getTime();
 
-        if(firstStart) showMessage("Attention", "This Beta will run out on " + Cfg.expireDay + "." + (Cfg.expireMonth + 1) + "." + Cfg.expireYear);
+        //if(firstStart) showMessage("Attention", "This Beta will run out on " + Cfg.expireDay + "." + (Cfg.expireMonth + 1) + "." + Cfg.expireYear);
 
-        if(date.after(lockDate)) {
-            Cfg.expired = true;
-            Intent i = new Intent(getApplicationContext(), TimeOut.class);
-            startActivity(i);
-        }
+        //if(date.after(lockDate)) {
+          //  Cfg.expired = true;
+            //Intent i = new Intent(getApplicationContext(), TimeOut.class);
+            //startActivity(i);
+        //}
 
     }
 
