@@ -56,7 +56,9 @@ public class QuickConn {
             try {
                 //Snackbars.SnackbarLong(getWindow().getDecorView().getRootView(), "Processing... Please wait.", "#7b7b7b");
                 quickconnThread.sleep(6000);
+                loadData(c);
                 LoginPost.quickSend(inUsername, inPassword, this);
+                saveApkData(c);
                 //quickconnThread.sleep(200);
                 //finish();
             } catch (InterruptedException e) {
@@ -74,6 +76,18 @@ public class QuickConn {
         inUsername = prefs.getString("user", "");
         inPassword = prefs.getString("pw", "");
 
+    }
+
+    private void saveApkData(Context context) {
+        SharedPreferences.Editor editor = context.getSharedPreferences("apkData", 0).edit();
+        editor.putString("loginURL", Cfg.logURL);
+        editor.apply();
+    }
+
+    private void loadApkData(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences("apkData", 0);
+
+        Cfg.logURL = prefs.getString("loginURL", Cfg.logURL);
     }
 
 }

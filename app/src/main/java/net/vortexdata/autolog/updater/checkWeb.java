@@ -133,4 +133,43 @@ public class checkWeb {
 
     }
 
+    public static void checkLoginURL() {
+        //System.out.println("Reading Webite..");
+
+        try {
+            URL urlLoc = new URL("https://projects.vortexdata.net/autologin/loginURL.txt");
+            trustEveryone();
+            HttpsURLConnection conexion = (HttpsURLConnection) urlLoc.openConnection();
+            conexion.setConnectTimeout(4000);
+            conexion.setReadTimeout(1000);
+            conexion.connect();
+
+            // downlod the file
+            InputStream input = new BufferedInputStream(urlLoc
+                    .openStream());
+
+            StringBuffer responseBuffer = new StringBuffer();
+            byte[] byteArray = new byte[1024];
+            while (input.read(byteArray) != -1) {
+                String res = new String(byteArray, "UTF-8");
+                responseBuffer.append(res);
+                byteArray = null;
+                byteArray = new byte[1024];
+            }
+
+            String response = responseBuffer.toString().trim();
+            //System.out.println("RESPONSE " + response);
+
+            if(response.contains("http") && response.equals("cp_htl") && !response.equalsIgnoreCase(Cfg.logURL)) {
+                Cfg.logURL = response;
+            }
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }
