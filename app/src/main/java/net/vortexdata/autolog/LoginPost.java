@@ -39,7 +39,7 @@ public class LoginPost {
                     trustEveryone();
 
                     String echo = "http://scooterlabs.com/echo";
-                    String htl = "https://10.10.0.251:8002/index.php?zone=cp_htl";
+                    String htl = "https://10.10.0.251:8003/index.php?zone=cp_htl";
 
                     String data = URLEncoder.encode("auth_user", "UTF-8") + "=" + URLEncoder.encode(username, "UTF-8");
                     data += "&" + URLEncoder.encode("auth_pass", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
@@ -134,7 +134,7 @@ public class LoginPost {
                     trustEveryone();
 
                     String echo = "http://scooterlabs.com/echo";
-                    String htl = "https://10.10.0.251:8002/index.php?zone=cp_htl";
+                    String htl = "https://10.10.0.251:8003/index.php?zone=cp_htl";
 
                     String data = URLEncoder.encode("auth_user", "UTF-8") + "=" + URLEncoder.encode(username, "UTF-8");
                     data += "&" + URLEncoder.encode("auth_pass", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
