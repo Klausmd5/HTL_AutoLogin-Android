@@ -105,7 +105,8 @@ public class Qconn extends AppCompatActivity {
                     }
             }
 
-            finish();
+            //finish();
+            finishAndRemoveTask();
         });
         closeThread.start();
 
