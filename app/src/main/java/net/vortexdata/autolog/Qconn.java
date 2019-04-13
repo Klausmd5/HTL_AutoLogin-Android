@@ -1,13 +1,15 @@
 package net.vortexdata.autolog;
 
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import net.vortexdata.autolog.configs.Msg;
 
 public class Qconn extends AppCompatActivity {
 
@@ -15,6 +17,11 @@ public class Qconn extends AppCompatActivity {
     private TextView stateTxt;
     private TextView underTxt;
     private ProgressBar pb;
+    private TextView quitTxt;
+
+    private Thread closeThread;
+    private Thread timer;
+    private int closeCounter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,35 +30,84 @@ public class Qconn extends AppCompatActivity {
 
         state = findViewById(R.id.stateImg);
         stateTxt = findViewById(R.id.stateTxt);
-        underTxt = findViewById(R.id.underTxxt);
+        underTxt = findViewById(R.id.underTxt);
         pb = findViewById(R.id.pbar);
+        quitTxt = findViewById(R.id.quitMsg);
 
         QuickConn q = new QuickConn(getApplicationContext());
 
+         timer = new Thread(() -> {
+             try {
+                 timer.sleep(3000);
+                 runOnUiThread(() -> {
+                     underTxt.setVisibility(View.VISIBLE);
+                 });
+             } catch (InterruptedException e) {
+                 e.printStackTrace();
+             }
+
+         });
+         timer.start();
+
         Thread t = new Thread(() -> {
-            while (q.state == null) {
+            while (true) {
                 if(q.done) {
                     if (q.statePositive) {
                         setBgColor("#27AE60");
                         runOnUiThread(() -> {
                             stateTxt.setText("Success!");
-                            underTxt.setText("You should now have full access to the Internet.");
+                            underTxt.setText(Msg.qConnSuccessMsg);
                         });
                         setVisibility();
+                        closeWindow();
+                        return;
 
                     } else {
                         setBgColor("#C3073F");
                         runOnUiThread(() -> {
                             stateTxt.setText("Failed!");
                             state.setImageResource(R.drawable.ic_clear_black_24dp);
-                            underTxt.setText("No accesspoint found.");
+                            if(q.state.contains("Wrong")) {
+                                underTxt.setText(Msg.qConnFailWrongUser);
+                            } else {
+                                underTxt.setText(Msg.qConnErr);
+                            }
                         });
                         setVisibility();
+                        closeWindow();
+                        return;
                     }
                 }
             }
+
         });
         t.start();
+
+    }
+
+    public void closeWindow() {
+        runOnUiThread(() -> {
+            quitTxt.setVisibility(View.VISIBLE);
+        });
+
+        closeCounter = 3;
+        closeThread = new Thread(() -> {
+            while (closeCounter > 0) {
+                try {
+                        runOnUiThread(() -> {
+                            quitTxt.setText("Closing in " + closeCounter + " ..");
+                            closeCounter--;
+                        });
+
+                        closeThread.sleep(1000);
+                    } catch(InterruptedException e){
+                        e.printStackTrace();
+                    }
+            }
+
+            finish();
+        });
+        closeThread.start();
 
     }
 

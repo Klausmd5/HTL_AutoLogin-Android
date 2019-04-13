@@ -2,16 +2,12 @@ package net.vortexdata.autolog;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.Network;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 
-import java.io.IOException;
-import java.net.URL;
+import net.vortexdata.autolog.configs.Cfg;
+
 import java.util.List;
 
 public class QuickConn {

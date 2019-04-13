@@ -14,6 +14,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
+import net.vortexdata.autolog.configs.Cfg;
+
 public class TimeOut extends AppCompatActivity {
 
     Button b;

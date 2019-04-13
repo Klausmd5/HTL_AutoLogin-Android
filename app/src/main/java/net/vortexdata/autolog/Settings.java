@@ -1,7 +1,6 @@
 package net.vortexdata.autolog;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -10,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
+
+import net.vortexdata.autolog.configs.Cfg;
 
 public class Settings extends AppCompatActivity {
 
@@ -72,7 +73,7 @@ public class Settings extends AppCompatActivity {
 
 
         back.setOnClickListener(view -> {
-            //Intent i = new Intent(getApplicationContext(), MainActivity.class);
+            //Intent i = new Intent(getApplicationContext(), MainActivity.class); // makes some errors
             //startActivity(i);
             finish();
 

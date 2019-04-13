@@ -18,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import net.vortexdata.autolog.configs.Cfg;
+import net.vortexdata.autolog.configs.Msg;
 import net.vortexdata.autolog.updater.checkWeb;
 
 import java.util.Calendar;
@@ -212,7 +214,7 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
                 quickconnThread = new Thread(() -> {
                     try {
                         quickconnThread.sleep(6000);
-                        Snackbars.Snackbar(view, "Processing... Please wait.", "#7b7b7b");
+                        Snackbars.Snackbar(view, Msg.MainProcessing, Msg.GreyColor);
                         LoginPost.send(inUsername.getText().toString(), inPassword.getText().toString(), main);
                     } catch (InterruptedException e) {
                         e.printStackTrace();

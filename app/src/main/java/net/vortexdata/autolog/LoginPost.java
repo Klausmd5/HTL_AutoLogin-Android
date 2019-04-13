@@ -1,9 +1,6 @@
 package net.vortexdata.autolog;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.Network;
-
+import net.vortexdata.autolog.configs.Cfg;
 import net.vortexdata.autolog.updater.checkWeb;
 
 import org.apache.http.client.ClientProtocolException;
@@ -169,7 +166,6 @@ public class LoginPost {
                         //m.ok("Wrong password or username\nResponse Code: "+code);
                         quickConn.state = "Wrong password or username!";
                         quickConn.statePositive = false;
-                        System.out.println("setting to done");
                         quickConn.done = true;
                     }
 
@@ -184,6 +180,7 @@ public class LoginPost {
                     e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
+                    quickConn.state = "Err";
                     quickConn.done = true;
                     quickConn.statePositive = false;
                 }
