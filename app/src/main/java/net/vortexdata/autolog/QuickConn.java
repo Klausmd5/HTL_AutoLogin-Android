@@ -20,6 +20,7 @@ public class QuickConn {
     public String state;
     public boolean statePositive;
     public boolean done = false;
+    public String response;
 
    public QuickConn(Context c) {
 

@@ -60,6 +60,9 @@ public class Qconn extends AppCompatActivity {
                         });
                         setVisibility();
                         closeWindow();
+                        runOnUiThread(() ->{
+                            underTxt.setText("Status Positive:" + q.statePositive);
+                        });
                         return;
 
                     } else {
@@ -72,6 +75,9 @@ public class Qconn extends AppCompatActivity {
                             } else {
                                 underTxt.setText(Msg.qConnErr);
                             }
+                            runOnUiThread(() ->{
+                                underTxt.setText("Status Positive:" + q.statePositive);
+                            });
                         });
                         setVisibility();
                         closeWindow();
