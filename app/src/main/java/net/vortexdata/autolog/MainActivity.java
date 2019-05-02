@@ -119,6 +119,10 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
                     return;
                 }
 
+                if(inUsername.getText().toString().equals("notifyMe")) {
+                    showMessage("Note", Msg.MobileData);
+                }
+
                 if(inUsername.getText().length() < 4 || inPassword.getText().length() < 4) {
 
                     Snackbars.Snackbar(view, "No Username and Password detected!", "#eb3b5a");
