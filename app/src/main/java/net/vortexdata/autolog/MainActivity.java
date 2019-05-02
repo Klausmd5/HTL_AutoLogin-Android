@@ -3,8 +3,12 @@ package net.vortexdata.autolog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkInfo;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -175,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
 
     private void connectWifi(ImageView b) {
 
-        if(firstStart) showMessage("Notify", "On newer Android-Verions (Android Q) you might turn off your mobile data. Because some errors can occur.");
+        if(firstStart) showMessage("Notify", "On newer Android-Verions you might turn off your mobile data.");
 
         b.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -211,6 +215,23 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
                         break;
                     }
                 }
+
+                /*if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+
+                    ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+                    for (Network net : connectivityManager.getAllNetworks()) {
+
+                        NetworkInfo networkInfo = connectivityManager.getNetworkInfo(net);
+
+                        if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+                            connectivityManager.bindProcessToNetwork(net);
+                            break;
+                        }
+                    }
+                }*/
+
+
                 quickconnThread = new Thread(() -> {
                     try {
                         quickconnThread.sleep(6000);

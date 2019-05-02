@@ -20,6 +20,7 @@ public class QuickConn {
     public String state;
     public boolean statePositive;
     public boolean done = false;
+    public boolean MobileDebug;
     public String response;
 
    public QuickConn(Context c) {
@@ -72,6 +73,8 @@ public class QuickConn {
         SharedPreferences prefs = context.getSharedPreferences("userData", 0);
         inUsername = prefs.getString("user", "");
         inPassword = prefs.getString("pw", "");
+
+        if(inUsername.toString().equalsIgnoreCase("VortexDebug")) MobileDebug = true;
 
     }
 

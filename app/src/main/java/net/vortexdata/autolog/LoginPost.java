@@ -1,5 +1,11 @@
 package net.vortexdata.autolog;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
+
 import net.vortexdata.autolog.configs.Cfg;
 import net.vortexdata.autolog.updater.checkWeb;
 
@@ -28,6 +34,8 @@ import javax.net.ssl.X509TrustManager;
  */
 
 public class LoginPost {
+
+
     public static void send(final String username, final String password, final MainActivity m) {
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -122,8 +130,25 @@ public class LoginPost {
 
     }
 
+    private boolean checkWifiOnAndConnected(Context context) {
+        WifiManager wifiMgr = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+
+        if (wifiMgr.isWifiEnabled()) { // Wi-Fi adapter is ON
+
+            WifiInfo wifiInfo = wifiMgr.getConnectionInfo();
+
+            if( wifiInfo.getNetworkId() == -1 ){
+                return false; // Not connected to an access point
+            }
+            return true; // Connected to an access point
+        }
+        else {
+            return false; // Wi-Fi adapter is OFF
+        }
+    }
 
     public static void quickSend(final String username, final String password, QuickConn quickConn) {
+
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {

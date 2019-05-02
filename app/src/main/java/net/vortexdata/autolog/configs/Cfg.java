@@ -15,7 +15,7 @@ public class Cfg {
     public static int expireMonth = 2; // from 0 to 11
     public static int expireYear = 2019;
 
-    public static String version = "0.1.1 - BETA";
+    public static String version = "1.0.0";
 
     public static String err = "Oops! Some connection error occured. Wrong Wifi? Or just left mobile data on?";
     public static String err_color = "#eb3b5a";

@@ -60,9 +60,12 @@ public class Qconn extends AppCompatActivity {
                         });
                         setVisibility();
                         closeWindow();
-                        runOnUiThread(() ->{
-                            underTxt.setText("Status Positive:" + q.statePositive);
-                        });
+                        if(q.MobileDebug) {
+                            runOnUiThread(() -> {
+                                underTxt.setText("Status Positive:" + q.statePositive);
+                                stateTxt.setText("Resp:" + q.response);
+                            });
+                        }
                         return;
 
                     } else {
@@ -75,9 +78,12 @@ public class Qconn extends AppCompatActivity {
                             } else {
                                 underTxt.setText(Msg.qConnErr);
                             }
-                            runOnUiThread(() ->{
-                                underTxt.setText("Status Positive:" + q.statePositive);
-                            });
+                            if(q.MobileDebug) {
+                                runOnUiThread(() -> {
+                                    underTxt.setText("Status Positive:" + q.statePositive);
+                                    stateTxt.setText("Resp:" + q.response);
+                                });
+                            }
                         });
                         setVisibility();
                         closeWindow();

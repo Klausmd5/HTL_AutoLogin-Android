@@ -84,6 +84,9 @@ public class Settings extends AppCompatActivity {
             if(clicked > 4) {
                 Cfg.easteregg = true;
                 clicked = 0;
+                if(Cfg.easteregg) {
+                    rgb.setVisibility(View.VISIBLE);
+                }
             }
 
 
