@@ -159,7 +159,7 @@ public class LoginPost {
                     }
 
                     quickConn.response = response;
-                    if(response.equalsIgnoreCase("Anmeldung erfolgreich") || response.contains("erfolgreich")) {
+                    if(response.equalsIgnoreCase("Anmeldung erfolgreich") || response.contains("erfolgreich") || response.contains("connected")) {
                         quickConn.state = "Successfully logged in!";
                         quickConn.statePositive = true;
                         quickConn.done = true;
