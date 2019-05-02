@@ -12,4 +12,7 @@ public class Msg {
 
     // Snackbar Colors
     public static String GreyColor = "#7b7b7b";
+
+    // Notify
+    public static String MobileData = "Please note, that you might have to turn off your mobile data.";
 }

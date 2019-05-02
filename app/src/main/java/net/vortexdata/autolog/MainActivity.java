@@ -3,12 +3,8 @@ package net.vortexdata.autolog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.Network;
-import android.net.NetworkInfo;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -179,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
 
     private void connectWifi(ImageView b) {
 
-        if(firstStart) showMessage("Notify", "On newer Android-Verions you might turn off your mobile data.");
+        if(firstStart) showMessage("Notify", Msg.MobileData);
 
         b.setOnClickListener(new View.OnClickListener() {
             @Override
