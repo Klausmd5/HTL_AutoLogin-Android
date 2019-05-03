@@ -34,11 +34,11 @@ public class Qconn extends AppCompatActivity {
         pb = findViewById(R.id.pbar);
         quitTxt = findViewById(R.id.quitMsg);
 
-        QuickConn q = new QuickConn(getApplicationContext());
+        QuickConn q = new QuickConn(getApplicationContext(), this);
 
          timer = new Thread(() -> {
              try {
-                 timer.sleep(3000);
+                 timer.sleep(4000);
                  runOnUiThread(() -> {
                      underTxt.setVisibility(View.VISIBLE);
                  });

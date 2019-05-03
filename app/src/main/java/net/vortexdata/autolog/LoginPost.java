@@ -1,7 +1,10 @@
 package net.vortexdata.autolog;
 
+import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.net.Network;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -44,6 +47,7 @@ public class LoginPost {
                     String msg = new String();
 
                     trustEveryone();
+                    bindtoNetwork(m);
 
                     String echo = "http://scooterlabs.com/echo";
                     String htl = Cfg.logURL;
@@ -147,7 +151,7 @@ public class LoginPost {
         }
     }
 
-    public static void quickSend(final String username, final String password, QuickConn quickConn) {
+    public static void quickSend(final String username, final String password, QuickConn quickConn, Activity a) {
 
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -157,6 +161,7 @@ public class LoginPost {
 
                     trustEveryone();
                     checkWeb.checkLoginURL();
+                    bindtoNetwork(a);
 
                     String echo = "http://scooterlabs.com/echo";
                     String htl = Cfg.logURL;
@@ -237,6 +242,23 @@ public class LoginPost {
                     context.getSocketFactory());
         } catch (Exception e) { // should never happen
             e.printStackTrace();
+        }
+    }
+
+    public static void bindtoNetwork(Activity a) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+
+            ConnectivityManager connectivityManager = (ConnectivityManager) a.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+            for (Network net : connectivityManager.getAllNetworks()) {
+
+                NetworkInfo networkInfo = connectivityManager.getNetworkInfo(net);
+
+                if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+                    connectivityManager.bindProcessToNetwork(net);
+                    break;
+                }
+            }
         }
     }
 

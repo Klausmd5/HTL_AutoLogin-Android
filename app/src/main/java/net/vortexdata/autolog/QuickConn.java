@@ -1,5 +1,6 @@
 package net.vortexdata.autolog;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.wifi.WifiConfiguration;
@@ -23,7 +24,7 @@ public class QuickConn {
     public boolean MobileDebug;
     public String response;
 
-   public QuickConn(Context c) {
+   public QuickConn(Context c, Activity a) {
 
         loadData(c);
 
@@ -55,7 +56,7 @@ public class QuickConn {
                 //Snackbars.SnackbarLong(getWindow().getDecorView().getRootView(), "Processing... Please wait.", "#7b7b7b");
                 quickconnThread.sleep(6000);
                 loadData(c);
-                LoginPost.quickSend(inUsername, inPassword, this);
+                LoginPost.quickSend(inUsername, inPassword, this, a);
                 saveApkData(c);
                 //quickconnThread.sleep(200);
                 //finish();

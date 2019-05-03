@@ -125,7 +125,7 @@
 
     <Switch
         android:id="@+id/rgbMode"
-        android:layout_width="320dp"
+        android:layout_width="365dp"
         android:layout_height="35dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="52dp"
@@ -141,7 +141,7 @@
 
     <Switch
         android:id="@+id/connectToHTBLA"
-        android:layout_width="320dp"
+        android:layout_width="362dp"
         android:layout_height="35dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="40dp"
