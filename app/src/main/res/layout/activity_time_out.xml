@@ -45,12 +45,16 @@
         android:id="@+id/updateMsg"
         android:layout_width="282dp"
         android:layout_height="157dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="8dp"
         android:text="The beta version has expired, please update to the release version. You can do so by tapping the button below."
         android:textAlignment="center"
         android:textColor="#fff"
         android:textSize="24sp"
-        tools:layout_editor_absoluteX="65dp"
-        tools:layout_editor_absoluteY="198dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
 
     <TextView
         android:id="@+id/copy"
@@ -73,7 +77,7 @@
         android:layout_width="234dp"
         android:layout_height="47dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="36dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/buttonstyle_gradient_selector"
         android:text="get the update"
@@ -81,6 +85,7 @@
         android:textColor="#fff"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/updateMsg" />
 </android.support.constraint.ConstraintLayout>
