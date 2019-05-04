@@ -3,9 +3,9 @@ package net.vortexdata.autolog.configs;
 public class Msg {
 
     // QuickConn Messages
-    public static String qConnSuccessMsg = "You should now have full access to the Internet.";
-    public static String qConnFailWrongUser = "Wrong username or password. Please change this.";
-    public static String qConnErr = "No accesspoint found.";
+    public static String qConnSuccessMsg = "You are now logged in and ready to browse the internet.";
+    public static String qConnFailWrongUser = "The credentials you are using are invalid.";
+    public static String qConnErr = "Could not connect to authentication servers.";
 
     // Snackbar Messages
     public static String MainProcessing = "Processing... Please wait.";

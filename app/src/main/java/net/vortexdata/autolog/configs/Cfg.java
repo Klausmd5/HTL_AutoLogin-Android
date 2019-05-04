@@ -17,7 +17,7 @@ public class Cfg {
 
     public static String version = "1.0.0";
 
-    public static String err = "Oops! Some connection error occured. Wrong Wifi? Or just left mobile data on?";
+    public static String err = "Could not connect to authentication servers.";
     public static String err_color = "#eb3b5a";
 
     public static String downloadURL = "https://projects.vortexdata.net/autologin/";
