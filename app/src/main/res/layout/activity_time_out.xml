@@ -48,7 +48,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="48dp"
         android:layout_marginEnd="8dp"
-        android:text="The beta version has expired, please update to the release version. You can do so by tapping the button below."
+        android:text="This Version is outdated, please update to the newest version. You can do so by tapping the button below."
         android:textAlignment="center"
         android:textColor="#fff"
         android:textSize="24sp"
