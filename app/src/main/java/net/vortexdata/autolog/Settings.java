@@ -1,6 +1,7 @@
 package net.vortexdata.autolog;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -17,7 +18,7 @@ public class Settings extends AppCompatActivity {
     private TextView back;
     private TextView copyright;
     private Switch rgb;
-    private Switch wifi;
+    private Switch rgb2;
     private ConstraintLayout background;
     TextView version;
 
@@ -31,8 +32,8 @@ public class Settings extends AppCompatActivity {
         back = findViewById(R.id.name);
         copyright = findViewById(R.id.copyright);
         rgb = findViewById(R.id.rgbMode);
+        rgb2 = findViewById(R.id.rgbMode2);
         background = findViewById(R.id.background);
-        wifi = findViewById(R.id.connectToHTBLA);
         version = findViewById(R.id.version);
 
         version.setText(Cfg.version);
@@ -40,37 +41,39 @@ public class Settings extends AppCompatActivity {
         if(Cfg.fancyBackground) {
             setFancyBackground(background, this);
             rgb.setChecked(true);
+            rgb2.setVisibility(View.VISIBLE);
         }
 
-        if(Cfg.qConn) wifi.setChecked(true);
+        rgb2.setChecked(Cfg.fancyBGinQConn);
 
-        wifi.setOnClickListener(v -> {
-            if(wifi.isChecked()) {
-                Cfg.qConn = true;
+        rgb.setOnClickListener(view -> {
+            if(rgb.isChecked()) {
+                Cfg.fancyBackground = true;
+                setFancyBackground(background, this);
+                rgb2.setVisibility(View.VISIBLE);
+                saveApkData();
             }
-
-            if(!wifi.isChecked()) {
-                Cfg.qConn = false;
+            if(!rgb.isChecked()) {
+                Cfg.fancyBackground = false;
+                //Cfg.easteregg = false;
+                //rgb.setVisibility(View.GONE);
+                removeFancyBackground(background, this);
+                rgb2.setVisibility(View.GONE);
+                Cfg.fancyBGinQConn = false;
+                saveApkData();
             }
         });
 
-        if(Cfg.easteregg) {
-            rgb.setVisibility(View.VISIBLE);
-            rgb.setOnClickListener(view -> {
-                if(rgb.isChecked()) {
-                    Cfg.fancyBackground = true;
-                    setFancyBackground(background, this);
-                }
-                if(!rgb.isChecked()) {
-                    Cfg.fancyBackground = false;
-                    Cfg.easteregg = false;
-                    rgb.setVisibility(View.GONE);
-                    removeFancyBackground(background, this);
-                }
-            });
-        }
 
-
+        rgb2.setOnClickListener(v -> {
+            if(rgb2.isChecked()) {
+                Cfg.fancyBGinQConn = true;
+                saveApkData();
+            } else {
+                Cfg.fancyBGinQConn = false;
+                saveApkData();
+            }
+        });
 
         back.setOnClickListener(view -> {
             //Intent i = new Intent(getApplicationContext(), MainActivity.class); // makes some errors
@@ -85,7 +88,7 @@ public class Settings extends AppCompatActivity {
                 Cfg.easteregg = true;
                 clicked = 0;
                 if(Cfg.easteregg) {
-                    rgb.setVisibility(View.VISIBLE);
+                    //rgb.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -104,5 +107,13 @@ public class Settings extends AppCompatActivity {
         an.setEnterFadeDuration(5000);
         an.setExitFadeDuration(2000);
         an.start();
+    }
+
+    private void saveApkData() {
+        SharedPreferences.Editor editor = getSharedPreferences("apkData", 0).edit();
+        editor.putBoolean("easteregg", Cfg.easteregg);
+        editor.putBoolean("fancyBackground", Cfg.fancyBackground);
+        editor.putBoolean("QConnBg", Cfg.fancyBGinQConn);
+        editor.apply();
     }
 }

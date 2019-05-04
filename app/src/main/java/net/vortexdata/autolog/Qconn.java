@@ -1,5 +1,6 @@
 package net.vortexdata.autolog;
 
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import net.vortexdata.autolog.configs.Cfg;
 import net.vortexdata.autolog.configs.Msg;
 
 public class Qconn extends AppCompatActivity {
@@ -18,6 +20,7 @@ public class Qconn extends AppCompatActivity {
     private TextView underTxt;
     private ProgressBar pb;
     private TextView quitTxt;
+    private ConstraintLayout bg;
 
     private Thread closeThread;
     private Thread timer;
@@ -33,8 +36,16 @@ public class Qconn extends AppCompatActivity {
         underTxt = findViewById(R.id.underTxt);
         pb = findViewById(R.id.pbar);
         quitTxt = findViewById(R.id.quitMsg);
+        bg = findViewById(R.id.cbackground);
 
         QuickConn q = new QuickConn(getApplicationContext(), this);
+
+        if(Cfg.fancyBGinQConn) {
+            Settings.setFancyBackground(bg, this);
+            pb.setIndeterminate(true);
+            pb.getIndeterminateDrawable().setColorFilter(0xFFFFFFFF,
+                    android.graphics.PorterDuff.Mode.MULTIPLY);
+        }
 
          timer = new Thread(() -> {
              try {
@@ -133,7 +144,6 @@ public class Qconn extends AppCompatActivity {
 
     public void setBgColor(String color) {
         runOnUiThread(() -> {
-            ConstraintLayout bg = findViewById(R.id.cbackground);
             bg.setBackgroundColor(Color.parseColor(color));
         });
     }

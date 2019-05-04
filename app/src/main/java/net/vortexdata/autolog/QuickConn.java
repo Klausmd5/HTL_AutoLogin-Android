@@ -77,6 +77,7 @@ public class QuickConn {
 
         if(inUsername.toString().equalsIgnoreCase("VortexDebug")) MobileDebug = true;
 
+        loadApkData(context);
     }
 
     private void saveApkData(Context context) {
@@ -89,6 +90,7 @@ public class QuickConn {
         SharedPreferences prefs = context.getSharedPreferences("apkData", 0);
 
         Cfg.logURL = prefs.getString("loginURL", Cfg.logURL);
+        Cfg.fancyBGinQConn = prefs.getBoolean("QConnBg", false);
     }
 
 }

@@ -190,12 +190,12 @@ public class LoginPost {
 
                     quickConn.response = response;
                     if(response.equalsIgnoreCase("Anmeldung erfolgreich") || response.contains("erfolgreich") || response.contains("connected")) {
-                        quickConn.state = "Successfully logged in!";
+                        quickConn.state = "Successfully logged in!"; // DO NOT CHANGE (NOT DISPLAYED)
                         quickConn.statePositive = true;
                         quickConn.done = true;
                     } else {
                         //m.ok("Wrong password or username\nResponse Code: "+code);
-                        quickConn.state = "Wrong password or username!";
+                        quickConn.state = "Wrong password or username!"; // DO NOT CHANGE (NOT DISPLAYED)
                         quickConn.statePositive = false;
                         quickConn.done = true;
                     }

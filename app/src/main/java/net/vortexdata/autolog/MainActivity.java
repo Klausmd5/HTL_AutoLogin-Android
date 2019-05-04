@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
     private FloatingActionButton connectButton;
     private Button connectWifi;
     private ImageView img;
-    private ImageView quickConn;
 
     private Thread quickconnThread;
 
@@ -56,16 +55,11 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
         saveButton = findViewById(R.id.savebutton);
         background = findViewById(R.id.background);
         img = findViewById(R.id.config);
-        quickConn = findViewById(R.id.quickConn);
 
-        if(Cfg.qConn) {
-            quickConn.setVisibility(View.VISIBLE);
-            connectWifi(quickConn);
-        }
 
         Thread t = new Thread(() -> {
             new checkWeb(getApplicationContext());
-            if(!Cfg.sentUsage) {
+            if (!Cfg.sentUsage) {
                 checkWeb.sendUsage();
             }
         });
@@ -77,27 +71,27 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
         loadApkData();
         saveButton(saveButton);
 
-        if(Cfg.fancyBackground) Settings.setFancyBackground(background, this);
+        if (Cfg.fancyBackground) Settings.setFancyBackground(background, this);
 
         img.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), Settings.class);
             startActivity(intent);
         });
 
-        Calendar c = Calendar.getInstance();
+/*        Calendar c = Calendar.getInstance();
         c.set(Calendar.MONTH, Cfg.expireMonth);
         c.set(Calendar.DATE, Cfg.expireDay);
         c.set(Calendar.YEAR, Cfg.expireYear);
 
         Date date = new Date();
         Date lockDate = c.getTime();
-
+*/
         //if(firstStart) showMessage("Attention", "This Beta will run out on " + Cfg.expireDay + "." + (Cfg.expireMonth + 1) + "." + Cfg.expireYear);
 
         //if(date.after(lockDate)) {
-          //  Cfg.expired = true;
-            //Intent i = new Intent(getApplicationContext(), TimeOut.class);
-            //startActivity(i);
+        //  Cfg.expired = true;
+        //Intent i = new Intent(getApplicationContext(), TimeOut.class);
+        //startActivity(i);
         //}
 
     }
@@ -108,24 +102,24 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
             @Override
             public void onClick(View view) {
 
-                if(inUsername.getText().toString().equals("VarChar42")) {
+                if (inUsername.getText().toString().equals("VarChar42")) {
                     Snackbars.Snackbar(view, "VarChar42 treibt sein unwesen!!!!", "#eb3b5a");
                     return;
                 }
 
-                if(inUsername.getText().toString().equals("quit")) {
+                if (inUsername.getText().toString().equals("quit")) {
                     Snackbars.Snackbar(view, "Bye!", "#eb3b5a");
                     System.exit(0);
                     return;
                 }
 
-                if(inUsername.getText().toString().equals("notifyMe")) {
+                if (inUsername.getText().toString().equals("notifyMe")) {
                     showMessage("Note", Msg.MobileData);
                 }
 
-                if(inUsername.getText().length() < 4 || inPassword.getText().length() < 4) {
+                if (inUsername.getText().length() < 4 || inPassword.getText().length() < 4) {
 
-                    Snackbars.Snackbar(view, "No Username and Password detected!", "#eb3b5a");
+                    Snackbars.Snackbar(view, Msg.noUsername, Msg.err_color);
                     return;
                 }
 
@@ -134,20 +128,19 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
                 editor.putString("pw", inPassword.getText().toString());
                 editor.apply();
                 //Toast.makeText(getBaseContext(), "Data saved!!", Toast.LENGTH_LONG).show();
-                Snackbars.Snackbar(view, "Successfully saved cridentials.", "#00d873");
+                Snackbars.Snackbar(view, Msg.loginData, "#00d873");
 
-                if(connecting) {
+                if (connecting) {
                     //toast = Toast.makeText(main, "Be patient!", Toast.LENGTH_LONG);
                     //toast.show();
-                    Snackbars.Snackbar(view, "Processing... Please wait.", "#fc5c65");
+                    Snackbars.Snackbar(view, Msg.processing, "#fc5c65");
                     return;
                 }
                 //toast = Toast.makeText(main, "Sending request!", Toast.LENGTH_LONG);
                 //toast.show();
-                Snackbars.Snackbar(view, "Processing... Please wait.", "#7b7b7b");
+                Snackbars.Snackbar(view, Msg.processing, Msg.GreyColor);
                 connecting = true;
                 LoginPost.send(inUsername.getText().toString(), inPassword.getText().toString(), main);
-
 
 
             }
@@ -156,12 +149,13 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
 
     private boolean connecting = false;
     private Toast toast;
+
     private void connectButton(FloatingActionButton b) {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(toast != null) toast.cancel();
-                if(connecting) {
+                if (toast != null) toast.cancel();
+                if (connecting) {
                     //toast = Toast.makeText(main, "Be patient!", Toast.LENGTH_LONG);
                     //toast.show();
                     Snackbars.Snackbar(view, "Be patient!", "#fc5c65");
@@ -169,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
                 }
                 //toast = Toast.makeText(main, "Sending request!", Toast.LENGTH_LONG);
                 //toast.show();
-                Snackbars.Snackbar(view, "Processing... Please wait.", "#7b7b7b");
+                Snackbars.Snackbar(view, Msg.processing, Msg.GreyColor);
                 connecting = true;
                 LoginPost.send(inUsername.getText().toString(), inPassword.getText().toString(), main);
 
@@ -179,13 +173,13 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
 
     private void connectWifi(ImageView b) {
 
-        if(firstStart) showMessage("Notify", Msg.MobileData);
+        if (firstStart) showMessage("Notify", Msg.MobileData);
 
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(inUsername.getText().length() < 4 || inPassword.getText().length() < 4) {
-                    Snackbars.Snackbar(view, "No Username and Password detected!", "#eb3b5a");
+                if (inUsername.getText().length() < 4 || inPassword.getText().length() < 4) {
+                    Snackbars.Snackbar(view, Msg.noUsername, Msg.err_color);
                     return;
                 }
 
@@ -194,22 +188,22 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
 
                 WifiConfiguration conf = new WifiConfiguration();
                 conf.SSID = "\"" + networkSSID + "\"";
-                conf.preSharedKey = "\""+ networkPass +"\"";
+                conf.preSharedKey = "\"" + networkPass + "\"";
                 WifiManager wifiManager = (WifiManager) main.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
                 wifiManager.addNetwork(conf);
 
 
                 List<WifiConfiguration> list = wifiManager.getConfiguredNetworks();
-                for( WifiConfiguration i : list ) {
-                    if(i.SSID != null && i.SSID.equals("\"" + networkSSID + "\"")) {
+                for (WifiConfiguration i : list) {
+                    if (i.SSID != null && i.SSID.equals("\"" + networkSSID + "\"")) {
                         wifiManager.disconnect();
                         wifiManager.enableNetwork(i.networkId, true);
 
                         wifiManager.reconnect();
-                        if(toast != null) toast.cancel();
+                        if (toast != null) toast.cancel();
                         //toast = Toast.makeText(main, "Connecting to "+i.SSID+"...", Toast.LENGTH_LONG);
                         //toast.show();
-                        Snackbars.Snackbar(view, "Connecting to "+i.SSID+"...", "#7b7b7b");
+                        Snackbars.Snackbar(view, "Connecting to " + i.SSID + "...", Msg.GreyColor);
 
 
                         break;
@@ -258,9 +252,9 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
         editor.putBoolean("firstStart", firstStart);
         editor.putBoolean("easteregg", Cfg.easteregg);
         editor.putBoolean("fancyBackground", Cfg.fancyBackground);
-        editor.putBoolean("qConn", Cfg.qConn);
         editor.putBoolean("Expired", Cfg.expired);
         editor.putBoolean("sentUsage", Cfg.sentUsage);
+        editor.putBoolean("QConnBg", Cfg.fancyBGinQConn);
         editor.apply();
     }
 
@@ -269,9 +263,9 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
         firstStart = prefs.getBoolean("firstStart", true);
         Cfg.easteregg = prefs.getBoolean("easteregg", false);
         Cfg.fancyBackground = prefs.getBoolean("fancyBackground", false);
-        Cfg.qConn = prefs.getBoolean("qConn", false);
         Cfg.expired = prefs.getBoolean("Expired", false);
         Cfg.sentUsage = prefs.getBoolean("sentUsage", false);
+        Cfg.fancyBGinQConn = prefs.getBoolean("QConnBg", false);
     }
 
     public void showMessage(String title, String msg) {
@@ -291,12 +285,11 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
         dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         dialog.getWindow().setDimAmount((float) 0.9);
 
-        btn.setOnClickListener(v ->  {
+        btn.setOnClickListener(v -> {
             dialog.dismiss();
             firstStart = false;
             saveApkData();
         });
-
 
 
         dialog.show();
@@ -308,33 +301,8 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
             @Override
             public void run() {
                 connecting = false;
-                //AlertDialog.Builder builder = new AlertDialog.Builder(main);
-                //View view = getLayoutInflater().inflate(R.layout.errormsg, null);
-                //View view = getLayoutInflater().inflate(R.layout.activity_main, null);
-                //View view = this.
 
-                Snackbars.Snackbar(getWindow().getDecorView().getRootView(), Cfg.err, Cfg.err_color);
-
-                /*
-                builder.setView(view);
-
-                TextView name = view.findViewById(R.id.name);
-                Button btn = view.findViewById(R.id.accept);
-                TextView t = view.findViewById(R.id.error);
-
-                name.setText("Error!!");
-                t.setText(error);
-
-                AlertDialog dialog = builder.create();
-                //dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
-
-                btn.setOnClickListener(v ->  {
-                    dialog.dismiss();
-                });
-
-                dialog.show();
-                */
-
+                Snackbars.Snackbar(getWindow().getDecorView().getRootView(), Msg.err, Msg.err_color);
             }
         });
     }
@@ -347,10 +315,10 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
                 connecting = false;
 
                 //Toast.makeText(main, message, Toast.LENGTH_LONG).show();
-                if(message.equals("Successfully logged in!")) {
-                    Snackbars.Snackbar(getWindow().getDecorView().getRootView(), message, "#00d873");
+                if (message.equals(Msg.loginSuccess)) {
+                    Snackbars.Snackbar(getWindow().getDecorView().getRootView(), message, Msg.successColor);
                 } else {
-                    Snackbars.Snackbar(getWindow().getDecorView().getRootView(), message, "#eb3b5a");
+                    Snackbars.Snackbar(getWindow().getDecorView().getRootView(), message, Msg.err_color);
                 }
 
             }
@@ -368,14 +336,7 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
         });
         t.start();
 
-        if(Cfg.qConn) {
-            quickConn.setVisibility(View.VISIBLE);
-            connectWifi(quickConn);
-        } else {
-            quickConn.setVisibility(View.GONE);
-        }
-
-        if(Cfg.fancyBackground) {
+        if (Cfg.fancyBackground) {
             Settings.setFancyBackground(background, this);
         } else {
             Settings.removeFancyBackground(background, this);
