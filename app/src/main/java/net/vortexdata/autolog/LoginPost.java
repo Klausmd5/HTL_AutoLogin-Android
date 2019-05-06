@@ -74,7 +74,7 @@ public class LoginPost {
                         response += line+"\n";
                     }
 
-                    if(response.equalsIgnoreCase("Anmeldung erfolgreich") || response.contains("erfolgreich")) {
+                    if(response.equalsIgnoreCase("Anmeldung erfolgreich") || response.contains("erfolgreich") || response.contains("connected")) {
                         m.ok("Successfully logged in!");
                     } else {
                         //m.ok("Wrong password or username\nResponse Code: "+code);
