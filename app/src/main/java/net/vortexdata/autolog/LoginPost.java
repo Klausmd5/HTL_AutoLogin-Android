@@ -33,9 +33,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.X509TrustManager;
 
-/**
- * Created by mwiesinger17 on 23.11.2018.
- */
+// Created on 23.11.2018.
 
 public class LoginPost {
 

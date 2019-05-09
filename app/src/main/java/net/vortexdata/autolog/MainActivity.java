@@ -140,10 +140,47 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
                 //toast.show();
                 Snackbars.Snackbar(view, Msg.processing, Msg.GreyColor);
                 connecting = true;
-                LoginPost.send(inUsername.getText().toString(), inPassword.getText().toString(), main);
+                //LoginPost.send(inUsername.getText().toString(), inPassword.getText().toString(), main);
+
+                String networkSSID = "HTBLA";
+                String networkPass = "htlgrieskirchen";
+
+                WifiConfiguration conf = new WifiConfiguration();
+                conf.SSID = "\"" + networkSSID + "\"";
+                conf.preSharedKey = "\"" + networkPass + "\"";
+                WifiManager wifiManager = (WifiManager) main.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+                wifiManager.addNetwork(conf);
 
 
+                List<WifiConfiguration> list = wifiManager.getConfiguredNetworks();
+                for (WifiConfiguration i : list) {
+                    if (i.SSID != null && i.SSID.equals("\"" + networkSSID + "\"")) {
+                        wifiManager.disconnect();
+                        wifiManager.enableNetwork(i.networkId, true);
+
+                        wifiManager.reconnect();
+                        if (toast != null) toast.cancel();
+                        //toast = Toast.makeText(main, "Connecting to "+i.SSID+"...", Toast.LENGTH_LONG);
+                        //toast.show();
+             //           Snackbars.Snackbar(view, "Connecting to " + i.SSID + "...", Msg.GreyColor);
+
+
+                        break;
+                    }
+                }
+
+                quickconnThread = new Thread(() -> {
+                    try {
+                        quickconnThread.sleep(6000);
+                        Snackbars.Snackbar(view, Msg.MainProcessing, Msg.GreyColor);
+                        LoginPost.send(inUsername.getText().toString(), inPassword.getText().toString(), main);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                });
+                quickconnThread.start();
             }
+
         });
     }
 
