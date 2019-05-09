@@ -10,6 +10,7 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 
 import net.vortexdata.autolog.configs.Cfg;
+import net.vortexdata.autolog.configs.Msg;
 import net.vortexdata.autolog.updater.checkWeb;
 
 import org.apache.http.client.ClientProtocolException;
@@ -75,7 +76,7 @@ public class LoginPost {
                     }
 
                     if(response.equalsIgnoreCase("Anmeldung erfolgreich") || response.contains("erfolgreich")) {
-                        m.ok("Successfully logged in!");
+                        m.ok(Msg.loginSuccess);
                     } else {
                         //m.ok("Wrong password or username\nResponse Code: "+code);
                         m.ok("Wrong password or username!");
