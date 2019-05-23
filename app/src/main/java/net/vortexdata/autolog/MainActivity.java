@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
                 if (connecting) {
                     //toast = Toast.makeText(main, "Be patient!", Toast.LENGTH_LONG);
                     //toast.show();
-                    Snackbars.Snackbar(view, Msg.processing, "#fc5c65");
+                    //Snackbars.Snackbar(view, Msg.processing, "#fc5c65");
                     return;
                 }
                 //toast = Toast.makeText(main, "Sending request!", Toast.LENGTH_LONG);

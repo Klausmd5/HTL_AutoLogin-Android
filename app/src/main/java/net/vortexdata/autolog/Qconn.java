@@ -23,8 +23,10 @@ public class Qconn extends AppCompatActivity {
     private ConstraintLayout bg;
 
     private Thread closeThread;
+    private Thread timeout;
     private Thread timer;
     private int closeCounter;
+    private boolean timetout = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +62,28 @@ public class Qconn extends AppCompatActivity {
          });
          timer.start();
 
+         timeout = new Thread(() -> {
+             try {
+                timeout.sleep(8000);
+                timetout = true;
+             } catch(Exception e) {
+                 e.printStackTrace();
+             }
+
+         });
+         timeout.start();
+
         Thread t = new Thread(() -> {
             while (true) {
+                if(timetout) {
+                    runOnUiThread(() -> {
+                        setBgColor("#C3073F");
+                        stateTxt.setText("Timeout!");
+                        underTxt.setText("");
+                        setVisibility();
+                        closeWindow();
+                    });
+                }
                 if(q.done) {
                     if (q.statePositive) {
                         setBgColor("#27AE60");
