@@ -63,7 +63,7 @@ public class Qconn extends AppCompatActivity {
 
          timeout = new Thread(() -> {
              try {
-                timeout.sleep(8000);
+                timeout.sleep(9000);
 
                  runOnUiThread(() -> {
                      setBgColor("#C3073F");
@@ -82,6 +82,7 @@ public class Qconn extends AppCompatActivity {
         Thread t = new Thread(() -> {
             while (true) {
                 if(q.done) {
+                    timeout.interrupt();
                     if (q.statePositive) {
                         setBgColor("#27AE60");
                         runOnUiThread(() -> {
