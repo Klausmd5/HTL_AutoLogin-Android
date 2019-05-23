@@ -23,7 +23,6 @@ public class Qconn extends AppCompatActivity {
     private ConstraintLayout bg;
 
     private Thread closeThread;
-    private Thread timeout;
     private Thread timer;
     private int closeCounter;
 
@@ -61,28 +60,9 @@ public class Qconn extends AppCompatActivity {
          });
          timer.start();
 
-         timeout = new Thread(() -> {
-             try {
-                timeout.sleep(9000);
-
-                 runOnUiThread(() -> {
-                     setBgColor("#C3073F");
-                     stateTxt.setText("Timeout!");
-                     underTxt.setText("Connection timet out!");
-                     setVisibility();
-                     closeWindow();
-                 });
-             } catch(Exception e) {
-                 e.printStackTrace();
-             }
-
-         });
-         timeout.start();
-
         Thread t = new Thread(() -> {
             while (true) {
                 if(q.done) {
-                    timeout.interrupt();
                     if (q.statePositive) {
                         setBgColor("#27AE60");
                         runOnUiThread(() -> {

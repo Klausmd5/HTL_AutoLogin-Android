@@ -31,7 +31,7 @@
         android:layout_height="3dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/version"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -42,7 +42,7 @@
         android:layout_height="33dp"
         android:layout_marginStart="13dp"
         android:layout_marginEnd="52dp"
-        android:layout_marginBottom="56dp"
+        android:layout_marginBottom="20dp"
         android:text="Beta"
         android:textAlignment="center"
         android:textColor="#ffff"
@@ -57,7 +57,7 @@
         android:layout_height="33dp"
         android:layout_marginStart="52dp"
         android:layout_marginEnd="13dp"
-        android:layout_marginBottom="56dp"
+        android:layout_marginBottom="20dp"
         android:text="Version:"
         android:textAlignment="center"
         android:textColor="#ffff"
@@ -108,29 +108,14 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/note"
-        android:layout_width="307dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="Please note that you are currently using a beta build of our app."
-        android:textAlignment="center"
-        android:textColor="#A5B1C2"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/cardView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <Switch
         android:id="@+id/rgbMode"
-        android:layout_width="321dp"
+        android:layout_width="320dp"
         android:layout_height="35dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="52dp"
         android:layout_marginEnd="8dp"
-        android:text="activate FancyBackground"
+        android:text="activate AnimatedBackground"
         android:textColor="#fff"
         android:textSize="18sp"
         android:textStyle="bold"
