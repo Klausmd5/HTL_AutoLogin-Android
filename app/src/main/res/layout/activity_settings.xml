@@ -42,7 +42,7 @@
         android:layout_height="33dp"
         android:layout_marginStart="13dp"
         android:layout_marginEnd="52dp"
-        android:layout_marginBottom="56dp"
+        android:layout_marginBottom="12dp"
         android:text="Beta"
         android:textAlignment="center"
         android:textColor="#ffff"
@@ -57,7 +57,7 @@
         android:layout_height="33dp"
         android:layout_marginStart="52dp"
         android:layout_marginEnd="13dp"
-        android:layout_marginBottom="56dp"
+        android:layout_marginBottom="12dp"
         android:text="Version:"
         android:textAlignment="center"
         android:textColor="#ffff"
@@ -101,26 +101,11 @@
         android:layout_marginStart="48dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
-        android:text="Copyright © 2019 Vortexdata.NET"
+        android:text="Copyright © 2019 - 2020 Vortexdata.NET"
         android:textColor="#666c75"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/note"
-        android:layout_width="307dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="Please note that you are currently using a beta build of our app."
-        android:textAlignment="center"
-        android:textColor="#A5B1C2"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/cardView"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Switch
@@ -154,5 +139,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rgbMode" />
+
+    <Switch
+        android:id="@+id/connectToWifi"
+        android:layout_width="321dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="Auto-connect to Wifi"
+        android:textColor="#fff"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rgbMode2" />
 
 </android.support.constraint.ConstraintLayout>

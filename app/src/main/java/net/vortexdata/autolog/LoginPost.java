@@ -1,7 +1,6 @@
 package net.vortexdata.autolog;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.Network;
@@ -10,7 +9,6 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 
 import net.vortexdata.autolog.configs.Cfg;
-import net.vortexdata.autolog.updater.checkWeb;
 
 import org.apache.http.client.ClientProtocolException;
 
@@ -160,7 +158,7 @@ public class LoginPost {
                     String msg = new String();
 
                     trustEveryone();
-                    checkWeb.checkLoginURL();
+                    //checkWeb.checkLoginURL();
                     bindtoNetwork(a);
 
                     String echo = "http://scooterlabs.com/echo";

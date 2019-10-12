@@ -22,6 +22,7 @@ public class Msg {
 
     // err Message
     public static String noUsername = "You haven't saved a username or password yet.";
+    public static String timeout = "Network timeout reached. Please try again.";
 
     // MainActivity
     public static String processing = "Processing... Please wait.";

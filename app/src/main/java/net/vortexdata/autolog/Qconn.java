@@ -1,6 +1,5 @@
 package net.vortexdata.autolog;
 
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -24,7 +23,10 @@ public class Qconn extends AppCompatActivity {
 
     private Thread closeThread;
     private Thread timer;
-    private int closeCounter;
+    private Thread timeout;
+    private Thread connect;
+    private Thread easteregg;
+    private int closeCounter = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +49,20 @@ public class Qconn extends AppCompatActivity {
                     android.graphics.PorterDuff.Mode.MULTIPLY);
         }
 
+        if(Cfg.easteregg) {
+            easteregg = new Thread(() -> {
+                while (true) {
+                    runOnUiThread(() -> {
+
+                            stateTxt.setRotation(stateTxt.getRotation()+5);
+                    });
+                }
+            });
+        }
+
          timer = new Thread(() -> {
              try {
-                 timer.sleep(4000);
+                 timer.sleep(6000);
                  runOnUiThread(() -> {
                      underTxt.setVisibility(View.VISIBLE);
                  });
@@ -60,7 +73,29 @@ public class Qconn extends AppCompatActivity {
          });
          timer.start();
 
-        Thread t = new Thread(() -> {
+         timeout = new Thread(() -> {
+            try {
+                timer.sleep(40000);
+                connect.interrupt();
+                runOnUiThread(() -> {
+                    setBgColor("#C3073F");
+                    runOnUiThread(() -> {
+                        stateTxt.setText("Timeout!");
+                        state.setImageResource(R.drawable.ic_clear_black_24dp);
+                        underTxt.setText(Msg.timeout);
+                    });
+                });
+                closeCounter = 5;
+                setVisibility();
+                closeWindow();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        });
+        timeout.start();
+
+        connect = new Thread(() -> {
             while (true) {
                 if(q.done) {
                     if (q.statePositive) {
@@ -104,7 +139,13 @@ public class Qconn extends AppCompatActivity {
             }
 
         });
-        t.start();
+        connect.start();
+
+        if(Cfg.easteregg) {
+            easteregg.start();
+            Cfg.easteregg = false;
+            q.saveApkData(this);
+        }
 
     }
 
@@ -113,7 +154,6 @@ public class Qconn extends AppCompatActivity {
             quitTxt.setVisibility(View.VISIBLE);
         });
 
-        closeCounter = 3;
         closeThread = new Thread(() -> {
             while (closeCounter > 0) {
                 try {

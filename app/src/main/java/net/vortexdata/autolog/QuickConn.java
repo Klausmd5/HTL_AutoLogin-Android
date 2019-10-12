@@ -28,33 +28,38 @@ public class QuickConn {
 
         loadData(c);
 
-        String networkSSID = "HTBLA";
-        String networkPass = "htlgrieskirchen";
+        if(Cfg.autoConnect) {
+            String networkSSID = "HTBLA";
+            String networkPass = "htlgrieskirchen";
 
-        WifiConfiguration conf = new WifiConfiguration();
-        conf.SSID = "\"" + networkSSID + "\"";
-        conf.preSharedKey = "\""+ networkPass +"\"";
-        WifiManager wifiManager = (WifiManager) c.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        wifiManager.addNetwork(conf);
-
-
-        List<WifiConfiguration> list = wifiManager.getConfiguredNetworks();
-        for( WifiConfiguration i : list ) {
-            if(i.SSID != null && i.SSID.equals("\"" + networkSSID + "\"")) {
-                wifiManager.disconnect();
-                wifiManager.enableNetwork(i.networkId, true);
-
-                wifiManager.reconnect();
+            WifiConfiguration conf = new WifiConfiguration();
+            conf.SSID = "\"" + networkSSID + "\"";
+            conf.preSharedKey = "\"" + networkPass + "\"";
+            WifiManager wifiManager = (WifiManager) c.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+            wifiManager.addNetwork(conf);
 
 
-                break;
+            List<WifiConfiguration> list = wifiManager.getConfiguredNetworks();
+            for (WifiConfiguration i : list) {
+                if (i.SSID != null && i.SSID.equals("\"" + networkSSID + "\"")) {
+                    wifiManager.disconnect();
+                    wifiManager.enableNetwork(i.networkId, true);
+
+                    wifiManager.reconnect();
+
+
+                    break;
+                }
             }
+
         }
 
         quickconnThread = new Thread(() -> {
             try {
                 //Snackbars.SnackbarLong(getWindow().getDecorView().getRootView(), "Processing... Please wait.", "#7b7b7b");
-                quickconnThread.sleep(6000);
+                if(Cfg.autoConnect) {
+                    quickconnThread.sleep(6000);
+                }
                 loadData(c);
                 LoginPost.quickSend(inUsername, inPassword, this, a);
                 saveApkData(c);
@@ -75,14 +80,16 @@ public class QuickConn {
         inUsername = prefs.getString("user", "");
         inPassword = prefs.getString("pw", "");
 
+
         if(inUsername.toString().equalsIgnoreCase("VortexDebug")) MobileDebug = true;
 
         loadApkData(context);
     }
 
-    private void saveApkData(Context context) {
+    public void saveApkData(Context context) {
         SharedPreferences.Editor editor = context.getSharedPreferences("apkData", 0).edit();
         editor.putString("loginURL", Cfg.logURL);
+        editor.putBoolean("easteregg", Cfg.easteregg);
         editor.apply();
     }
 
@@ -91,6 +98,8 @@ public class QuickConn {
 
         Cfg.logURL = prefs.getString("loginURL", Cfg.logURL);
         Cfg.fancyBGinQConn = prefs.getBoolean("QConnBg", false);
+        Cfg.autoConnect = prefs.getBoolean("connectToWifi", true);
+        Cfg.easteregg = prefs.getBoolean("easteregg", false);
     }
 
 }

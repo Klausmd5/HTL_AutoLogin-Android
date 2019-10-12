@@ -10,12 +10,14 @@ public class Cfg {
     public static boolean sentUsage = false;
     public static boolean allowGoBackOnTimeout = false;
 
+    public static boolean autoConnect = true;
+
 
     public static int expireDay = 30;
     public static int expireMonth = 2; // from 0 to 11
     public static int expireYear = 2019;
 
-    public static String version = "1.0.0";
+    public static String version = "1.1.0";
 
     public static String downloadURL = "https://projects.vortexdata.net/autologin/";
     public static String checkWeb = "https://projects.vortexdata.net/autologin/v1.0.0.txt";

@@ -19,6 +19,7 @@ public class Settings extends AppCompatActivity {
     private TextView copyright;
     private Switch rgb;
     private Switch rgb2;
+    private Switch autoConn;
     private ConstraintLayout background;
     TextView version;
 
@@ -35,6 +36,7 @@ public class Settings extends AppCompatActivity {
         rgb2 = findViewById(R.id.rgbMode2);
         background = findViewById(R.id.background);
         version = findViewById(R.id.version);
+        autoConn = findViewById(R.id.connectToWifi);
 
         version.setText(Cfg.version);
 
@@ -75,6 +77,19 @@ public class Settings extends AppCompatActivity {
             }
         });
 
+        autoConn.setChecked(Cfg.autoConnect);
+
+        autoConn.setOnClickListener(view -> {
+            if(autoConn.isChecked()) {
+                Cfg.autoConnect = true;
+                saveApkData();
+            }
+            if(!autoConn.isChecked()) {
+                Cfg.autoConnect = false;
+                saveApkData();
+            }
+        });
+
         back.setOnClickListener(view -> {
             //Intent i = new Intent(getApplicationContext(), MainActivity.class); // makes some errors
             //startActivity(i);
@@ -86,6 +101,7 @@ public class Settings extends AppCompatActivity {
             clicked++;
             if(clicked > 4) {
                 Cfg.easteregg = true;
+                saveApkData();
                 clicked = 0;
                 if(Cfg.easteregg) {
                     //rgb.setVisibility(View.VISIBLE);
@@ -114,6 +130,7 @@ public class Settings extends AppCompatActivity {
         editor.putBoolean("easteregg", Cfg.easteregg);
         editor.putBoolean("fancyBackground", Cfg.fancyBackground);
         editor.putBoolean("QConnBg", Cfg.fancyBGinQConn);
+        editor.putBoolean("connectToWifi", Cfg.autoConnect);
         editor.apply();
     }
 }

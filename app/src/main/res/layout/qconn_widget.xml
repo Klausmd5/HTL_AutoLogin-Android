@@ -5,20 +5,15 @@
 
     <Button
         android:id="@+id/q_widget_btn"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:layout_centerInParent="true"
-        android:background="@drawable/qconn_48dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
-
-    <TextView
-        android:id="@+id/q_widget_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/q_widget_btn"
-        android:layout_centerHorizontal="true"
+        android:background="@drawable/cerclebackgroundwhite"
+        android:fontFamily="sans-serif-condensed-medium"
         android:text="QConn"
-        android:textColor="#fff"
-        android:textStyle="bold" />
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textSize="14sp"
+        android:textStyle="bold|italic" />
 
 </RelativeLayout>

@@ -22,8 +22,6 @@ import net.vortexdata.autolog.configs.Cfg;
 import net.vortexdata.autolog.configs.Msg;
 import net.vortexdata.autolog.updater.checkWeb;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 
@@ -37,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
     private FloatingActionButton connectButton;
     private Button connectWifi;
     private ImageView img;
+    private TextView header;
 
     private Thread quickconnThread;
 
@@ -55,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
         saveButton = findViewById(R.id.savebutton);
         background = findViewById(R.id.background);
         img = findViewById(R.id.config);
+        header = findViewById(R.id.header);
 
 
         Thread t = new Thread(() -> {
@@ -70,6 +70,11 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
         loadData();
         loadApkData();
         saveButton(saveButton);
+
+        if(Cfg.easteregg) {
+            header.setText("Auto logout");
+        }
+
 
         if (Cfg.fancyBackground) Settings.setFancyBackground(background, this);
 
@@ -113,6 +118,10 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
                     return;
                 }
 
+                if (inUsername.getText().toString().equals("gastschueler")) {
+                    Snackbars.Snackbar(view, "Looks like someone trys to do something bad..", Msg.GreyColor);
+                }
+
                 if (inUsername.getText().toString().equals("notifyMe")) {
                     showMessage("Note", Msg.MobileData);
                 }
@@ -127,12 +136,9 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
                 editor.putString("user", inUsername.getText().toString());
                 editor.putString("pw", inPassword.getText().toString());
                 editor.apply();
-                //Toast.makeText(getBaseContext(), "Data saved!!", Toast.LENGTH_LONG).show();
                 Snackbars.Snackbar(view, Msg.loginData, "#00d873");
 
                 if (connecting) {
-                    //toast = Toast.makeText(main, "Be patient!", Toast.LENGTH_LONG);
-                    //toast.show();
                     Snackbars.Snackbar(view, Msg.processing, "#fc5c65");
                     return;
                 }
@@ -156,13 +162,10 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
             public void onClick(View view) {
                 if (toast != null) toast.cancel();
                 if (connecting) {
-                    //toast = Toast.makeText(main, "Be patient!", Toast.LENGTH_LONG);
-                    //toast.show();
                     Snackbars.Snackbar(view, "Be patient!", "#fc5c65");
                     return;
                 }
-                //toast = Toast.makeText(main, "Sending request!", Toast.LENGTH_LONG);
-                //toast.show();
+
                 Snackbars.Snackbar(view, Msg.processing, Msg.GreyColor);
                 connecting = true;
                 LoginPost.send(inUsername.getText().toString(), inPassword.getText().toString(), main);
@@ -183,30 +186,33 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
                     return;
                 }
 
-                String networkSSID = "HTBLA";
-                String networkPass = "htlgrieskirchen";
+                if(Cfg.autoConnect) {
 
-                WifiConfiguration conf = new WifiConfiguration();
-                conf.SSID = "\"" + networkSSID + "\"";
-                conf.preSharedKey = "\"" + networkPass + "\"";
-                WifiManager wifiManager = (WifiManager) main.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-                wifiManager.addNetwork(conf);
+                    String networkSSID = "HTBLA";
+                    String networkPass = "htlgrieskirchen";
 
-
-                List<WifiConfiguration> list = wifiManager.getConfiguredNetworks();
-                for (WifiConfiguration i : list) {
-                    if (i.SSID != null && i.SSID.equals("\"" + networkSSID + "\"")) {
-                        wifiManager.disconnect();
-                        wifiManager.enableNetwork(i.networkId, true);
-
-                        wifiManager.reconnect();
-                        if (toast != null) toast.cancel();
-                        //toast = Toast.makeText(main, "Connecting to "+i.SSID+"...", Toast.LENGTH_LONG);
-                        //toast.show();
-                        Snackbars.Snackbar(view, "Connecting to " + i.SSID + "...", Msg.GreyColor);
+                    WifiConfiguration conf = new WifiConfiguration();
+                    conf.SSID = "\"" + networkSSID + "\"";
+                    conf.preSharedKey = "\"" + networkPass + "\"";
+                    WifiManager wifiManager = (WifiManager) main.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+                    wifiManager.addNetwork(conf);
 
 
-                        break;
+                    List<WifiConfiguration> list = wifiManager.getConfiguredNetworks();
+                    for (WifiConfiguration i : list) {
+                        if (i.SSID != null && i.SSID.equals("\"" + networkSSID + "\"")) {
+                            wifiManager.disconnect();
+                            wifiManager.enableNetwork(i.networkId, true);
+
+                            wifiManager.reconnect();
+                            if (toast != null) toast.cancel();
+                            //toast = Toast.makeText(main, "Connecting to "+i.SSID+"...", Toast.LENGTH_LONG);
+                            //toast.show();
+                            Snackbars.Snackbar(view, "Connecting to " + i.SSID + "...", Msg.GreyColor);
+
+
+                            break;
+                        }
                     }
                 }
 
@@ -255,6 +261,7 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
         editor.putBoolean("Expired", Cfg.expired);
         editor.putBoolean("sentUsage", Cfg.sentUsage);
         editor.putBoolean("QConnBg", Cfg.fancyBGinQConn);
+        editor.putBoolean("connectToWifi", Cfg.autoConnect);
         editor.apply();
     }
 
@@ -266,6 +273,7 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
         Cfg.expired = prefs.getBoolean("Expired", false);
         Cfg.sentUsage = prefs.getBoolean("sentUsage", false);
         Cfg.fancyBGinQConn = prefs.getBoolean("QConnBg", false);
+        Cfg.autoConnect = prefs.getBoolean("connectToWifi", true);
     }
 
     public void showMessage(String title, String msg) {
