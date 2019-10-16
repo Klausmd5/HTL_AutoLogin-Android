@@ -10,7 +10,7 @@ public class Cfg {
     public static boolean sentUsage = false;
     public static boolean allowGoBackOnTimeout = false;
 
-    public static boolean autoConnect = true;
+    public static boolean autoConnect = false;
 
 
     public static int expireDay = 30;
