@@ -59,7 +59,6 @@ public class home extends AppCompatActivity {
         loadApkData();
 
         main = this;
-        getNews();
 
     }
 
@@ -98,6 +97,8 @@ public class home extends AppCompatActivity {
     }
 
     public void getNews() {
+
+        NewsFeed.clear();
 
         if(NewsFeed.size() > 1) return;
 
