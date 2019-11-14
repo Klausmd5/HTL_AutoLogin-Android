@@ -56,6 +56,8 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
         img = findViewById(R.id.config);
         header = findViewById(R.id.header);
 
+        Intent intent2 = new Intent(getApplicationContext(), home.class);
+        startActivity(intent2);
 
         Thread t = new Thread(() -> {
             new checkWeb(getApplicationContext());
@@ -146,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
                 //toast.show();
                 Snackbars.Snackbar(view, Msg.processing, Msg.GreyColor);
                 connecting = true;
-                LoginPost.send(inUsername.getText().toString(), inPassword.getText().toString(), main);
+                //LoginPost.send(inUsername.getText().toString(), inPassword.getText().toString(), main);
 
 
             }
@@ -168,7 +170,7 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
 
                 Snackbars.Snackbar(view, Msg.processing, Msg.GreyColor);
                 connecting = true;
-                LoginPost.send(inUsername.getText().toString(), inPassword.getText().toString(), main);
+                //LoginPost.send(inUsername.getText().toString(), inPassword.getText().toString(), main);
 
             }
         });
@@ -236,7 +238,7 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
                     try {
                         quickconnThread.sleep(6000);
                         Snackbars.Snackbar(view, Msg.MainProcessing, Msg.GreyColor);
-                        LoginPost.send(inUsername.getText().toString(), inPassword.getText().toString(), main);
+                        //LoginPost.send(inUsername.getText().toString(), inPassword.getText().toString(), main);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -282,7 +284,7 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
 
         builder.setView(view);
 
-        TextView name = view.findViewById(R.id.name);
+        TextView name = view.findViewById(R.id.back);
         Button btn = view.findViewById(R.id.accept);
         TextView t = view.findViewById(R.id.error);
 
@@ -322,7 +324,6 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
             public void run() {
                 connecting = false;
 
-                //Toast.makeText(main, message, Toast.LENGTH_LONG).show();
                 if (message.equals(Msg.loginSuccess)) {
                     Snackbars.Snackbar(getWindow().getDecorView().getRootView(), message, Msg.successColor);
                 } else {

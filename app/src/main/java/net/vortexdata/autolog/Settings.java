@@ -30,7 +30,7 @@ public class Settings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        back = findViewById(R.id.name);
+        back = findViewById(R.id.back);
         copyright = findViewById(R.id.copyright);
         rgb = findViewById(R.id.rgbMode);
         rgb2 = findViewById(R.id.rgbMode2);

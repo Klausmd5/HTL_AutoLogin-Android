@@ -46,7 +46,7 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
-                android:id="@+id/name"
+                android:id="@+id/back"
                 android:layout_width="239dp"
                 android:layout_height="37dp"
                 android:layout_marginStart="12dp"
@@ -76,7 +76,7 @@
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/name" />
+                app:layout_constraintTop_toBottomOf="@+id/back" />
 
         </android.support.constraint.ConstraintLayout>
 

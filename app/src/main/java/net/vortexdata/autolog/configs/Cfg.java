@@ -17,13 +17,14 @@ public class Cfg {
     public static int expireMonth = 2; // from 0 to 11
     public static int expireYear = 2019;
 
-    public static String version = "1.1.0";
+    public static String version = "2.1.0";
 
     public static String downloadURL = "https://projects.vortexdata.net/autologin/";
     public static String checkWeb = "https://projects.vortexdata.net/autologin/v1.0.0.txt";
     public static String checkForUpdates = "https://projects.vortexdata.net/autologin/changes.txt";
     public static String sendUsage = "https://projects.vortexdata.net/autologin/stats/usage.php?v=latest";
     public static String logURL = "http://10.10.0.251:8002/index.php?zone=cp_htl";
+    public static String newsFeed = "https://src.vortexdata.net/modules/api/autolog.php";
     //public static String logURL = "https://projects.vortexdata.net/autologin/test/index.php";
 
 }

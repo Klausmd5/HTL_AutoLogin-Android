@@ -74,7 +74,7 @@ public class TimeOut extends AppCompatActivity {
 
         builder.setView(view);
 
-        TextView name = view.findViewById(R.id.name);
+        TextView name = view.findViewById(R.id.back);
         Button btn = view.findViewById(R.id.accept);
         TextView t = view.findViewById(R.id.error);
 

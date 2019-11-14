@@ -5,8 +5,6 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 
 import net.vortexdata.autolog.configs.Cfg;
 
@@ -30,32 +28,21 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.X509TrustManager;
 
-/**
- * Created by mwiesinger17 on 23.11.2018.
- */
-
 public class LoginPost {
 
 
-    public static void send(final String username, final String password, final MainActivity m) {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
+    public static void send(final String username, final String password, final home m) {
+        Thread thread = new Thread(() ->  {
                 try {
-                    String msg = new String();
-
                     trustEveryone();
                     bindtoNetwork(m);
-
-                    String echo = "http://scooterlabs.com/echo";
-                    String htl = Cfg.logURL;
 
                     String data = URLEncoder.encode("auth_user", "UTF-8") + "=" + URLEncoder.encode(username, "UTF-8");
                     data += "&" + URLEncoder.encode("auth_pass", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
                     data += "&" + URLEncoder.encode("accept", "UTF-8") + "=" + URLEncoder.encode("Anmelden", "UTF-8");
 
 
-                    URL url = new URL(htl);
+                    URL url = new URL(Cfg.logURL);
                     URLConnection conn = url.openConnection();
                     conn.setRequestProperty("User-Agent", "AutoLogin by Vortexdata | "+Cfg.version);
                     conn.setConnectTimeout(5000);
@@ -79,38 +66,9 @@ public class LoginPost {
                         m.ok("Wrong password or username!");
                     }
 
-
-
                     wr.close();
                     rd.close();
 
-                    /*
-                    post.addHeader("Referer", "http://10.10.0.251:8002/?zone=cp_htl");
-                    post.addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:63.0) Gecko/20100101 Firefox/63.0");
-
-                    List<BasicNameValuePair> urlParameters = new ArrayList<BasicNameValuePair>();
-                    urlParameters.add(new BasicNameValuePair("auth_user", "mwiesinger17"));
-                    urlParameters.add(new BasicNameValuePair("auth_pass", "password"));
-                    urlParameters.add(new BasicNameValuePair("accept", "Anmelden"));
-
-
-
-                    post.setEntity(new UrlEncodedFormEntity(urlParameters));
-                    System.out.println("111");
-                    HttpResponse response = client.execute(post);
-                    msg += "Response Code : " + response.getStatusLine().getStatusCode()+"\n";
-
-                    BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-
-                    StringBuffer result = new StringBuffer();
-                    String line = "";
-                    while ((line = rd.readLine()) != null) {
-                        result.append(line);
-                    }
-                    msg += "---------"+result;
-                    m.ok(msg);
-
-                    */
 
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
@@ -122,54 +80,24 @@ public class LoginPost {
                     e.printStackTrace();
                     m.error(e.getMessage());
                 }
-
-
-            }
         });
         thread.start();
 
-
-
-    }
-
-    private boolean checkWifiOnAndConnected(Context context) {
-        WifiManager wifiMgr = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-
-        if (wifiMgr.isWifiEnabled()) { // Wi-Fi adapter is ON
-
-            WifiInfo wifiInfo = wifiMgr.getConnectionInfo();
-
-            if( wifiInfo.getNetworkId() == -1 ){
-                return false; // Not connected to an access point
-            }
-            return true; // Connected to an access point
-        }
-        else {
-            return false; // Wi-Fi adapter is OFF
-        }
     }
 
     public static void quickSend(final String username, final String password, QuickConn quickConn, Activity a) {
 
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
+        Thread thread = new Thread(() -> {
                 try {
-                    String msg = new String();
 
                     trustEveryone();
-                    //checkWeb.checkLoginURL();
                     bindtoNetwork(a);
-
-                    String echo = "http://scooterlabs.com/echo";
-                    String htl = Cfg.logURL;
 
                     String data = URLEncoder.encode("auth_user", "UTF-8") + "=" + URLEncoder.encode(username, "UTF-8");
                     data += "&" + URLEncoder.encode("auth_pass", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
                     data += "&" + URLEncoder.encode("accept", "UTF-8") + "=" + URLEncoder.encode("Anmelden", "UTF-8");
 
-
-                    URL url = new URL(htl);
+                    URL url = new URL(Cfg.logURL);
                     URLConnection conn = url.openConnection();
                     conn.setRequestProperty("User-Agent", "AutoLogin by Vortexdata | "+Cfg.version);
                     conn.setConnectTimeout(5000);
@@ -198,7 +126,6 @@ public class LoginPost {
                         quickConn.done = true;
                     }
 
-
                     wr.close();
                     rd.close();
 
@@ -213,9 +140,6 @@ public class LoginPost {
                     quickConn.done = true;
                     quickConn.statePositive = false;
                 }
-
-
-            }
         });
         thread.start();
 

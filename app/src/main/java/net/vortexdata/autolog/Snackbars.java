@@ -9,6 +9,8 @@ public class Snackbars {
 
     public static void Snackbar(View view, String txt, String color) {
 
+        if(view == null) return;
+
         Snackbar snackbar;
         snackbar = Snackbar.make(view, txt, Snackbar.LENGTH_SHORT);
         View snackBarView = snackbar.getView();
