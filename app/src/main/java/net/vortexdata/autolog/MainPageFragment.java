@@ -29,6 +29,9 @@ public class MainPageFragment extends Fragment {
     ImageView news;
     TextView header;
     ConstraintLayout bg;
+    View v;
+
+    Thread ok;
 
     public MainPageFragment() {
 
@@ -52,7 +55,8 @@ public class MainPageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        View v = inflater.inflate(R.layout.fragment_main_page, container, false);
+        v = inflater.inflate(R.layout.fragment_main_page, container, false);
+
 
         inUsername = (EditText) v.findViewById(R.id.inUsername);
         inPassword = v.findViewById(R.id.inPassword);
@@ -90,7 +94,8 @@ public class MainPageFragment extends Fragment {
             Snackbars.Snackbar(view, Msg.loginData, Msg.successColor);
 
             Snackbars.Snackbar(view, Msg.processing, Msg.GreyColor);
-            LoginPost.send(inUsername.getText().toString(), inPassword.getText().toString(), home.main);
+            LoginPost l = new LoginPost();
+            l.send(inUsername.getText().toString(), inPassword.getText().toString(), this);
         });
 
 
@@ -114,6 +119,24 @@ public class MainPageFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
+    }
+
+    public void error(final String error) {
+        Snackbars.Snackbar(v, Msg.err, Msg.err_color);
+    }
+
+    public void ok(final String message) {
+        Snackbars.Snackbar(v, message, Msg.successColor);
+
+        ok = new Thread(() -> {
+            try {
+                ok.sleep(1000);
+                BasicMethods.openTab(getContext());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        ok.start();
     }
 
     @Override

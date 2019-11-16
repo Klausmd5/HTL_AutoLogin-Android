@@ -24,6 +24,7 @@ public class SettingsPage extends Fragment {
     Switch rgb;
     Switch rgb2;
     Switch autoConn;
+    Switch openTab;
     TextView version;
     CardView hr1;
     CardView hr2;
@@ -66,6 +67,7 @@ public class SettingsPage extends Fragment {
         hr1 = v.findViewById(R.id.hr1);
         hr2 = v.findViewById(R.id.hr2);
         bg = v.findViewById(R.id.bg_settings);
+        openTab = v.findViewById(R.id.openTab);
 
         if(Cfg.fancyBackground) {
             Settings.setFancyBackground(bg, getContext());
@@ -85,6 +87,7 @@ public class SettingsPage extends Fragment {
         }
 
         rgb2.setChecked(Cfg.fancyBGinQConn);
+        openTab.setChecked(Cfg.openTab);
 
         rgb.setOnClickListener(view -> {
             if (rgb.isChecked()) {
@@ -126,6 +129,11 @@ public class SettingsPage extends Fragment {
             }
         });
 
+        openTab.setOnClickListener(view -> {
+            if(openTab.isChecked()) { Cfg.openTab = true; } else { Cfg.openTab = false; }
+            saveApkData();
+        });
+
         copyright.setOnClickListener(view -> {
             clicked++;
             if (clicked > 4) {
@@ -147,22 +155,12 @@ public class SettingsPage extends Fragment {
         SharedPreferences.Editor editor = getContext().getSharedPreferences("apkData", 0).edit();
         editor.putBoolean("easteregg", Cfg.easteregg);
         editor.putBoolean("fancyBackground", Cfg.fancyBackground);
-        editor.putBoolean("Expired", Cfg.expired);
-        editor.putBoolean("sentUsage", Cfg.sentUsage);
+        editor.putBoolean("openTab", Cfg.openTab);
         editor.putBoolean("QConnBg", Cfg.fancyBGinQConn);
         editor.putBoolean("connectToWifi", Cfg.autoConnect);
         editor.apply();
     }
 
-    private void loadApkData() {
-        SharedPreferences prefs = getContext().getSharedPreferences("apkData", 0);
-        Cfg.easteregg = prefs.getBoolean("easteregg", false);
-        Cfg.fancyBackground = prefs.getBoolean("fancyBackground", false);
-        Cfg.expired = prefs.getBoolean("Expired", false);
-        Cfg.sentUsage = prefs.getBoolean("sentUsage", false);
-        Cfg.fancyBGinQConn = prefs.getBoolean("QConnBg", false);
-        Cfg.autoConnect = prefs.getBoolean("connectToWifi", true);
-    }
 
     public void onButtonPressed(Uri uri) {
 
@@ -180,16 +178,6 @@ public class SettingsPage extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);

@@ -1,6 +1,5 @@
 package net.vortexdata.autolog;
 
-import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.Network;
@@ -19,23 +18,21 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.security.SecureRandom;
-import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
-import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
 import javax.net.ssl.X509TrustManager;
 
 public class LoginPost {
 
+    private Thread qsend;
 
-    public static void send(final String username, final String password, final home m) {
+    public void send(final String username, final String password, final MainPageFragment m) {
         Thread thread = new Thread(() ->  {
                 try {
                     trustEveryone();
-                    bindtoNetwork(m);
+                    bindtoNetwork(m.getContext());
 
                     String data = URLEncoder.encode("auth_user", "UTF-8") + "=" + URLEncoder.encode(username, "UTF-8");
                     data += "&" + URLEncoder.encode("auth_pass", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
@@ -57,6 +54,10 @@ public class LoginPost {
                     String response = new String();
                     while ((line = rd.readLine()) != null) {
                         response += line+"\n";
+                    }
+
+                    if(Cfg.dev) {
+                        System.out.println("R: " + response);
                     }
 
                     if(response.equalsIgnoreCase("Anmeldung erfolgreich") || response.contains("erfolgreich") || response.contains("connected")) {
@@ -85,13 +86,13 @@ public class LoginPost {
 
     }
 
-    public static void quickSend(final String username, final String password, QuickConn quickConn, Activity a) {
+    public void quickSend(final String username, final String password, Qconn q) {
 
-        Thread thread = new Thread(() -> {
+        qsend = new Thread(() -> {
                 try {
 
                     trustEveryone();
-                    bindtoNetwork(a);
+                    bindtoNetwork(q.getApplicationContext());
 
                     String data = URLEncoder.encode("auth_user", "UTF-8") + "=" + URLEncoder.encode(username, "UTF-8");
                     data += "&" + URLEncoder.encode("auth_pass", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
@@ -114,16 +115,19 @@ public class LoginPost {
                         response += line+"\n";
                     }
 
-                    quickConn.response = response;
+
+                    if(Cfg.dev) {
+                        System.out.println("R: " + response);
+                    }
+
+                    q.response = response;
                     if(response.equalsIgnoreCase("Anmeldung erfolgreich") || response.contains("erfolgreich") || response.contains("connected")) {
-                        quickConn.state = "Successfully logged in!"; // DO NOT CHANGE (NOT DISPLAYED)
-                        quickConn.statePositive = true;
-                        quickConn.done = true;
+                        q.status = "Successfully logged in!"; // DO NOT CHANGE (NOT DISPLAYED)
+                        q.statePositive = true;
                     } else {
                         //m.ok("Wrong password or username\nResponse Code: "+code);
-                        quickConn.state = "Wrong password or username!"; // DO NOT CHANGE (NOT DISPLAYED)
-                        quickConn.statePositive = false;
-                        quickConn.done = true;
+                        q.status = "Wrong password or username!"; // DO NOT CHANGE (NOT DISPLAYED)
+                        q.statePositive = false;
                     }
 
                     wr.close();
@@ -136,27 +140,26 @@ public class LoginPost {
                     e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
-                    quickConn.state = "Err";
-                    quickConn.done = true;
-                    quickConn.statePositive = false;
+                } finally {
+                    q.done = true;
+                    q.setText();
+                    qsend.interrupt();
+                    qsend = null;
                 }
         });
-        thread.start();
+        qsend.start();
 
     }
 
     private static void trustEveryone() {
         try {
-            HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier(){
-                public boolean verify(String hostname, SSLSession session) {
-                    return true;
-                }});
+            HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> true);
             SSLContext context = SSLContext.getInstance("TLS");
             context.init(null, new X509TrustManager[]{new X509TrustManager(){
                 public void checkClientTrusted(X509Certificate[] chain,
-                                               String authType) throws CertificateException {}
+                                               String authType) {}
                 public void checkServerTrusted(X509Certificate[] chain,
-                                               String authType) throws CertificateException {}
+                                               String authType) {}
                 public X509Certificate[] getAcceptedIssuers() {
                     return new X509Certificate[0];
                 }}}, new SecureRandom());
@@ -167,7 +170,7 @@ public class LoginPost {
         }
     }
 
-    public static void bindtoNetwork(Activity a) {
+    public static void bindtoNetwork(Context a) {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
 
             ConnectivityManager connectivityManager = (ConnectivityManager) a.getSystemService(Context.CONNECTIVITY_SERVICE);

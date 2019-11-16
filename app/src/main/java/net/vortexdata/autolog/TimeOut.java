@@ -14,8 +14,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
-import net.vortexdata.autolog.configs.Cfg;
-
 public class TimeOut extends AppCompatActivity {
 
     Button b;
@@ -33,14 +31,10 @@ public class TimeOut extends AppCompatActivity {
         title = findViewById(R.id.title);
         okay = findViewById(R.id.accept);
 
-        if(Cfg.allowGoBackOnTimeout) {
-            okay.setVisibility(View.VISIBLE);
-        }
-
         b.setOnClickListener(v -> {
 
             try {
-                Uri uri = Uri.parse("googlechrome://navigate?url=" + Cfg.downloadURL);
+                Uri uri = Uri.parse("googlechrome://navigate?url=");
                 Intent i = new Intent(Intent.ACTION_VIEW, uri);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
@@ -52,14 +46,12 @@ public class TimeOut extends AppCompatActivity {
 
         copy.setOnClickListener(v -> {
             ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-            ClipData clip = ClipData.newPlainText("Upadte URL", Cfg.downloadURL);
+            ClipData clip = ClipData.newPlainText("Upadte URL", "");
             clipboard.setPrimaryClip(clip);
 
         });
 
-        if(Cfg.expired) {
             title.setText("Outdated!");
-        }
 
         okay.setOnClickListener(v -> {
             finish();
@@ -97,11 +89,7 @@ public class TimeOut extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(Cfg.allowGoBackOnTimeout) {
-            super.onBackPressed();
-        } else {
-            noBack();
-        }
+        super.onBackPressed();
     }
 
 }

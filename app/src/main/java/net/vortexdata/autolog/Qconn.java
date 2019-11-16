@@ -1,6 +1,10 @@
 package net.vortexdata.autolog;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.wifi.WifiConfiguration;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +16,12 @@ import android.widget.TextView;
 import net.vortexdata.autolog.configs.Cfg;
 import net.vortexdata.autolog.configs.Msg;
 
+import java.util.List;
+
 public class Qconn extends AppCompatActivity {
+
+    private String inUsername;
+    private String inPassword;
 
     private ImageView state;
     private TextView stateTxt;
@@ -26,7 +35,14 @@ public class Qconn extends AppCompatActivity {
     private Thread timeout;
     private Thread connect;
     private Thread easteregg;
+    Thread quickconnThread;
     private int closeCounter = 3;
+
+    public String response = new String();
+    public boolean statePositive;
+    public boolean done = false;
+    public String status = new String();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +56,6 @@ public class Qconn extends AppCompatActivity {
         quitTxt = findViewById(R.id.quitMsg);
         bg = findViewById(R.id.cbackground);
 
-        QuickConn q = new QuickConn(getApplicationContext(), this);
-
         if(Cfg.fancyBGinQConn) {
             Settings.setFancyBackground(bg, this);
             pb.setIndeterminate(true);
@@ -52,13 +66,12 @@ public class Qconn extends AppCompatActivity {
         if(Cfg.easteregg) {
             easteregg = new Thread(() -> {
                 while (true) {
-                    runOnUiThread(() -> {
-
-                            stateTxt.setRotation(stateTxt.getRotation()+5);
-                    });
+                    runOnUiThread(() -> stateTxt.setRotation(stateTxt.getRotation()+5));
                 }
             });
         }
+
+        connect();
 
          timer = new Thread(() -> {
              try {
@@ -76,7 +89,6 @@ public class Qconn extends AppCompatActivity {
          timeout = new Thread(() -> {
             try {
                 timer.sleep(40000);
-                connect.interrupt();
                 runOnUiThread(() -> {
                     setBgColor("#C3073F");
                     runOnUiThread(() -> {
@@ -95,64 +107,59 @@ public class Qconn extends AppCompatActivity {
         });
         timeout.start();
 
-        connect = new Thread(() -> {
-            while (true) {
-                if(q.done) {
-                    if (q.statePositive) {
-                        setBgColor("#27AE60");
-                        runOnUiThread(() -> {
-                            stateTxt.setText("Success!");
-                            underTxt.setText(Msg.qConnSuccessMsg);
-                        });
-                        setVisibility();
-                        closeWindow();
-                        if(q.MobileDebug) {
-                            runOnUiThread(() -> {
-                                underTxt.setText("Status Positive:" + q.statePositive);
-                                stateTxt.setText("Resp:" + q.response);
-                            });
-                        }
-                        return;
-
-                    } else {
-                        setBgColor("#C3073F");
-                        runOnUiThread(() -> {
-                            stateTxt.setText("Failed!");
-                            state.setImageResource(R.drawable.ic_clear_black_24dp);
-                            if(q.state.contains("Wrong")) {
-                                underTxt.setText(Msg.qConnFailWrongUser);
-                            } else {
-                                underTxt.setText(Msg.qConnErr);
-                            }
-                            if(q.MobileDebug) {
-                                runOnUiThread(() -> {
-                                    underTxt.setText("Status Positive:" + q.statePositive);
-                                    stateTxt.setText("Resp:" + q.response);
-                                });
-                            }
-                        });
-                        setVisibility();
-                        closeWindow();
-                        return;
-                    }
-                }
-            }
-
-        });
-        connect.start();
-
         if(Cfg.easteregg) {
             easteregg.start();
             Cfg.easteregg = false;
-            q.saveApkData(this);
+            saveApkData();
         }
 
     }
 
+    public void setText() {
+        timeout.interrupt();
+        if(done) {
+            if (statePositive) {
+                setBgColor("#27AE60");
+                runOnUiThread(() -> {
+                    stateTxt.setText("Success!");
+                    underTxt.setText(Msg.qConnSuccessMsg);
+                });
+                setVisibility();
+                closeWindow();
+                if(Cfg.dev) {
+                    runOnUiThread(() -> {
+                        underTxt.setText("Status Positive:" + statePositive);
+                        stateTxt.setText("Resp:" + response);
+                    });
+                }
+                return;
+
+            } else {
+                setBgColor("#C3073F");
+                runOnUiThread(() -> {
+                    stateTxt.setText("Failed!");
+                    state.setImageResource(R.drawable.ic_clear_black_24dp);
+                    if(status.contains("Wrong")) {
+                        underTxt.setText(Msg.qConnFailWrongUser);
+                    } else {
+                        underTxt.setText(Msg.qConnErr);
+                    }
+                    if(Cfg.dev) {
+                        runOnUiThread(() -> {
+                            underTxt.setText("Status Positive:" + statePositive);
+                            stateTxt.setText("Resp:" + response);
+                        });
+                    }
+                });
+                setVisibility();
+                closeWindow();
+                return;
+            }
+        }
+    }
+
     public void closeWindow() {
-        runOnUiThread(() -> {
-            quitTxt.setVisibility(View.VISIBLE);
-        });
+        runOnUiThread(() -> quitTxt.setVisibility(View.VISIBLE));
 
         closeThread = new Thread(() -> {
             while (closeCounter > 0) {
@@ -168,6 +175,7 @@ public class Qconn extends AppCompatActivity {
                     }
             }
 
+            if(Cfg.openTab) BasicMethods.openTab(getApplicationContext());
             //finish();
             finishAndRemoveTask();
         });
@@ -186,5 +194,74 @@ public class Qconn extends AppCompatActivity {
         runOnUiThread(() -> {
             bg.setBackgroundColor(Color.parseColor(color));
         });
+    }
+
+    public void connect() {
+
+        if(Cfg.autoConnect) {
+            String networkSSID = "HTBLA";
+            String networkPass = "htlgrieskirchen";
+
+            WifiConfiguration conf = new WifiConfiguration();
+            conf.SSID = "\"" + networkSSID + "\"";
+            conf.preSharedKey = "\"" + networkPass + "\"";
+            WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+            wifiManager.addNetwork(conf);
+
+
+            List<WifiConfiguration> list = wifiManager.getConfiguredNetworks();
+            for (WifiConfiguration i : list) {
+                if (i.SSID != null && i.SSID.equals("\"" + networkSSID + "\"")) {
+                    wifiManager.disconnect();
+                    wifiManager.enableNetwork(i.networkId, true);
+
+                    wifiManager.reconnect();
+                    break;
+                }
+            }
+
+        }
+
+        quickconnThread = new Thread(() -> {
+            try {
+                if(Cfg.autoConnect) {
+                    quickconnThread.sleep(6000);
+                }
+                loadData();
+                LoginPost l = new LoginPost();
+                l.quickSend(inUsername, inPassword, this);
+                saveApkData();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        quickconnThread.start();
+    }
+
+    private void loadData() {
+
+        SharedPreferences prefs = getSharedPreferences("userData", 0);
+        inUsername = prefs.getString("user", "");
+        inPassword = prefs.getString("pw", "");
+
+        if(inUsername.equalsIgnoreCase("VortexDebug")) Cfg.dev = true;
+        loadApkData();
+    }
+
+    public void saveApkData() {
+        SharedPreferences.Editor editor = getSharedPreferences("apkData", 0).edit();
+        editor.putString("loginURL", Cfg.logURL);
+        editor.putBoolean("easteregg", Cfg.easteregg);
+        editor.apply();
+    }
+
+    private void loadApkData() {
+        SharedPreferences prefs = getSharedPreferences("apkData", 0);
+
+        Cfg.openTab = prefs.getBoolean("openTab", false);
+        Cfg.logURL = prefs.getString("loginURL", Cfg.logURL);
+        Cfg.fancyBGinQConn = prefs.getBoolean("QConnBg", false);
+        Cfg.autoConnect = prefs.getBoolean("connectToWifi", true);
+        Cfg.easteregg = prefs.getBoolean("easteregg", false);
     }
 }

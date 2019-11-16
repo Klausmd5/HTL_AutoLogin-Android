@@ -13,10 +13,28 @@ import android.widget.TextView;
 
 import net.vortexdata.autolog.adapter.NewsAdapter;
 import net.vortexdata.autolog.configs.Cfg;
+import net.vortexdata.autolog.objects.News;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.security.SecureRandom;
+import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.X509TrustManager;
 
 public class NewsFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
+    public static ArrayList<News> NewsFeed = new ArrayList<News>() {};
 
     ConstraintLayout bg;
     ListView newsList;
@@ -26,7 +44,7 @@ public class NewsFragment extends Fragment {
     NewsAdapter na;
 
     public NewsFragment() {
-
+        getNews();
     }
 
     public static NewsFragment newInstance(String param1, String param2) {
@@ -52,7 +70,7 @@ public class NewsFragment extends Fragment {
         back = v.findViewById(R.id.back_news);
         header = v.findViewById(R.id.header_news);
 
-        na = new NewsAdapter(home.main);
+        na = new NewsAdapter(this);
         newsList.setAdapter(na);
 
         if (Cfg.fancyBackground) {
@@ -83,5 +101,76 @@ public class NewsFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public void getNews() {
+
+        NewsFeed.clear();
+
+        if(NewsFeed.size() > 1) return;
+
+        Thread getNews = new Thread(() -> {
+            try {
+                URL urlLoc = new URL(Cfg.newsFeed);
+                trustEveryone();
+                HttpsURLConnection connection = (HttpsURLConnection) urlLoc.openConnection();
+                connection.setConnectTimeout(4000);
+                connection.setReadTimeout(1000);
+                connection.connect();
+
+
+                InputStream input = new BufferedInputStream(urlLoc.openStream());
+
+                StringBuffer responseBuffer = new StringBuffer();
+                byte[] byteArray = new byte[1024];
+                while (input.read(byteArray) != -1) {
+                    String res = new String(byteArray, "UTF-8");
+                    responseBuffer.append(res);
+                    byteArray = null;
+                    byteArray = new byte[1024];
+                }
+
+                String response = responseBuffer.toString();
+                try {
+                    JSONArray arr = new JSONArray(response);
+                    for(int i = 0; i < arr.length(); i++) {
+                        NewsFeed.add(new News(arr.getJSONObject(i).getString("headline"), arr.getJSONObject(i).getString("text"),  arr.getJSONObject(i).getString("date"),  arr.getJSONObject(i).getString("creator")));
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        getNews.start();
+
+    }
+
+    private static void trustEveryone() {
+        try {
+            HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> true);
+            SSLContext context = SSLContext.getInstance("TLS");
+            context.init(null, new X509TrustManager[]{new X509TrustManager(){
+                public void checkClientTrusted(X509Certificate[] chain,
+                                               String authType) {}
+                public void checkServerTrusted(X509Certificate[] chain,
+                                               String authType) {}
+                public X509Certificate[] getAcceptedIssuers() {
+                    return new X509Certificate[0];
+                }}}, new SecureRandom());
+            HttpsURLConnection.setDefaultSSLSocketFactory(
+                    context.getSocketFactory());
+        } catch (Exception e) { // should never happen
+            e.printStackTrace();
+        }
     }
 }

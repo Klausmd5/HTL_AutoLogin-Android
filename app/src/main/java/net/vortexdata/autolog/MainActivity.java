@@ -20,7 +20,6 @@ import android.widget.Toast;
 
 import net.vortexdata.autolog.configs.Cfg;
 import net.vortexdata.autolog.configs.Msg;
-import net.vortexdata.autolog.updater.checkWeb;
 
 import java.util.List;
 
@@ -58,15 +57,6 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
 
         Intent intent2 = new Intent(getApplicationContext(), home.class);
         startActivity(intent2);
-
-        Thread t = new Thread(() -> {
-            new checkWeb(getApplicationContext());
-            if (!Cfg.sentUsage) {
-                checkWeb.sendUsage();
-            }
-        });
-        t.start();
-
 
         main = this;
         loadData();
@@ -260,8 +250,6 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
         editor.putBoolean("firstStart", firstStart);
         editor.putBoolean("easteregg", Cfg.easteregg);
         editor.putBoolean("fancyBackground", Cfg.fancyBackground);
-        editor.putBoolean("Expired", Cfg.expired);
-        editor.putBoolean("sentUsage", Cfg.sentUsage);
         editor.putBoolean("QConnBg", Cfg.fancyBGinQConn);
         editor.putBoolean("connectToWifi", Cfg.autoConnect);
         editor.apply();
@@ -272,8 +260,6 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
         firstStart = prefs.getBoolean("firstStart", true);
         Cfg.easteregg = prefs.getBoolean("easteregg", false);
         Cfg.fancyBackground = prefs.getBoolean("fancyBackground", false);
-        Cfg.expired = prefs.getBoolean("Expired", false);
-        Cfg.sentUsage = prefs.getBoolean("sentUsage", false);
         Cfg.fancyBGinQConn = prefs.getBoolean("QConnBg", false);
         Cfg.autoConnect = prefs.getBoolean("connectToWifi", true);
     }
@@ -339,11 +325,6 @@ public class MainActivity extends AppCompatActivity implements ResponseReceiver 
     public void onResume() {
         super.onResume();
         saveApkData();
-
-        Thread t = new Thread(() -> {
-            new checkWeb(getApplicationContext());
-        });
-        t.start();
 
         if (Cfg.fancyBackground) {
             Settings.setFancyBackground(background, this);
