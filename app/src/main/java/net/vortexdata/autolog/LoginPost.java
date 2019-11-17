@@ -6,6 +6,7 @@ import android.net.Network;
 import android.net.NetworkInfo;
 
 import net.vortexdata.autolog.configs.Cfg;
+import net.vortexdata.autolog.configs.Msg;
 
 import org.apache.http.client.ClientProtocolException;
 
@@ -41,7 +42,7 @@ public class LoginPost {
 
                     URL url = new URL(Cfg.logURL);
                     URLConnection conn = url.openConnection();
-                    conn.setRequestProperty("User-Agent", "AutoLogin by Vortexdata | "+Cfg.version);
+                    conn.setRequestProperty("User-Agent", "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko");
                     conn.setConnectTimeout(5000);
                     conn.setDoOutput(true);
 
@@ -136,10 +137,14 @@ public class LoginPost {
 
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
+                    q.statePositive = false;
                 } catch (ClientProtocolException e) {
                     e.printStackTrace();
+                    q.statePositive = false;
                 } catch (IOException e) {
                     e.printStackTrace();
+                    q.statePositive = false;
+                    q.status = Msg.qConnErr;
                 } finally {
                     q.done = true;
                     q.setText();

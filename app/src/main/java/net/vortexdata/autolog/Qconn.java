@@ -33,13 +33,12 @@ public class Qconn extends AppCompatActivity {
     private Thread closeThread;
     private Thread timer;
     private Thread timeout;
-    private Thread connect;
     private Thread easteregg;
-    Thread quickconnThread;
+    private Thread quickconnThread;
     private int closeCounter = 3;
 
     public String response = new String();
-    public boolean statePositive;
+    public boolean statePositive = false;
     public boolean done = false;
     public String status = new String();
 
@@ -76,9 +75,7 @@ public class Qconn extends AppCompatActivity {
          timer = new Thread(() -> {
              try {
                  timer.sleep(6000);
-                 runOnUiThread(() -> {
-                     underTxt.setVisibility(View.VISIBLE);
-                 });
+                 runOnUiThread(() -> underTxt.setVisibility(View.VISIBLE));
              } catch (InterruptedException e) {
                  e.printStackTrace();
              }
@@ -88,7 +85,7 @@ public class Qconn extends AppCompatActivity {
 
          timeout = new Thread(() -> {
             try {
-                timer.sleep(40000);
+                timeout.sleep(Cfg.autoConnect ? 4000 : 2000);
                 runOnUiThread(() -> {
                     setBgColor("#C3073F");
                     runOnUiThread(() -> {
@@ -101,7 +98,7 @@ public class Qconn extends AppCompatActivity {
                 setVisibility();
                 closeWindow();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                // can happen on close bevore timeout
             }
 
         });
@@ -175,7 +172,7 @@ public class Qconn extends AppCompatActivity {
                     }
             }
 
-            if(Cfg.openTab) BasicMethods.openTab(getApplicationContext());
+            if(Cfg.openTab && statePositive) BasicMethods.openTab(getApplicationContext());
             //finish();
             finishAndRemoveTask();
         });
@@ -250,7 +247,6 @@ public class Qconn extends AppCompatActivity {
 
     public void saveApkData() {
         SharedPreferences.Editor editor = getSharedPreferences("apkData", 0).edit();
-        editor.putString("loginURL", Cfg.logURL);
         editor.putBoolean("easteregg", Cfg.easteregg);
         editor.apply();
     }
@@ -258,10 +254,9 @@ public class Qconn extends AppCompatActivity {
     private void loadApkData() {
         SharedPreferences prefs = getSharedPreferences("apkData", 0);
 
-        Cfg.openTab = prefs.getBoolean("openTab", false);
-        Cfg.logURL = prefs.getString("loginURL", Cfg.logURL);
-        Cfg.fancyBGinQConn = prefs.getBoolean("QConnBg", false);
-        Cfg.autoConnect = prefs.getBoolean("connectToWifi", true);
-        Cfg.easteregg = prefs.getBoolean("easteregg", false);
+        Cfg.openTab = prefs.getBoolean("openTab", Cfg.openTab);
+        Cfg.fancyBGinQConn = prefs.getBoolean("QConnBg", Cfg.fancyBGinQConn);
+        Cfg.autoConnect = prefs.getBoolean("connectToWifi", Cfg.autoConnect);
+        Cfg.easteregg = prefs.getBoolean("easteregg", Cfg.easteregg);
     }
 }

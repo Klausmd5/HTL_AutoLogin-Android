@@ -36,7 +36,7 @@ public class NewsFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     public static ArrayList<News> NewsFeed = new ArrayList<News>() {};
 
-    ConstraintLayout bg;
+    public ConstraintLayout bg;
     ListView newsList;
     TextView header;
     TextView back;
@@ -74,8 +74,12 @@ public class NewsFragment extends Fragment {
         newsList.setAdapter(na);
 
         if (Cfg.fancyBackground) {
-            Settings.setFancyBackground(bg, getContext());
+            home.setFancyBackground(bg, getContext());
         }
+
+        back.setOnClickListener(view -> {
+            home.main.vp.setCurrentItem(1, true);
+        });
 
         return v;
     }
@@ -143,6 +147,7 @@ public class NewsFragment extends Fragment {
 
 
 
+                connection.disconnect();
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import net.vortexdata.autolog.adapter.SliderAdapter;
 import net.vortexdata.autolog.configs.Cfg;
 
 public class SettingsPage extends Fragment {
@@ -28,7 +29,7 @@ public class SettingsPage extends Fragment {
     TextView version;
     CardView hr1;
     CardView hr2;
-    ConstraintLayout bg;
+    public ConstraintLayout bg;
 
     private int clicked = 0;
 
@@ -69,8 +70,10 @@ public class SettingsPage extends Fragment {
         bg = v.findViewById(R.id.bg_settings);
         openTab = v.findViewById(R.id.openTab);
 
+        ConstraintLayout[] backgrounds = {bg, SliderAdapter.mainPage.bg, SliderAdapter.news.bg};
+
         if(Cfg.fancyBackground) {
-            Settings.setFancyBackground(bg, getContext());
+            home.setFancyBackground(bg, getContext());
             rgb.setChecked(true);
             rgb2.setVisibility(View.VISIBLE);
         }
@@ -78,11 +81,11 @@ public class SettingsPage extends Fragment {
         version.setText(Cfg.version);
 
         back.setOnClickListener(view -> {
-
+            home.main.vp.setCurrentItem(1, true);
         });
 
         if (Cfg.fancyBackground) {
-            Settings.setFancyBackground(bg, getContext());
+            home.setFancyBackground(bg, getContext());
             rgb.setChecked(true);
         }
 
@@ -92,14 +95,14 @@ public class SettingsPage extends Fragment {
         rgb.setOnClickListener(view -> {
             if (rgb.isChecked()) {
                 Cfg.fancyBackground = true;
-                Settings.setFancyBackground(bg, getContext());
+                home.setFancyBackgrounds(backgrounds, getContext());
                 rgb2.setVisibility(View.VISIBLE);
                 saveApkData();
             }
 
             if (!rgb.isChecked()) {
                 Cfg.fancyBackground = false;
-                Settings.removeFancyBackground(bg, getContext());
+                home.removeFancyBackgrounds(backgrounds, getContext());
                 rgb2.setVisibility(View.GONE);
                 Cfg.fancyBGinQConn = false;
                 saveApkData();
@@ -179,7 +182,6 @@ public class SettingsPage extends Fragment {
     }
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 }

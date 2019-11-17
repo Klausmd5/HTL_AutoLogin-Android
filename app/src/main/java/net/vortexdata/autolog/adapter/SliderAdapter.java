@@ -21,15 +21,14 @@ public class SliderAdapter extends FragmentStatePagerAdapter {
         news = new NewsFragment();
         mainPage = new MainPageFragment();
 
-
     }
 
     @Override
     public Fragment getItem(int i) {
         switch (i) {
-            case 1: return settings;
-            case 2: return news;
-            case 0: return mainPage;
+            case 2: return settings;
+            case 0: return news;
+            case 1: return mainPage;
             default: return mainPage;
         }
     }

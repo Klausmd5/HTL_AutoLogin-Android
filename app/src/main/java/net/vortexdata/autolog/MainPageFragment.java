@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +27,7 @@ public class MainPageFragment extends Fragment {
     ImageView settings;
     ImageView news;
     TextView header;
-    ConstraintLayout bg;
+    public ConstraintLayout bg;
     View v;
 
     Thread ok;
@@ -53,10 +52,7 @@ public class MainPageFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-
         v = inflater.inflate(R.layout.fragment_main_page, container, false);
-
 
         inUsername = (EditText) v.findViewById(R.id.inUsername);
         inPassword = v.findViewById(R.id.inPassword);
@@ -69,14 +65,17 @@ public class MainPageFragment extends Fragment {
         loadData();
 
         if (Cfg.fancyBackground) {
-            Settings.setFancyBackground(bg, getContext());
+            home.setFancyBackground(bg, getContext());
         }
 
         settings.setOnClickListener(view -> {
-            FragmentTransaction tr = getFragmentManager().beginTransaction();
-            tr.replace(R.id.bg_home, new SettingsPage());
-            tr.commit();
+            home.main.vp.setCurrentItem(2, true);
         });
+
+        news.setOnClickListener(view -> {
+            home.main.vp.setCurrentItem(0, true);
+        });
+
 
         saveButton.setOnClickListener(view -> {
 

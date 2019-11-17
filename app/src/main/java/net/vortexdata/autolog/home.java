@@ -1,8 +1,11 @@
 package net.vortexdata.autolog;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -34,18 +37,41 @@ public class home extends AppCompatActivity {
         vp.setAdapter(sl);
         loadApkData();
 
+        vp.setCurrentItem(1);
         main = this;
-
     }
 
+    public static void setFancyBackgrounds(ConstraintLayout[] c, Context context) {
+        for(ConstraintLayout bg : c) {
+            setFancyBackground(bg, context);
+        }
+    }
+
+    public static void setFancyBackground(ConstraintLayout bg, Context c) {
+        bg.setBackground(ContextCompat.getDrawable(c, R.drawable.anim_background));
+        AnimationDrawable an =(AnimationDrawable) bg.getBackground();
+        an.setEnterFadeDuration(5000);
+        an.setExitFadeDuration(2000);
+        an.start();
+    }
+
+    public static void removeFancyBackgrounds(ConstraintLayout[] c, Context context) {
+        for(ConstraintLayout bg : c) {
+            removeFancyBackground(bg, context);
+        }
+    }
+
+    public static void removeFancyBackground(ConstraintLayout bg, Context c) {
+        bg.setBackground(ContextCompat.getDrawable(c, R.color.backgroundBlack));
+    }
 
     private void loadApkData() {
         SharedPreferences prefs = getSharedPreferences("apkData", 0);
-        Cfg.easteregg = prefs.getBoolean("easteregg", false);
-        Cfg.fancyBackground = prefs.getBoolean("fancyBackground", false);
-        Cfg.fancyBGinQConn = prefs.getBoolean("QConnBg", false);
-        Cfg.autoConnect = prefs.getBoolean("connectToWifi", true);
-        Cfg.openTab = prefs.getBoolean("openTab", false);
+        Cfg.easteregg = prefs.getBoolean("easteregg", Cfg.easteregg);
+        Cfg.fancyBackground = prefs.getBoolean("fancyBackground", Cfg.fancyBackground);
+        Cfg.fancyBGinQConn = prefs.getBoolean("QConnBg", Cfg.fancyBGinQConn);
+        Cfg.autoConnect = prefs.getBoolean("connectToWifi", Cfg.autoConnect);
+        Cfg.openTab = prefs.getBoolean("openTab", Cfg.openTab);
     }
 
 
