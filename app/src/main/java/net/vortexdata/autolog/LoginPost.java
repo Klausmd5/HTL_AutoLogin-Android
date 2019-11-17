@@ -42,7 +42,7 @@ public class LoginPost {
 
                     URL url = new URL(Cfg.logURL);
                     URLConnection conn = url.openConnection();
-                    conn.setRequestProperty("User-Agent", "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko");
+                    conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko");
                     conn.setConnectTimeout(5000);
                     conn.setDoOutput(true);
 
