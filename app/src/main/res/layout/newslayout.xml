@@ -53,13 +53,13 @@
 
             <TextView
                 android:id="@+id/date"
-                android:layout_width="88dp"
+                android:layout_width="92dp"
                 android:layout_height="23dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="4dp"
                 android:text="date"
                 android:textAlignment="textEnd"
-                android:textSize="12sp"
+                android:textSize="10sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
