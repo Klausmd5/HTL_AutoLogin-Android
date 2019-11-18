@@ -65,7 +65,7 @@ public class MainPageFragment extends Fragment {
         loadData();
 
         if (Cfg.fancyBackground) {
-            home.setFancyBackground(bg, getContext());
+            BasicMethods.setFancyBackground(bg, getContext());
         }
 
         settings.setOnClickListener(view -> {
@@ -82,6 +82,20 @@ public class MainPageFragment extends Fragment {
             if (inUsername.getText().length() < 4 || inPassword.getText().length() < 4) {
 
                 Snackbars.Snackbar(view, Msg.noUsername, Msg.err_color);
+                return;
+            }
+
+            if(inUsername.getText().equals("VortexDebug")) {
+                Cfg.dev = true;
+                loadData();
+                Snackbars.Snackbar(view, Msg.debug, Msg.successColor);
+                return;
+            }
+
+            if(inUsername.getText().equals("NonDebug")) {
+                Cfg.dev = false;
+                loadData();
+                Snackbars.Snackbar(view, Msg.leftDebug, Msg.successColor);
                 return;
             }
 

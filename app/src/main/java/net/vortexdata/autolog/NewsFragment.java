@@ -74,7 +74,7 @@ public class NewsFragment extends Fragment {
         newsList.setAdapter(na);
 
         if (Cfg.fancyBackground) {
-            home.setFancyBackground(bg, getContext());
+            BasicMethods.setFancyBackground(bg, getContext());
         }
 
         back.setOnClickListener(view -> {

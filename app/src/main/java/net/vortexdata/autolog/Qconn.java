@@ -39,7 +39,7 @@ public class Qconn extends AppCompatActivity {
 
     public String response = new String();
     public boolean statePositive = false;
-    public boolean done = false;
+    public static boolean done = false;
     public String status = new String();
 
 
@@ -56,7 +56,7 @@ public class Qconn extends AppCompatActivity {
         bg = findViewById(R.id.cbackground);
 
         if(Cfg.fancyBGinQConn) {
-            Settings.setFancyBackground(bg, this);
+            BasicMethods.setFancyBackground(bg, this);
             pb.setIndeterminate(true);
             pb.getIndeterminateDrawable().setColorFilter(0xFFFFFFFF,
                     android.graphics.PorterDuff.Mode.MULTIPLY);
@@ -173,7 +173,6 @@ public class Qconn extends AppCompatActivity {
             }
 
             if(Cfg.openTab && statePositive) BasicMethods.openTab(getApplicationContext());
-            //finish();
             finishAndRemoveTask();
         });
         closeThread.start();

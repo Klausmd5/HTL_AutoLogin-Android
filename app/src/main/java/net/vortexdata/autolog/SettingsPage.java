@@ -73,7 +73,7 @@ public class SettingsPage extends Fragment {
         ConstraintLayout[] backgrounds = {bg, SliderAdapter.mainPage.bg, SliderAdapter.news.bg};
 
         if(Cfg.fancyBackground) {
-            home.setFancyBackground(bg, getContext());
+            BasicMethods.setFancyBackground(bg, getContext());
             rgb.setChecked(true);
             rgb2.setVisibility(View.VISIBLE);
         }
@@ -85,7 +85,7 @@ public class SettingsPage extends Fragment {
         });
 
         if (Cfg.fancyBackground) {
-            home.setFancyBackground(bg, getContext());
+            BasicMethods.setFancyBackground(bg, getContext());
             rgb.setChecked(true);
         }
 
@@ -95,14 +95,14 @@ public class SettingsPage extends Fragment {
         rgb.setOnClickListener(view -> {
             if (rgb.isChecked()) {
                 Cfg.fancyBackground = true;
-                home.setFancyBackgrounds(backgrounds, getContext());
+                BasicMethods.setFancyBackgrounds(backgrounds, getContext());
                 rgb2.setVisibility(View.VISIBLE);
                 saveApkData();
             }
 
             if (!rgb.isChecked()) {
                 Cfg.fancyBackground = false;
-                home.removeFancyBackgrounds(backgrounds, getContext());
+                BasicMethods.removeFancyBackgrounds(backgrounds, getContext());
                 rgb2.setVisibility(View.GONE);
                 Cfg.fancyBGinQConn = false;
                 saveApkData();

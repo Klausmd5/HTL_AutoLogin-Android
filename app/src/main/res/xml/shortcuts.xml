@@ -3,7 +3,7 @@
     <shortcut
         android:shortcutId="qcon"
         android:enabled="true"
-        android:icon="@drawable/qconn_48dp"
+        android:icon="@drawable/autologin_quick_connect_icon48"
         android:shortcutShortLabel="@string/q_conn"
         android:shortcutLongLabel="@string/QuickConnect"
         android:shortcutDisabledMessage="@string/disabledMsg">
@@ -12,22 +12,6 @@
             android:targetPackage="net.vortexdata.autolog"
             android:targetClass="net.vortexdata.autolog.Qconn" />
 
-        <categories android:name="android.shortcut.conversation" />
-    </shortcut>
-    <shortcut
-        android:shortcutId="Settings"
-        android:enabled="false"
-        android:icon="@drawable/ic_settings_black_48dp"
-        android:shortcutShortLabel="@string/Settings"
-        android:shortcutLongLabel="@string/Settings"
-        android:shortcutDisabledMessage="@string/disabledMsg">
-        <intent
-            android:action="android.intent.action.VIEW"
-            android:targetPackage="net.vortexdata.autolog"
-            android:targetClass="net.vortexdata.autolog.Settings" />
-        <!-- If your shortcut is associated with multiple intents, include them
-             here. The last intent in the list determines what the user sees when
-             they launch this shortcut. -->
         <categories android:name="android.shortcut.conversation" />
     </shortcut>
 </shortcuts>

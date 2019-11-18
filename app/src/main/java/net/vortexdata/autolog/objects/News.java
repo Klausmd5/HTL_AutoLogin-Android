@@ -2,12 +2,13 @@ package net.vortexdata.autolog.objects;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class News {
 
     private String headline;
     private String text;
-    private Date date; // is parsed to string and will not be edited.
+    private String date;
     private String creator;
 
     public News(String headline, String text, String date, String creator) {
@@ -15,9 +16,13 @@ public class News {
         this.text = text;
         this.creator = creator;
         try {
-            this.date = new SimpleDateFormat("dd.MM.yyyy").parse(date);
+            SimpleDateFormat base = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+            Date baseDate = base.parse(date);
+            SimpleDateFormat form = new SimpleDateFormat("HH:mm dd.MM.yy");
+            this.date = form.format(baseDate);
         } catch (Exception e) {
-            this.date = new Date();
+            e.printStackTrace();
+            this.date = date;
         }
     }
 

@@ -3,7 +3,7 @@
     android:initialLayout="@layout/qconn_widget"
     android:minHeight="40dp"
     android:minWidth="40dp"
-    android:previewImage="@drawable/qconn_48dp"
+    android:previewImage="@drawable/autologin_quick_connect_icon48"
     android:minResizeWidth="40dp"
     android:minResizeHeight="40dp"
     android:resizeMode="vertical|horizontal"
