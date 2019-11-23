@@ -6,7 +6,7 @@
     android:previewImage="@drawable/autologin_quick_connect_icon48"
     android:minResizeWidth="40dp"
     android:minResizeHeight="40dp"
-    android:resizeMode="vertical|horizontal"
+    android:resizeMode="none"
     android:updatePeriodMillis="3600000"
     android:widgetCategory="home_screen">
 </appwidget-provider>

@@ -16,7 +16,7 @@
     <color name="desire">#eb3b5a</color>
     <color name="fusionRed">#fc5c65</color>
     <color name="highBlue">#45aaf2</color>
-    <color name="c64NTSC">#4b6584</color>
+    <color name="c64NTSC">#4B6584</color>
     <color name="amazonCursor">#90DF25</color>
     <color name="green">#2cd323</color>
     <color name="backgroundBlack">#1a1a1c</color>
@@ -41,5 +41,7 @@
     <color name="cyan_500">#00BCD4</color>
     <color name="light_blue_500">#03A9F4</color>
     <color name="colorTransparentWhite">#E2CCCCCC</color>
+    <color name="vdata_green">#24C59E</color>
+    <color name="vdata_green_light">#3FC5BE</color>
 
 </resources>

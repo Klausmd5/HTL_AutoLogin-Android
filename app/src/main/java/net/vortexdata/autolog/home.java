@@ -11,11 +11,8 @@ import net.vortexdata.autolog.configs.Cfg;
 public class home extends AppCompatActivity {
 
     public static home main;
-
     public ViewPager vp;
-
     public SliderAdapter sl;
-    public int currentPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,21 +34,6 @@ public class home extends AppCompatActivity {
         Cfg.fancyBackground = prefs.getBoolean("fancyBackground", Cfg.fancyBackground);
         Cfg.fancyBGinQConn = prefs.getBoolean("QConnBg", Cfg.fancyBGinQConn);
         Cfg.autoConnect = prefs.getBoolean("connectToWifi", Cfg.autoConnect);
-        Cfg.openTab = prefs.getBoolean("openTab", Cfg.openTab);
     }
 
-
-
-    @Override
-    public void onBackPressed() {
-        if(Qconn.done) {
-            finishAndRemoveTask();
-        }
-
-        if(currentPage == 1) {
-            super.onBackPressed();
-        } else {
-            vp.setCurrentItem(1, true);
-        }
-    }
 }

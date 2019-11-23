@@ -57,7 +57,12 @@ public class NewsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
 
+    @Override
+    public void onAttachFragment(Fragment childFragment) {
+        super.onAttachFragment(childFragment);
+        getNews();
     }
 
     @Override
@@ -72,6 +77,11 @@ public class NewsFragment extends Fragment {
 
         na = new NewsAdapter(this);
         newsList.setAdapter(na);
+        newsList.setDividerHeight(15);
+        newsList.setClickable(true);
+        newsList.setOnItemClickListener((parent, view, position, id) -> {
+            BasicMethods.readNews(this, position);
+        });
 
         if (Cfg.fancyBackground) {
             BasicMethods.setFancyBackground(bg, getContext());
@@ -85,14 +95,9 @@ public class NewsFragment extends Fragment {
     }
 
 
-    public void onButtonPressed(Uri uri) {
-
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
     }
 
     @Override
@@ -109,8 +114,11 @@ public class NewsFragment extends Fragment {
 
     public void getNews() {
 
-        NewsFeed.clear();
+        if(Cfg.dev) {
+            System.out.println("Fetching news..");
+        }
 
+        NewsFeed.clear();
         if(NewsFeed.size() > 1) return;
 
         Thread getNews = new Thread(() -> {
@@ -139,6 +147,14 @@ public class NewsFragment extends Fragment {
                     JSONArray arr = new JSONArray(response);
                     for(int i = 0; i < arr.length(); i++) {
                         NewsFeed.add(new News(arr.getJSONObject(i).getString("headline"), arr.getJSONObject(i).getString("text"),  arr.getJSONObject(i).getString("date"),  arr.getJSONObject(i).getString("creator")));
+                        if(NewsFeed.size() > 1) {
+                            try{
+                                na.notifyDataSetChanged();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                        }
                     }
 
                 } catch (JSONException e) {

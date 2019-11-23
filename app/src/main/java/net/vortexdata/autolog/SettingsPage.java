@@ -16,6 +16,8 @@ import android.widget.TextView;
 import net.vortexdata.autolog.adapter.SliderAdapter;
 import net.vortexdata.autolog.configs.Cfg;
 
+import java.time.Year;
+
 public class SettingsPage extends Fragment {
 
     TextView settingsHeader;
@@ -25,7 +27,6 @@ public class SettingsPage extends Fragment {
     Switch rgb;
     Switch rgb2;
     Switch autoConn;
-    Switch openTab;
     TextView version;
     CardView hr1;
     CardView hr2;
@@ -68,7 +69,7 @@ public class SettingsPage extends Fragment {
         hr1 = v.findViewById(R.id.hr1);
         hr2 = v.findViewById(R.id.hr2);
         bg = v.findViewById(R.id.bg_settings);
-        openTab = v.findViewById(R.id.openTab);
+
 
         ConstraintLayout[] backgrounds = {bg, SliderAdapter.mainPage.bg, SliderAdapter.news.bg};
 
@@ -79,6 +80,12 @@ public class SettingsPage extends Fragment {
         }
 
         version.setText(Cfg.version);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            copyright.setText(Year.now().equals(Year.parse("2019")) ? "Copyright Vortexdata.NET © 2019" : "Copyright Vortexdata.NET © 2019  - " + Year.now());
+        } else {
+            copyright.setText("Copyright Vortexdata.NET © 2019 - 2020");
+        }
+
 
         back.setOnClickListener(view -> {
             home.main.vp.setCurrentItem(1, true);
@@ -90,13 +97,13 @@ public class SettingsPage extends Fragment {
         }
 
         rgb2.setChecked(Cfg.fancyBGinQConn);
-        openTab.setChecked(Cfg.openTab);
 
         rgb.setOnClickListener(view -> {
             if (rgb.isChecked()) {
                 Cfg.fancyBackground = true;
                 BasicMethods.setFancyBackgrounds(backgrounds, getContext());
                 rgb2.setVisibility(View.VISIBLE);
+                rgb2.setChecked(true); // set as default
                 saveApkData();
             }
 
@@ -132,25 +139,6 @@ public class SettingsPage extends Fragment {
             }
         });
 
-        openTab.setOnClickListener(view -> {
-            if(openTab.isChecked()) { Cfg.openTab = true; } else { Cfg.openTab = false; }
-            saveApkData();
-        });
-
-        copyright.setOnClickListener(view -> {
-            clicked++;
-            if (clicked > 4) {
-                Cfg.easteregg = true;
-                saveApkData();
-                clicked = 0;
-                if (Cfg.easteregg) {
-                    // place for easteregg
-                }
-            }
-
-
-        });
-
         return v;
     }
 
@@ -158,15 +146,9 @@ public class SettingsPage extends Fragment {
         SharedPreferences.Editor editor = getContext().getSharedPreferences("apkData", 0).edit();
         editor.putBoolean("easteregg", Cfg.easteregg);
         editor.putBoolean("fancyBackground", Cfg.fancyBackground);
-        editor.putBoolean("openTab", Cfg.openTab);
         editor.putBoolean("QConnBg", Cfg.fancyBGinQConn);
         editor.putBoolean("connectToWifi", Cfg.autoConnect);
         editor.apply();
-    }
-
-
-    public void onButtonPressed(Uri uri) {
-
     }
 
     @Override

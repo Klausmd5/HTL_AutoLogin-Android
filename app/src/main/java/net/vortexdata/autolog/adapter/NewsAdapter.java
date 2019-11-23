@@ -1,5 +1,6 @@
 package net.vortexdata.autolog.adapter;
 
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +50,7 @@ public class NewsAdapter extends BaseAdapter {
         News news = n.NewsFeed.get(i);
         // Layout
         head.setText(news.getHeadline());
-        text.setText(news.getText());
+        text.setText(news.getText().length() > 90 ? news.getText().substring(0, 91) + Html.fromHtml( ".... <br/><b>read more(click me)</b>") : news.getText());
         date.setText(news.getDate());
 
         return view;

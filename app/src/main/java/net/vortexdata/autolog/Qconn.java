@@ -171,8 +171,6 @@ public class Qconn extends AppCompatActivity {
                         e.printStackTrace();
                     }
             }
-
-            if(Cfg.openTab && statePositive) BasicMethods.openTab(getApplicationContext());
             finishAndRemoveTask();
         });
         closeThread.start();
@@ -252,8 +250,6 @@ public class Qconn extends AppCompatActivity {
 
     private void loadApkData() {
         SharedPreferences prefs = getSharedPreferences("apkData", 0);
-
-        Cfg.openTab = prefs.getBoolean("openTab", Cfg.openTab);
         Cfg.fancyBGinQConn = prefs.getBoolean("QConnBg", Cfg.fancyBGinQConn);
         Cfg.autoConnect = prefs.getBoolean("connectToWifi", Cfg.autoConnect);
         Cfg.easteregg = prefs.getBoolean("easteregg", Cfg.easteregg);
