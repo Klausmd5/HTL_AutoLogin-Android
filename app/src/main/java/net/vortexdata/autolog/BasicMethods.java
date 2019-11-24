@@ -50,6 +50,7 @@ public class BasicMethods {
         text.setText(n.getText());
         date.setText(n.getDate());
         by.setText(n.getCreator());
+        setNewsIcons(n, icon, view);
 
         AlertDialog dialog = builder.create();
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -58,6 +59,17 @@ public class BasicMethods {
         done.setOnClickListener(view1 -> dialog.dismiss());
 
         dialog.show();
+    }
+
+    public static void setNewsIcons(News news, ImageView icon, View view) {
+        switch (news.getCategory()) {
+            case "app": icon.setImageDrawable(view.getResources().getDrawable(R.drawable.ic_comment_black_24dp));
+                break;
+            case "sv": icon.setImageDrawable(view.getResources().getDrawable(R.drawable.ic_public_black_24dp));
+                break;
+            case "info": icon.setImageDrawable(view.getResources().getDrawable(R.drawable.ic_info_outline_black_24dp));
+                break;
+        }
     }
 
     public static void setFancyBackgrounds(ConstraintLayout[] c, Context context) {

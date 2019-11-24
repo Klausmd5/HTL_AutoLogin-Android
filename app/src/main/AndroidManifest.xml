@@ -23,11 +23,9 @@
         <activity
             android:name=".home"
             android:launchMode="singleTop"
-            android:windowSoftInputMode="stateAlwaysHidden"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 

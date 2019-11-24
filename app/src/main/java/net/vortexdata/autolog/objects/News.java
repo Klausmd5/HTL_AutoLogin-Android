@@ -10,11 +10,13 @@ public class News {
     private String text;
     private String date;
     private String creator;
+    private String category;
 
-    public News(String headline, String text, String date, String creator) {
+    public News(String headline, String text, String date, String creator, String category) {
         this.headline = headline;
         this.text = text;
         this.creator = creator;
+        this.category = category;
         try {
             SimpleDateFormat base = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
             Date baseDate = base.parse(date);
@@ -35,10 +37,14 @@ public class News {
     }
 
     public String getDate() {
-        return date.toString();
+        return date;
     }
 
     public String getCreator() {
         return creator;
+    }
+
+    public String getCategory() {
+        return category;
     }
 }

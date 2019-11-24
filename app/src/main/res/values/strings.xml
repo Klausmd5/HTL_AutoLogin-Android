@@ -1,13 +1,7 @@
 <resources>
     <string name="app_name">AutoLogin</string>
-    <string name="version">Beta v1.3</string>
-    <string name="brand">Beta v1.3 | by VarChar42</string>
-
-    <string name="q_conn">qConnect</string>
+    <string name="q_conn">QConnect</string>
     <string name="QuickConnect">Quick Connect</string>
     <string name="disabledMsg">Option disabled.</string>
     <string name="Settings">Settings</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

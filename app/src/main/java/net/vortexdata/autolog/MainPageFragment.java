@@ -54,7 +54,7 @@ public class MainPageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_main_page, container, false);
 
-        inUsername = (EditText) v.findViewById(R.id.inUsername);
+        inUsername = v.findViewById(R.id.inUsername);
         inPassword = v.findViewById(R.id.inPassword);
         saveButton = v.findViewById(R.id.savebutton);
         settings = v.findViewById(R.id.config);
@@ -63,6 +63,9 @@ public class MainPageFragment extends Fragment {
         bg = v.findViewById(R.id.bg_home);
 
         loadData();
+        
+        inUsername.clearFocus(); // do not show keyboard on start
+        inPassword.clearFocus();
 
         if (Cfg.fancyBackground) {
             BasicMethods.setFancyBackground(bg, getContext());
@@ -117,8 +120,8 @@ public class MainPageFragment extends Fragment {
 
     private void loadData() {
         SharedPreferences prefs = getContext().getSharedPreferences("userData", getContext().MODE_PRIVATE);
-        inUsername.setText(prefs.getString("user", ""));
-        inPassword.setText(prefs.getString("pw", ""));
+        inUsername.setText(prefs.getString("user", "Gastschueler"));
+        inPassword.setText(prefs.getString("pw", "htlgkr"));
 
     }
 

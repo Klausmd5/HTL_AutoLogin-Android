@@ -146,7 +146,7 @@ public class NewsFragment extends Fragment {
                 try {
                     JSONArray arr = new JSONArray(response);
                     for(int i = 0; i < arr.length(); i++) {
-                        NewsFeed.add(new News(arr.getJSONObject(i).getString("headline"), arr.getJSONObject(i).getString("text"),  arr.getJSONObject(i).getString("date"),  arr.getJSONObject(i).getString("creator")));
+                        NewsFeed.add(new News(arr.getJSONObject(i).getString("headline"), arr.getJSONObject(i).getString("text"),  arr.getJSONObject(i).getString("date"),  arr.getJSONObject(i).getString("creator"), arr.getJSONObject(i).getString("category")));
                         if(NewsFeed.size() > 1) {
                             try{
                                 na.notifyDataSetChanged();

@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import net.vortexdata.autolog.BasicMethods;
 import net.vortexdata.autolog.NewsFragment;
 import net.vortexdata.autolog.R;
 import net.vortexdata.autolog.home;
@@ -49,8 +50,9 @@ public class NewsAdapter extends BaseAdapter {
 
         News news = n.NewsFeed.get(i);
         // Layout
+        BasicMethods.setNewsIcons(news, icon, view);
         head.setText(news.getHeadline());
-        text.setText(news.getText().length() > 90 ? news.getText().substring(0, 91) + Html.fromHtml( ".... <br/><b>read more(click me)</b>") : news.getText());
+        text.setText(news.getText().length() > 51 ? news.getText().substring(0, 51) + Html.fromHtml( ".... <br/><strong>read more(click me)</strong>") : news.getText());
         date.setText(news.getDate());
 
         return view;
