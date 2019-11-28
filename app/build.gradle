@@ -6,8 +6,8 @@ android {
         applicationId "net.vortexdata.autolog"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 11
-        versionName "2.2.5.2"
+        versionCode 13
+        versionName "2.2.6"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

@@ -239,19 +239,12 @@ public class Qconn extends AppCompatActivity {
         inPassword = prefs.getString("pw", "");
 
         if(inUsername.equalsIgnoreCase("VortexDebug")) Cfg.dev = true;
-        loadApkData();
+        BasicMethods.loadApkData(getApplicationContext());
     }
 
     public void saveApkData() {
         SharedPreferences.Editor editor = getSharedPreferences("apkData", 0).edit();
         editor.putBoolean("easteregg", Cfg.easteregg);
         editor.apply();
-    }
-
-    private void loadApkData() {
-        SharedPreferences prefs = getSharedPreferences("apkData", 0);
-        Cfg.fancyBGinQConn = prefs.getBoolean("QConnBg", Cfg.fancyBGinQConn);
-        Cfg.autoConnect = prefs.getBoolean("connectToWifi", Cfg.autoConnect);
-        Cfg.easteregg = prefs.getBoolean("easteregg", Cfg.easteregg);
     }
 }

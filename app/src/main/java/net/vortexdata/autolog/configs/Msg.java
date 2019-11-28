@@ -22,8 +22,9 @@ public class Msg {
     // MainActivity
     public static String processing = "Processing... Please wait.";
     public static String loginData = "Successfully saved credentials.";
+    public static String locked = "This field is locked. See settings..";
 
     // Debug
-    public static String debug = "Entered temporal debugmode.";
-    public static String leftDebug = "Left temporal debugmode.";
+    public static String debug = "Entered Developermode.";
+    public static String leftDebug = "Left Developermode.";
 }

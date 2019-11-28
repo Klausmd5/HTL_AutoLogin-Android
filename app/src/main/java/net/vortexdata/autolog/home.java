@@ -1,12 +1,10 @@
 package net.vortexdata.autolog;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import net.vortexdata.autolog.adapter.SliderAdapter;
-import net.vortexdata.autolog.configs.Cfg;
 
 public class home extends AppCompatActivity {
 
@@ -22,18 +20,10 @@ public class home extends AppCompatActivity {
         vp = findViewById(R.id.slideViewPager);
         sl = new SliderAdapter(getSupportFragmentManager());
         vp.setAdapter(sl);
-        loadApkData();
+        BasicMethods.loadApkData(getApplicationContext());
 
         vp.setCurrentItem(1);
         main = this;
-    }
-
-    private void loadApkData() {
-        SharedPreferences prefs = getSharedPreferences("apkData", 0);
-        Cfg.easteregg = prefs.getBoolean("easteregg", Cfg.easteregg);
-        Cfg.fancyBackground = prefs.getBoolean("fancyBackground", Cfg.fancyBackground);
-        Cfg.fancyBGinQConn = prefs.getBoolean("QConnBg", Cfg.fancyBGinQConn);
-        Cfg.autoConnect = prefs.getBoolean("connectToWifi", Cfg.autoConnect);
     }
 
 }

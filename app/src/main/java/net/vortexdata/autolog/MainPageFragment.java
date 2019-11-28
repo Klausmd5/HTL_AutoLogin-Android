@@ -21,8 +21,8 @@ public class MainPageFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    EditText inUsername;
-    EditText inPassword;
+    public static EditText inUsername;
+    public static EditText inPassword;
     Button saveButton;
     ImageView settings;
     ImageView news;
@@ -30,12 +30,9 @@ public class MainPageFragment extends Fragment {
     public ConstraintLayout bg;
     View v;
 
-    Thread ok;
-
     public MainPageFragment() {
 
     }
-
 
     public static MainPageFragment newInstance() {
         MainPageFragment fragment = new MainPageFragment();
@@ -63,9 +60,8 @@ public class MainPageFragment extends Fragment {
         bg = v.findViewById(R.id.bg_home);
 
         loadData();
-        
-        inUsername.clearFocus(); // do not show keyboard on start
-        inPassword.clearFocus();
+
+        BasicMethods.updateInput();
 
         if (Cfg.fancyBackground) {
             BasicMethods.setFancyBackground(bg, getContext());
@@ -79,26 +75,26 @@ public class MainPageFragment extends Fragment {
             home.main.vp.setCurrentItem(0, true);
         });
 
-
         saveButton.setOnClickListener(view -> {
 
             if (inUsername.getText().length() < 4 || inPassword.getText().length() < 4) {
-
                 Snackbars.Snackbar(view, Msg.noUsername, Msg.err_color);
                 return;
             }
 
-            if(inUsername.getText().equals("VortexDebug")) {
+            if(inUsername.getText().toString().equals("VortexDev")) {
                 Cfg.dev = true;
                 loadData();
                 Snackbars.Snackbar(view, Msg.debug, Msg.successColor);
+                BasicMethods.saveApkData(getContext());
                 return;
             }
 
-            if(inUsername.getText().equals("NonDebug")) {
+            if(inUsername.getText().toString().equals("NoDev")) {
                 Cfg.dev = false;
                 loadData();
                 Snackbars.Snackbar(view, Msg.leftDebug, Msg.successColor);
+                BasicMethods.saveApkData(getContext());
                 return;
             }
 
@@ -107,7 +103,7 @@ public class MainPageFragment extends Fragment {
             editor.putString("pw", inPassword.getText().toString());
             editor.apply();
 
-            Snackbars.Snackbar(view, Msg.loginData, Msg.successColor);
+            //Snackbars.Snackbar(view, Msg.loginData, Msg.successColor);
 
             Snackbars.Snackbar(view, Msg.processing, Msg.GreyColor);
             LoginPost l = new LoginPost();
@@ -142,17 +138,11 @@ public class MainPageFragment extends Fragment {
     }
 
     public void ok(final String message) {
-        Snackbars.Snackbar(v, message, Msg.successColor);
-
-        ok = new Thread(() -> {
-            try {
-                ok.sleep(1000);
-                BasicMethods.openTab(getContext());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-        ok.start();
+        if(message.equals("Wrong")) {
+            Snackbars.Snackbar(v, message, Msg.err_color);
+        } else {
+            Snackbars.Snackbar(v, message, Msg.successColor);
+        }
     }
 
     @Override

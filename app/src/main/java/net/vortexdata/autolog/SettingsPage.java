@@ -1,7 +1,6 @@
 package net.vortexdata.autolog;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -27,6 +26,7 @@ public class SettingsPage extends Fragment {
     Switch rgb;
     Switch rgb2;
     Switch autoConn;
+    Switch lockInput;
     TextView version;
     CardView hr1;
     CardView hr2;
@@ -69,6 +69,7 @@ public class SettingsPage extends Fragment {
         hr1 = v.findViewById(R.id.hr1);
         hr2 = v.findViewById(R.id.hr2);
         bg = v.findViewById(R.id.bg_settings);
+        lockInput = v.findViewById(R.id.lockInput);
 
 
         ConstraintLayout[] backgrounds = {bg, SliderAdapter.mainPage.bg, SliderAdapter.news.bg};
@@ -79,6 +80,9 @@ public class SettingsPage extends Fragment {
             rgb2.setVisibility(View.VISIBLE);
         }
 
+        lockInput.setChecked(Cfg.lockCredentials);
+        autoConn.setChecked(Cfg.autoConnect);
+
         version.setText(Cfg.version);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             copyright.setText(Year.now().equals(Year.parse("2019")) ? "Copyright Vortexdata.NET © 2019" : "Copyright Vortexdata.NET © 2019  - " + Year.now());
@@ -86,10 +90,7 @@ public class SettingsPage extends Fragment {
             copyright.setText("Copyright Vortexdata.NET © 2019 - 2020");
         }
 
-
-        back.setOnClickListener(view -> {
-            home.main.vp.setCurrentItem(1, true);
-        });
+        back.setOnClickListener(view -> home.main.vp.setCurrentItem(1, true));
 
         if (Cfg.fancyBackground) {
             BasicMethods.setFancyBackground(bg, getContext());
@@ -100,56 +101,40 @@ public class SettingsPage extends Fragment {
 
         rgb.setOnClickListener(view -> {
             if (rgb.isChecked()) {
-                Cfg.fancyBackground = true;
                 BasicMethods.setFancyBackgrounds(backgrounds, getContext());
                 rgb2.setVisibility(View.VISIBLE);
                 rgb2.setChecked(true); // set as default
-                saveApkData();
             }
 
             if (!rgb.isChecked()) {
-                Cfg.fancyBackground = false;
                 BasicMethods.removeFancyBackgrounds(backgrounds, getContext());
                 rgb2.setVisibility(View.GONE);
                 Cfg.fancyBGinQConn = false;
-                saveApkData();
             }
+
+            Cfg.fancyBackground = rgb.isChecked();
+            BasicMethods.saveApkData(getContext());
         });
 
         rgb2.setOnClickListener(view -> {
-            if (rgb2.isChecked()) {
-                Cfg.fancyBGinQConn = true;
-                saveApkData();
-            } else {
-                Cfg.fancyBGinQConn = false;
-                saveApkData();
-            }
+            Cfg.fancyBGinQConn = rgb2.isChecked();
+            BasicMethods.saveApkData(getContext());
         });
 
-        autoConn.setChecked(Cfg.autoConnect);
-
         autoConn.setOnClickListener(view -> {
-            if (autoConn.isChecked()) {
-                Cfg.autoConnect = true;
-                saveApkData();
-            }
-            if (!autoConn.isChecked()) {
-                Cfg.autoConnect = false;
-                saveApkData();
-            }
+            Cfg.autoConnect = autoConn.isChecked();
+            BasicMethods.saveApkData(getContext());
+        });
+
+        lockInput.setOnClickListener(v1 -> {
+            Cfg.lockCredentials = lockInput.isChecked();
+            BasicMethods.updateInput();
+            BasicMethods.saveApkData(getContext());
         });
 
         return v;
     }
 
-    private void saveApkData() {
-        SharedPreferences.Editor editor = getContext().getSharedPreferences("apkData", 0).edit();
-        editor.putBoolean("easteregg", Cfg.easteregg);
-        editor.putBoolean("fancyBackground", Cfg.fancyBackground);
-        editor.putBoolean("QConnBg", Cfg.fancyBGinQConn);
-        editor.putBoolean("connectToWifi", Cfg.autoConnect);
-        editor.apply();
-    }
 
     @Override
     public void onAttach(Context context) {
