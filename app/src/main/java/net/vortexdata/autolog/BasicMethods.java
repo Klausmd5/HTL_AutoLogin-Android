@@ -79,13 +79,17 @@ public class BasicMethods {
     }
 
     public static void setNewsIcons(News news, ImageView icon, View view) {
-        switch (news.getCategory()) {
-            case "app": icon.setImageDrawable(view.getResources().getDrawable(R.drawable.ic_comment_black_24dp));
-                break;
-            case "sv": icon.setImageDrawable(view.getResources().getDrawable(R.drawable.ic_public_black_24dp));
-                break;
-            case "info": icon.setImageDrawable(view.getResources().getDrawable(R.drawable.ic_info_outline_black_24dp));
-                break;
+        try {
+            switch (news.getCategory()) {
+                case "app": icon.setImageDrawable(view.getResources().getDrawable(R.drawable.ic_comment_black_24dp));
+                    break;
+                case "sv": icon.setImageDrawable(view.getResources().getDrawable(R.drawable.ic_public_black_24dp));
+                    break;
+                case "info": icon.setImageDrawable(view.getResources().getDrawable(R.drawable.ic_info_outline_black_24dp));
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
