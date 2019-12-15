@@ -83,16 +83,12 @@ public class NewsFragment extends Fragment {
         header = v.findViewById(R.id.header_news);
         refresh = v.findViewById(R.id.refresh);
 
-        Thread t = new Thread(() -> {
-           na = new NewsAdapter(newsFrag);
-           newsList.setAdapter(na);
-           newsList.setDivider(new ColorDrawable(Color.TRANSPARENT));
-           newsList.setDividerHeight(20);
-           newsList.setClickable(true);
-           newsList.setOnItemClickListener((parent, view, position, id) -> BasicMethods.readNews(newsFrag, position));
-        });
-
-        t.start();
+        na = new NewsAdapter(newsFrag);
+        newsList.setAdapter(na);
+        newsList.setDivider(new ColorDrawable(Color.TRANSPARENT));
+        newsList.setDividerHeight(20);
+        newsList.setClickable(true);
+        newsList.setOnItemClickListener((parent, view, position, id) -> BasicMethods.readNews(newsFrag, position));
         getNews();
 
 
