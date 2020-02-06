@@ -45,7 +45,13 @@ public class BasicMethods {
 
     public static void readNews(Fragment f, int i) {
         AlertDialog.Builder builder = new AlertDialog.Builder(f.getContext());
-        View view = f.getLayoutInflater().inflate(R.layout.read_news_layout, null);
+        View view;
+
+        if(Cfg.newDesign) {
+            view = f.getLayoutInflater().inflate(R.layout.read_news_layout_test, null);
+        } else {
+            view = f.getLayoutInflater().inflate(R.layout.read_news_layout, null);
+        }
 
         builder.setView(view);
 
@@ -136,6 +142,7 @@ public class BasicMethods {
         editor.putBoolean("QConnBg", Cfg.fancyBGinQConn);
         editor.putBoolean("connectToWifi", Cfg.autoConnect);
         editor.putBoolean("lockCredentials", Cfg.lockCredentials);
+        editor.putBoolean("newDesign", Cfg.newDesign);
         editor.apply();
     }
 
@@ -147,6 +154,7 @@ public class BasicMethods {
         Cfg.fancyBGinQConn = prefs.getBoolean("QConnBg", Cfg.fancyBGinQConn);
         Cfg.autoConnect = prefs.getBoolean("connectToWifi", Cfg.autoConnect);
         Cfg.lockCredentials = prefs.getBoolean("lockCredentials", Cfg.lockCredentials);
+        Cfg.newDesign = prefs.getBoolean("newDesign", Cfg.newDesign);
     }
 
 }

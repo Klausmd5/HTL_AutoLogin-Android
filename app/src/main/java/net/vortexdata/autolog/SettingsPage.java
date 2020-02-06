@@ -9,6 +9,8 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -31,6 +33,7 @@ public class SettingsPage extends Fragment {
     CardView hr1;
     CardView hr2;
     public ConstraintLayout bg;
+    Spinner profiles;
 
     private int clicked = 0;
 
@@ -70,6 +73,8 @@ public class SettingsPage extends Fragment {
         hr2 = v.findViewById(R.id.hr2);
         bg = v.findViewById(R.id.bg_settings);
         lockInput = v.findViewById(R.id.lockInput);
+        profiles = v.findViewById(R.id.profiles);
+
 
 
         ConstraintLayout[] backgrounds = {bg, SliderAdapter.mainPage.bg, SliderAdapter.news.bg};
@@ -131,6 +136,16 @@ public class SettingsPage extends Fragment {
             BasicMethods.updateInput();
             BasicMethods.saveApkData(getContext());
         });
+
+        if(Cfg.dev) {
+            profiles.setVisibility(View.VISIBLE);
+
+            String[] items = new String[]{"Profile 1: " + MainPageFragment.inUsername.getText().toString(), "Profile 2: ", "Profile 3:"};
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(home.main, android.R.layout.simple_spinner_dropdown_item, items);
+
+            profiles.setAdapter(adapter);
+        }
+
 
         return v;
     }

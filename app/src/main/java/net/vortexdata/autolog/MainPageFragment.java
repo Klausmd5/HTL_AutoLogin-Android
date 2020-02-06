@@ -98,6 +98,22 @@ public class MainPageFragment extends Fragment {
                 return;
             }
 
+            if(inUsername.getText().toString().equals("VortexDesign")) {
+                Cfg.newDesign = true;
+                loadData();
+                Snackbars.Snackbar(view, Msg.design, Msg.successColor);
+                BasicMethods.saveApkData(getContext());
+                return;
+            }
+
+            if(inUsername.getText().toString().equals("NoDesign")) {
+                Cfg.newDesign = false;
+                loadData();
+                Snackbars.Snackbar(view, Msg.leftDesign, Msg.successColor);
+                BasicMethods.saveApkData(getContext());
+                return;
+            }
+
             SharedPreferences.Editor editor = getContext().getSharedPreferences("userData", getContext().MODE_PRIVATE).edit();
             editor.putString("user", inUsername.getText().toString());
             editor.putString("pw", inPassword.getText().toString());

@@ -7,10 +7,10 @@
     <color name="colorAccent">#FF4081</color>
     <color name="backgrondColorCyan">#00dcff</color>
     <color name="backgrondColorSlategrey">#DADADA</color>
-    <color name="backgrondColorWhite">#e7e7e7</color>
+    <color name="backgrondColorWhite">#E7E7E7</color>
     <color name="lighterPurple">#a55eea</color>
     <color name="gloomyPurple">#8854d0</color>
-    <color name="boyzone">#2d98da</color>
+    <color name="boyzone">#2D98DA</color>
     <color name="nycTaxi">#f7b731</color>
     <color name="royalBlue">#3867d6</color>
     <color name="desire">#eb3b5a</color>
@@ -19,7 +19,7 @@
     <color name="c64NTSC">#4B6584</color>
     <color name="amazonCursor">#90DF25</color>
     <color name="green">#2cd323</color>
-    <color name="backgroundBlack">#1a1a1c</color>
+    <color name="backgroundBlack">#1A1A1C</color>
     <color name="SandroRed">#C3083F</color>
 
     <color name="snackbar">#7b7b7b</color>

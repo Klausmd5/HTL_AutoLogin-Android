@@ -78,9 +78,11 @@ public class News implements Comparable<News> {
 
     @Override
     public int compareTo(News o) {
-        if(o.equals(this)) {
+
+        if(o.getId() > this.getId()) {
             return 1;
+        } else {
+            return 0;
         }
-        return 0;
     }
 }

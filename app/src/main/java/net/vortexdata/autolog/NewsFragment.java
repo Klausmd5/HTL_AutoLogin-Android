@@ -31,6 +31,7 @@ import java.net.URL;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -163,11 +164,14 @@ public class NewsFragment extends Fragment {
                     for(int i = 0; i < arr.length(); i++) {
                         parseMessage(arr, i, false);
                     }
+
                     if(Cfg.dev) {
                         loadNews();
                     }
+
                     if(NewsFeed.size() >= 1) {
                         try{
+                            Collections.sort(NewsFeed);
                             getActivity().runOnUiThread(() -> na.notifyDataSetChanged());
                         } catch (Exception e) {
                             e.printStackTrace();

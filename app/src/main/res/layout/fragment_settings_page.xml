@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/backgroundBlack"
     android:theme="@style/input"
+    android:visibility="visible"
     tools:context=".SettingsPage">
 
     <TextView
@@ -44,7 +45,7 @@
         android:layout_marginStart="13dp"
         android:layout_marginEnd="52dp"
         android:layout_marginBottom="12dp"
-        android:text="Beta"
+        android:text="2.2.6.2"
         android:textAlignment="center"
         android:textColor="#ffff"
         android:textSize="18sp"
@@ -173,5 +174,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/connectToWifi" />
+
+    <Spinner
+        android:id="@+id/profiles"
+        android:layout_width="321dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/spinngerbg"
+        android:spinnerMode="dropdown"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lockInput" />
 
 </android.support.constraint.ConstraintLayout>

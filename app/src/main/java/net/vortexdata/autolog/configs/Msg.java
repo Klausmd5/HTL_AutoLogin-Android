@@ -27,4 +27,8 @@ public class Msg {
     // Debug
     public static String debug = "Entered Developermode.";
     public static String leftDebug = "Left Developermode.";
+
+    // Design
+    public static String design = "Entered Designermode.";
+    public static String leftDesign = "Left Designermode.";
 }

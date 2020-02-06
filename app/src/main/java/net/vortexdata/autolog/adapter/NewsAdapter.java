@@ -43,24 +43,33 @@ public class NewsAdapter extends BaseAdapter {
         LayoutInflater layoutInflater = (LayoutInflater) n.getContext().getSystemService(home.LAYOUT_INFLATER_SERVICE);
         view = layoutInflater.inflate(R.layout.newslayout, null);
 
-        TextView head = view.findViewById(R.id.headline);
-        TextView text = view.findViewById(R.id.text);
-        ImageView icon = view.findViewById(R.id.icon);
-        TextView date = view.findViewById(R.id.date);
-        TextView newIcon = view.findViewById(R.id.newIcon);
+        if(NewsFragment.NewsFeed.size() -1 < i) return view;
 
-        News news = n.NewsFeed.get(i);
-        // Layout
-        BasicMethods.setNewsIcons(news, icon, view);
-        head.setText(news.getHeadline());
-        if(!Cfg.dev) {
-            newIcon.setVisibility(View.INVISIBLE);
+        try {
+
+            TextView head = view.findViewById(R.id.headline);
+            TextView text = view.findViewById(R.id.text);
+            ImageView icon = view.findViewById(R.id.icon);
+            TextView date = view.findViewById(R.id.date);
+            TextView newIcon = view.findViewById(R.id.newIcon);
+
+            News news = n.NewsFeed.get(i);
+            // Layout
+            BasicMethods.setNewsIcons(news, icon, view);
+            head.setText(news.getHeadline());
+            if(!Cfg.dev) {
+                newIcon.setVisibility(View.INVISIBLE);
+            }
+            if(news.isRead()) {
+                newIcon.setVisibility(View.INVISIBLE);
+            }
+            //text.setText(news.getText().length() > 51 ? news.getText().substring(0, 51) + Html.fromHtml( ".... <br/><strong>read more(click me)</strong>") : news.getText());
+            date.setText(news.getDate());
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
-        if(news.isRead()) {
-            newIcon.setVisibility(View.INVISIBLE);
-        }
-        //text.setText(news.getText().length() > 51 ? news.getText().substring(0, 51) + Html.fromHtml( ".... <br/><strong>read more(click me)</strong>") : news.getText());
-        date.setText(news.getDate());
+
 
         return view;
 
