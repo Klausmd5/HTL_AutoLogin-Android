@@ -1,7 +1,6 @@
 package net.vortexdata.autolog;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -28,14 +27,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.SecureRandom;
-import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collections;
 
 import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.X509TrustManager;
 
 public class NewsFragment extends Fragment {
 
@@ -140,7 +135,7 @@ public class NewsFragment extends Fragment {
                 if(NewsFeed.size() > 1) return;
 
                 URL urlLoc = new URL(Cfg.newsFeed);
-                trustEveryone();
+                BasicMethods.trustEveryone();
                 HttpsURLConnection connection = (HttpsURLConnection) urlLoc.openConnection();
                 connection.setConnectTimeout(4000);
                 connection.setReadTimeout(1000);
@@ -163,10 +158,6 @@ public class NewsFragment extends Fragment {
                     JSONArray arr = new JSONArray(response);
                     for(int i = 0; i < arr.length(); i++) {
                         parseMessage(arr, i, false);
-                    }
-
-                    if(Cfg.dev) {
-                        loadNews();
                     }
 
                     if(NewsFeed.size() >= 1) {
@@ -193,66 +184,11 @@ public class NewsFragment extends Fragment {
         getNews.start();
     }
 
-    public static void saveNews(Context c) {
-        try {
-            JSONArray arr = new JSONArray();
-
-            for(News n : NewsFeed) {
-                JSONObject o = new JSONObject();
-
-                o.put("id", n.getId());
-                o.put("headline",n.getHeadline());
-                o.put("text", n.getText());
-                o.put("date", n.getDate());
-                o.put("creator", n.getCreator());
-                o.put("category", n.getCategory());
-                o.put("read", n.isRead());
-                arr.put(o);
-            }
-
-            SharedPreferences.Editor editor = c.getSharedPreferences("news", 0).edit();
-            editor.putString("news", arr.toString());
-            editor.apply();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void loadNews() {
-        boolean cont = true;
-        SharedPreferences prefs = getActivity().getSharedPreferences("news", 0);
-        JSONArray arr = null;
-        try {
-            arr = new JSONArray(prefs.getString("news", ""));
-        } catch (Exception e) {
-            //e.printStackTrace(); will be thrown if no there are no saves
-            cont = false;
-        }
-
-        JSONArray finalArr = arr;
-        Thread t = new Thread(() -> {
-            try {
-
-                for(int i = 0; i < finalArr.length(); i++) {
-                    parseMessage(finalArr, i, true);
-                }
-                getActivity().runOnUiThread(() -> na.notifyDataSetChanged());
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-        if(cont) {
-            t.start();
-        }
-    }
-
     private void parseMessage(JSONArray arr, int i, boolean saved) {
         Thread parse = new Thread(() -> {
             try {
                 JSONObject o = arr.getJSONObject(i);
-                News n = new News(o.getInt("id"), o.getString("headline"), o.getString("text"),  o.getString("date"),  o.getString("creator"), o.getString("category"));
+                News n = new News(o.getInt("id"), o.getString("headline"), o.getString("text"), o.getString("url"),  o.getString("date"),  o.getString("creator"), o.getString("category"));
                 if(NewsFeed.contains(n)) {
                     if(Cfg.dev) {
                         System.out.println("contains!! " + n.getHeadline());
@@ -268,32 +204,17 @@ public class NewsFragment extends Fragment {
                         System.out.println("adding.. " + n.getHeadline());
                     }
                     NewsFeed.add(n);
+                    Collections.sort(NewsFeed);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
             getActivity().runOnUiThread(() -> na.notifyDataSetChanged());
         });
         parse.start();
 
     }
 
-    private static void trustEveryone() {
-        try {
-            HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> true);
-            SSLContext context = SSLContext.getInstance("TLS");
-            context.init(null, new X509TrustManager[]{new X509TrustManager(){
-                public void checkClientTrusted(X509Certificate[] chain,
-                                               String authType) {}
-                public void checkServerTrusted(X509Certificate[] chain,
-                                               String authType) {}
-                public X509Certificate[] getAcceptedIssuers() {
-                    return new X509Certificate[0];
-                }}}, new SecureRandom());
-            HttpsURLConnection.setDefaultSSLSocketFactory(
-                    context.getSocketFactory());
-        } catch (Exception e) { // should never happen
-            e.printStackTrace();
-        }
-    }
+
 }

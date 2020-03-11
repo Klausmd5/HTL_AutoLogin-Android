@@ -10,9 +10,11 @@ import android.widget.TextView;
 import net.vortexdata.autolog.BasicMethods;
 import net.vortexdata.autolog.NewsFragment;
 import net.vortexdata.autolog.R;
-import net.vortexdata.autolog.configs.Cfg;
 import net.vortexdata.autolog.home;
 import net.vortexdata.autolog.objects.News;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class NewsAdapter extends BaseAdapter {
 
@@ -57,12 +59,27 @@ public class NewsAdapter extends BaseAdapter {
             // Layout
             BasicMethods.setNewsIcons(news, icon, view);
             head.setText(news.getHeadline());
-            if(!Cfg.dev) {
-                newIcon.setVisibility(View.INVISIBLE);
-            }
+
             if(news.isRead()) {
                 newIcon.setVisibility(View.INVISIBLE);
+            } else {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                    LocalDateTime now = LocalDateTime.now();
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd.MM.yy");
+                    LocalDateTime newsDate = LocalDateTime.parse(news.getDate(), formatter);
+                    newsDate.plusDays(2);
+
+                    if(now.isAfter(newsDate)) {
+                        newIcon.setVisibility(View.INVISIBLE);
+                    } else {
+                        newIcon.setVisibility(View.VISIBLE);
+                    }
+
+                } else {
+                    newIcon.setVisibility(View.INVISIBLE);
+                }
             }
+
             //text.setText(news.getText().length() > 51 ? news.getText().substring(0, 51) + Html.fromHtml( ".... <br/><strong>read more(click me)</strong>") : news.getText());
             date.setText(news.getDate());
 

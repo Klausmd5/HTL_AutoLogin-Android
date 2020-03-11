@@ -23,7 +23,7 @@ public class MainPageFragment extends Fragment {
 
     public static EditText inUsername;
     public static EditText inPassword;
-    Button saveButton;
+    public static Button saveButton;
     ImageView settings;
     ImageView news;
     TextView header;
@@ -74,6 +74,10 @@ public class MainPageFragment extends Fragment {
         news.setOnClickListener(view -> {
             home.main.vp.setCurrentItem(0, true);
         });
+
+        if(Cfg.lockCredentials) {
+            saveButton.setText("Log in");
+        }
 
         saveButton.setOnClickListener(view -> {
 

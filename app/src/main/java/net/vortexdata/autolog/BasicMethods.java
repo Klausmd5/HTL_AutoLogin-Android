@@ -13,11 +13,19 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import net.vortexdata.autolog.configs.Cfg;
 import net.vortexdata.autolog.objects.News;
+
+import java.security.SecureRandom;
+import java.security.cert.X509Certificate;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.X509TrustManager;
 
 public class BasicMethods {
 
@@ -40,6 +48,12 @@ public class BasicMethods {
         MainPageFragment.inPassword.setEnabled(!Cfg.lockCredentials);
         MainPageFragment.inPassword.setFocusable(!Cfg.lockCredentials);
         MainPageFragment.inPassword.setFocusableInTouchMode(!Cfg.lockCredentials);
+
+        if(Cfg.lockCredentials) {
+            MainPageFragment.saveButton.setText("Login");
+        } else {
+            MainPageFragment.saveButton.setText("Save & Login");
+        }
     }
 
 
@@ -47,11 +61,12 @@ public class BasicMethods {
         AlertDialog.Builder builder = new AlertDialog.Builder(f.getContext());
         View view;
 
-        if(Cfg.newDesign) {
+        /*if(Cfg.newDesign) {
             view = f.getLayoutInflater().inflate(R.layout.read_news_layout_test, null);
         } else {
             view = f.getLayoutInflater().inflate(R.layout.read_news_layout, null);
-        }
+        }*/
+        view = f.getLayoutInflater().inflate(R.layout.read_news_layout_test, null);
 
         builder.setView(view);
 
@@ -61,16 +76,24 @@ public class BasicMethods {
         TextView date = view.findViewById(R.id.date);
         TextView done = view.findViewById(R.id.done);
         TextView by = view.findViewById(R.id.by);
+        Button copyURL = view.findViewById(R.id.copyURL);
 
         News n = NewsFragment.NewsFeed.get(i);
-
-        head.setText(n.getHeadline());
         text.setText(n.getText());
+        head.setText(n.getHeadline());
         date.setText(n.getDate());
         by.setText(n.getCreator());
         setNewsIcons(n, icon, view);
         n.setRead(true);
         NewsFragment.na.notifyDataSetChanged();
+
+        if(n.getURL().contains("http://") || n.getURL().contains("https://")) {
+            copyURL.setVisibility(View.VISIBLE);
+
+            copyURL.setOnClickListener((v) -> {
+                home.main.copyURL(n.getURL());
+            });
+        }
 
         AlertDialog dialog = builder.create();
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -79,20 +102,19 @@ public class BasicMethods {
         done.setOnClickListener(view1 -> dialog.dismiss());
 
         dialog.show();
-        if(Cfg.dev) {
-            NewsFragment.saveNews(f.getContext());
-        }
     }
 
     public static void setNewsIcons(News news, ImageView icon, View view) {
         if(view == null) return;
         try {
             switch (news.getCategory()) {
-                case "app": icon.setImageDrawable(view.getResources().getDrawable(R.drawable.ic_comment_black_24dp));
+                case "app": icon.setImageDrawable(view.getResources().getDrawable(R.mipmap.ic_launcher));
                     break;
-                case "sv": icon.setImageDrawable(view.getResources().getDrawable(R.drawable.ic_public_black_24dp));
+                case "sv": icon.setImageDrawable(view.getResources().getDrawable(R.drawable.ic_group_black_24dp));
                     break;
                 case "info": icon.setImageDrawable(view.getResources().getDrawable(R.drawable.ic_info_outline_black_24dp));
+                    break;
+                case "global": icon.setImageDrawable(view.getResources().getDrawable(R.drawable.ic_public_black_24dp));
                     break;
             }
         } catch (Exception e) {
@@ -155,6 +177,25 @@ public class BasicMethods {
         Cfg.autoConnect = prefs.getBoolean("connectToWifi", Cfg.autoConnect);
         Cfg.lockCredentials = prefs.getBoolean("lockCredentials", Cfg.lockCredentials);
         Cfg.newDesign = prefs.getBoolean("newDesign", Cfg.newDesign);
+    }
+
+    public static void trustEveryone() {
+        try {
+            HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> true);
+            SSLContext context = SSLContext.getInstance("TLS");
+            context.init(null, new X509TrustManager[]{new X509TrustManager(){
+                public void checkClientTrusted(X509Certificate[] chain,
+                                               String authType) {}
+                public void checkServerTrusted(X509Certificate[] chain,
+                                               String authType) {}
+                public X509Certificate[] getAcceptedIssuers() {
+                    return new X509Certificate[0];
+                }}}, new SecureRandom());
+            HttpsURLConnection.setDefaultSSLSocketFactory(
+                    context.getSocketFactory());
+        } catch (Exception e) { // should never happen
+            e.printStackTrace();
+        }
     }
 
 }

@@ -43,5 +43,6 @@
     <color name="colorTransparentWhite">#E2CCCCCC</color>
     <color name="vdata_green">#24C59E</color>
     <color name="vdata_green_light">#3FC5BE</color>
+    <color name="bg_gray">#AEAEAE</color>
 
 </resources>

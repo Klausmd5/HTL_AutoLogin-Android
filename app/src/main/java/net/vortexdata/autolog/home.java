@@ -1,5 +1,8 @@
 package net.vortexdata.autolog;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +27,12 @@ public class home extends AppCompatActivity {
 
         vp.setCurrentItem(1);
         main = this;
+    }
+
+    public void copyURL(String url) {
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("Upadte URL", url);
+        clipboard.setPrimaryClip(clip);
     }
 
 }

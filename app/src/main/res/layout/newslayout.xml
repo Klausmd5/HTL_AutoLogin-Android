@@ -29,8 +29,8 @@
         android:id="@+id/cv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/colorTransparentWhite"
-        app:cardCornerRadius="16px"
+        app:cardBackgroundColor="@color/bg_gray"
+        app:cardCornerRadius="20px"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="@id/newsVerLeftGuideline"
         app:layout_constraintStart_toStartOf="parent">
@@ -63,12 +63,10 @@
                 android:layout_height="24dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="4dp"
-                android:layout_marginEnd="8dp"
                 android:text="Headline"
+                android:textColor="#FFFFFF"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/icon"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -84,7 +82,7 @@
                 android:textColor="@color/colour_dark_green"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                android:visibility="visible"
+                android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/headline"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -98,6 +96,7 @@
                 android:layout_marginBottom="4dp"
                 android:text="date"
                 android:textAlignment="textEnd"
+                android:textColor="#FFFFFF"
                 android:textSize="10sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"

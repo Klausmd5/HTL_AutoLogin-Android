@@ -12,15 +12,17 @@ public class News implements Comparable<News> {
     private int id;
     private String headline;
     private String text;
+    private String URL;
     private String date;
     private String creator;
     private String category;
     private boolean read = false;
 
-    public News(int id, String headline, String text, String date, String creator, String category) {
+    public News(int id, String headline, String text, String URL, String date, String creator, String category) {
         this.id = id;
         this.headline = headline;
         this.text = text;
+        this.URL = URL;
         this.creator = creator;
         this.category = category;
         try {
@@ -84,5 +86,9 @@ public class News implements Comparable<News> {
         } else {
             return 0;
         }
+    }
+
+    public String getURL() {
+        return URL;
     }
 }
