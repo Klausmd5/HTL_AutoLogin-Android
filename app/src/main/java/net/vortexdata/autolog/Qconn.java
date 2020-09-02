@@ -1,21 +1,22 @@
 package net.vortexdata.autolog;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
 import net.vortexdata.autolog.configs.Cfg;
 import net.vortexdata.autolog.configs.Msg;
-
 import java.util.List;
 
 public class Qconn extends AppCompatActivity {
@@ -40,8 +41,8 @@ public class Qconn extends AppCompatActivity {
     public String response = new String();
     public boolean statePositive = false;
     public static boolean done = false;
+    public static boolean timedout = false;
     public String status = new String();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,35 +56,35 @@ public class Qconn extends AppCompatActivity {
         quitTxt = findViewById(R.id.quitMsg);
         bg = findViewById(R.id.cbackground);
 
-        if(Cfg.fancyBGinQConn) {
+        if (Cfg.fancyBGinQConn) {
             BasicMethods.setFancyBackground(bg, this);
             pb.setIndeterminate(true);
             pb.getIndeterminateDrawable().setColorFilter(0xFFFFFFFF,
                     android.graphics.PorterDuff.Mode.MULTIPLY);
         }
 
-        if(Cfg.easteregg) {
+        if (Cfg.easteregg) {
             easteregg = new Thread(() -> {
                 while (true) {
-                    runOnUiThread(() -> stateTxt.setRotation(stateTxt.getRotation()+5));
+                    runOnUiThread(() -> stateTxt.setRotation(stateTxt.getRotation() + 5));
                 }
             });
         }
 
         connect();
 
-         timer = new Thread(() -> {
-             try {
-                 timer.sleep(6000);
-                 runOnUiThread(() -> underTxt.setVisibility(View.VISIBLE));
-             } catch (InterruptedException e) {
-                 e.printStackTrace();
-             }
+        timer = new Thread(() -> {
+            try {
+                timer.sleep(6000);
+                runOnUiThread(() -> underTxt.setVisibility(View.VISIBLE));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
-         });
-         timer.start();
+        });
+        timer.start();
 
-         timeout = new Thread(() -> {
+        timeout = new Thread(() -> {
             try {
                 timeout.sleep(Cfg.autoConnect ? 4000 : 2000);
                 runOnUiThread(() -> {
@@ -94,8 +95,9 @@ public class Qconn extends AppCompatActivity {
                         underTxt.setText(Msg.timeout);
                     });
                 });
-                closeCounter = 5;
                 setVisibility();
+                done = false;
+                timedout = true;
                 closeWindow();
             } catch (InterruptedException e) {
                 // can happen on close bevore timeout
@@ -104,7 +106,7 @@ public class Qconn extends AppCompatActivity {
         });
         timeout.start();
 
-        if(Cfg.easteregg) {
+        if (Cfg.easteregg) {
             easteregg.start();
             Cfg.easteregg = false;
             saveApkData();
@@ -114,7 +116,7 @@ public class Qconn extends AppCompatActivity {
 
     public void setText() {
         timeout.interrupt();
-        if(done) {
+        if (done &! timedout) {
             if (statePositive) {
                 setBgColor("#27AE60");
                 runOnUiThread(() -> {
@@ -123,7 +125,7 @@ public class Qconn extends AppCompatActivity {
                 });
                 setVisibility();
                 closeWindow();
-                if(Cfg.dev) {
+                if (Cfg.dev) {
                     runOnUiThread(() -> {
                         underTxt.setText("Status Positive:" + statePositive);
                         stateTxt.setText("Resp:" + response);
@@ -136,12 +138,12 @@ public class Qconn extends AppCompatActivity {
                 runOnUiThread(() -> {
                     stateTxt.setText("Failed!");
                     state.setImageResource(R.drawable.ic_clear_black_24dp);
-                    if(status.contains("Wrong")) {
+                    if (status.contains("Wrong")) {
                         underTxt.setText(Msg.qConnFailWrongUser);
                     } else {
                         underTxt.setText(Msg.qConnErr);
                     }
-                    if(Cfg.dev) {
+                    if (Cfg.dev) {
                         runOnUiThread(() -> {
                             underTxt.setText("Status Positive:" + statePositive);
                             stateTxt.setText("Resp:" + response);
@@ -159,17 +161,17 @@ public class Qconn extends AppCompatActivity {
         runOnUiThread(() -> quitTxt.setVisibility(View.VISIBLE));
 
         closeThread = new Thread(() -> {
-            while (closeCounter > 0) {
+            while (closeCounter >= 0) {
                 try {
-                        runOnUiThread(() -> {
-                            quitTxt.setText("Closing in " + closeCounter + " ..");
-                            closeCounter--;
-                        });
+                    runOnUiThread(() -> {
+                        quitTxt.setText("Closing in " + closeCounter + " ..");
+                        closeCounter--;
+                    });
 
-                        closeThread.sleep(1000);
-                    } catch(InterruptedException e){
-                        e.printStackTrace();
-                    }
+                    closeThread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
             finishAndRemoveTask();
         });
@@ -192,7 +194,7 @@ public class Qconn extends AppCompatActivity {
 
     public void connect() {
 
-        if(Cfg.autoConnect) {
+        if (Cfg.autoConnect) {
             String networkSSID = "HTBLA";
             String networkPass = "htlgrieskirchen";
 
@@ -203,6 +205,9 @@ public class Qconn extends AppCompatActivity {
             wifiManager.addNetwork(conf);
 
 
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
             List<WifiConfiguration> list = wifiManager.getConfiguredNetworks();
             for (WifiConfiguration i : list) {
                 if (i.SSID != null && i.SSID.equals("\"" + networkSSID + "\"")) {

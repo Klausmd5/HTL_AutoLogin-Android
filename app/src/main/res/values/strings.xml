@@ -4,4 +4,6 @@
     <string name="QuickConnect">Quick Connect</string>
     <string name="disabledMsg">Option disabled.</string>
     <string name="Settings">Settings</string>
+    <string name="connection_detected">Connection detected</string>
+    <string name="connection_info">You just connected to the HTL Wifi. Do you want to login?</string>
 </resources>

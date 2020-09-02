@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +11,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
 
 import net.vortexdata.autolog.configs.Cfg;
 import net.vortexdata.autolog.configs.Msg;
@@ -25,7 +26,6 @@ public class MainPageFragment extends Fragment {
     public static EditText inPassword;
     public static Button saveButton;
     ImageView settings;
-    ImageView news;
     TextView header;
     public ConstraintLayout bg;
     View v;
@@ -55,7 +55,6 @@ public class MainPageFragment extends Fragment {
         inPassword = v.findViewById(R.id.inPassword);
         saveButton = v.findViewById(R.id.savebutton);
         settings = v.findViewById(R.id.config);
-        news = v.findViewById(R.id.news);
         header = v.findViewById(R.id.header);
         bg = v.findViewById(R.id.bg_home);
 
@@ -69,10 +68,6 @@ public class MainPageFragment extends Fragment {
 
         settings.setOnClickListener(view -> {
             home.main.vp.setCurrentItem(2, true);
-        });
-
-        news.setOnClickListener(view -> {
-            home.main.vp.setCurrentItem(0, true);
         });
 
         if(Cfg.lockCredentials) {
@@ -172,7 +167,7 @@ public class MainPageFragment extends Fragment {
     }
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
+
         void onFragmentInteraction(Uri uri);
     }
 }

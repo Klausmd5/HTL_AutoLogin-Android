@@ -1,7 +1,5 @@
 package net.vortexdata.autolog.configs;
 
-import net.vortexdata.autolog.BuildConfig;
-
 public class Cfg {
 
     public static boolean easteregg = false;
@@ -12,7 +10,6 @@ public class Cfg {
     public static boolean lockCredentials = false;
     public static boolean newDesign = false;
 
-    public static String version = BuildConfig.VERSION_NAME;
     public static String logURL = "http://10.10.0.251:8002/index.php?zone=cp_htl";
     public static String newsFeed = "https://src.vortexdata.net/modules/api/autolog.php";
 

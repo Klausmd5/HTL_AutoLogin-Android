@@ -101,7 +101,7 @@ public class LoginPost {
 
                     URL url = new URL(Cfg.logURL);
                     URLConnection conn = url.openConnection();
-                    conn.setRequestProperty("User-Agent", "AutoLogin by Vortexdata | "+Cfg.version);
+                    conn.setRequestProperty("User-Agent", "AutoLogin by Vortexdata");
                     conn.setConnectTimeout(5000);
                     conn.setDoOutput(true);
 

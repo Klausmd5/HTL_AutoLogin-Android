@@ -3,9 +3,13 @@ package net.vortexdata.autolog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.wifi.WifiInfo;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import net.vortexdata.autolog.adapter.SliderAdapter;
 
@@ -25,7 +29,7 @@ public class home extends AppCompatActivity {
         vp.setAdapter(sl);
         BasicMethods.loadApkData(getApplicationContext());
 
-        vp.setCurrentItem(1);
+        vp.setCurrentItem(0);
         main = this;
     }
 

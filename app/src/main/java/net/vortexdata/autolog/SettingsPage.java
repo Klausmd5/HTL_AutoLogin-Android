@@ -1,11 +1,9 @@
 package net.vortexdata.autolog;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +11,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
+
+import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
 
 import net.vortexdata.autolog.adapter.SliderAdapter;
 import net.vortexdata.autolog.configs.Cfg;
@@ -77,7 +79,7 @@ public class SettingsPage extends Fragment {
 
 
 
-        ConstraintLayout[] backgrounds = {bg, SliderAdapter.mainPage.bg, SliderAdapter.news.bg};
+        ConstraintLayout[] backgrounds = {bg, SliderAdapter.mainPage.bg};
 
         if(Cfg.fancyBackground) {
             BasicMethods.setFancyBackground(bg, getContext());
@@ -88,14 +90,18 @@ public class SettingsPage extends Fragment {
         lockInput.setChecked(Cfg.lockCredentials);
         autoConn.setChecked(Cfg.autoConnect);
 
-        version.setText(Cfg.version);
+        try {
+            version.setText(getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0).versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             copyright.setText(Year.now().equals(Year.parse("2019")) ? "Copyright Vortexdata.NET © 2019" : "Copyright Vortexdata.NET © 2019  - " + Year.now());
         } else {
             copyright.setText("Copyright Vortexdata.NET © 2019 - 2020");
         }
 
-        back.setOnClickListener(view -> home.main.vp.setCurrentItem(1, true));
+        back.setOnClickListener(view -> home.main.vp.setCurrentItem(0, true));
 
         if (Cfg.fancyBackground) {
             BasicMethods.setFancyBackground(bg, getContext());

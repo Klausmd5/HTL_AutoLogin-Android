@@ -1,9 +1,10 @@
 package net.vortexdata.autolog;
 
 import android.graphics.Color;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.TextView;
+
+import com.google.android.material.snackbar.Snackbar;
 
 public class Snackbars {
 
@@ -36,7 +37,7 @@ public class Snackbars {
         Snackbar snackbar;
         snackbar = Snackbar.make(view, txt, Snackbar.LENGTH_SHORT);
         View snackBarView = snackbar.getView();
-        TextView t = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text) ;
+        TextView t = (TextView) snackBarView.findViewById(R.id.snackbar_text) ;
         t.setMaxLines(lines);
         snackBarView.setBackgroundColor(Color.parseColor(BackgroundColor));
         snackbar.show();
