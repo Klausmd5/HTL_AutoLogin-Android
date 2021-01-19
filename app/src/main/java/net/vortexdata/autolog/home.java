@@ -29,7 +29,7 @@ public class home extends AppCompatActivity {
         vp.setAdapter(sl);
         BasicMethods.loadApkData(getApplicationContext());
 
-        vp.setCurrentItem(0);
+        vp.setCurrentItem(1);
         main = this;
     }
 

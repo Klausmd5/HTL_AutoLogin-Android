@@ -26,6 +26,7 @@ public class MainPageFragment extends Fragment {
     public static EditText inPassword;
     public static Button saveButton;
     ImageView settings;
+    ImageView news;
     TextView header;
     public ConstraintLayout bg;
     View v;
@@ -55,6 +56,7 @@ public class MainPageFragment extends Fragment {
         inPassword = v.findViewById(R.id.inPassword);
         saveButton = v.findViewById(R.id.savebutton);
         settings = v.findViewById(R.id.config);
+        news = v.findViewById(R.id.news);
         header = v.findViewById(R.id.header);
         bg = v.findViewById(R.id.bg_home);
 
@@ -97,21 +99,6 @@ public class MainPageFragment extends Fragment {
                 return;
             }
 
-            if(inUsername.getText().toString().equals("VortexDesign")) {
-                Cfg.newDesign = true;
-                loadData();
-                Snackbars.Snackbar(view, Msg.design, Msg.successColor);
-                BasicMethods.saveApkData(getContext());
-                return;
-            }
-
-            if(inUsername.getText().toString().equals("NoDesign")) {
-                Cfg.newDesign = false;
-                loadData();
-                Snackbars.Snackbar(view, Msg.leftDesign, Msg.successColor);
-                BasicMethods.saveApkData(getContext());
-                return;
-            }
 
             SharedPreferences.Editor editor = getContext().getSharedPreferences("userData", getContext().MODE_PRIVATE).edit();
             editor.putString("user", inUsername.getText().toString());
@@ -123,6 +110,10 @@ public class MainPageFragment extends Fragment {
             Snackbars.Snackbar(view, Msg.processing, Msg.GreyColor);
             LoginPost l = new LoginPost();
             l.send(inUsername.getText().toString(), inPassword.getText().toString(), this);
+        });
+
+        news.setOnClickListener(view -> {
+            home.main.vp.setCurrentItem(0, true);
         });
 
 

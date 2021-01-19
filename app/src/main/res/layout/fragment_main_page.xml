@@ -92,5 +92,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_settings_black_24dp" />
 
+    <ImageView
+        android:id="@+id/news"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/news_24dp" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
