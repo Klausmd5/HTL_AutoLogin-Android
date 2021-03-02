@@ -98,7 +98,7 @@ public class SettingsPage extends Fragment {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             copyright.setText(Year.now().equals(Year.parse("2019")) ? "Copyright Vortexdata.NET © 2019" : "Copyright Vortexdata.NET © 2019  - " + Year.now());
         } else {
-            copyright.setText("Copyright Vortexdata.NET © 2019 - 2020");
+            copyright.setText("Copyright Vortexdata.NET © 2019 - 2021");
         }
 
         back.setOnClickListener(view -> home.main.vp.setCurrentItem(0, true));

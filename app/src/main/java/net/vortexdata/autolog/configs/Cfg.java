@@ -11,6 +11,7 @@ public class Cfg {
 
     public static String logURL = "http://10.10.0.251:8002/index.php?zone=cp_htl";
     //public static String newsFeed = "https://src.vortexdata.net/modules/api/autolog.php";
-    public static String newsFeed = "http://192.168.137.1:3000/api/self";
+    public static String newsFeed = "http://192.168.1.15:3000/api/test";
+    public static String blogUrl = "http://192.168.1.15:3000/test";
 
 }

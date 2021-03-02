@@ -1,4 +1,6 @@
 package net.vortexdata.autolog.objects;
+import android.graphics.Bitmap;
+
 import androidx.annotation.Nullable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,6 +15,7 @@ public class News implements Comparable<News> {
     private String text;
     private String category;
     private String author;
+    private Bitmap authorPic;
     private boolean read = false;
 
     public News(int id, String displayID, String title) {
@@ -21,6 +24,14 @@ public class News implements Comparable<News> {
         this.title = title;
         category = "global";
         author = "postcord";
+    }
+
+    public Bitmap getAuthorPic() {
+        return authorPic;
+    }
+
+    public void setAuthorPic(Bitmap authorPic) {
+        this.authorPic = authorPic;
     }
 
     public String getCategory() {

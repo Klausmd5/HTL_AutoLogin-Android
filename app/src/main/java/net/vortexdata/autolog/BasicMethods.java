@@ -8,7 +8,9 @@ import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -60,34 +62,45 @@ public class BasicMethods {
 
     public static void readNews(Fragment f, int i) {
         AlertDialog.Builder builder = new AlertDialog.Builder(f.getContext());
-        View view;
-
-        /*if(Cfg.newDesign) {
-            view = f.getLayoutInflater().inflate(R.layout.read_news_layout_test, null);
-        } else {
-            view = f.getLayoutInflater().inflate(R.layout.read_news_layout, null);
-        }*/
-        view = f.getLayoutInflater().inflate(R.layout.read_news_layout_test, null);
-
+        View view = f.getLayoutInflater().inflate(R.layout.read_news_layout_test, null);
         builder.setView(view);
 
         ImageView icon = view.findViewById(R.id.icon);
         TextView head = view.findViewById(R.id.headline);
         TextView text = view.findViewById(R.id.text);
-        TextView date = view.findViewById(R.id.date);
+        TextView date = view.findViewById(R.id.author);
         TextView done = view.findViewById(R.id.done);
         TextView by = view.findViewById(R.id.by);
-        Button copyURL = view.findViewById(R.id.copyURL);
+        Button openBlog = view.findViewById(R.id.openBlog);
 
         News n = NewsFragment.NewsFeed.get(i);
 
-        NewsFragment.getPostExact(n, by, text);
+        NewsFragment.getPostExact(n, by, text, icon);
+
+        date.setVisibility(View.GONE);
+        openBlog.setVisibility(View.VISIBLE);
+        openBlog.setOnClickListener(v -> {
+            try {
+                Uri uri = Uri.parse("googlechrome://navigate?url=" + Cfg.blogUrl+"/"+n.getDisplayID());
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                f.startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                // Chrome is probably not installed
+            }
+        });
 
         text.setText(n.getText());
+        text.setMovementMethod(new ScrollingMovementMethod());
         head.setText(n.getTitle());
         //date.setText(n.getDate());
         by.setText(n.getAuthor());
-        setNewsIcons(n, icon, view);
+        try {
+            icon.setImageBitmap(n.getAuthorPic());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         n.setRead(true);
         NewsFragment.na.notifyDataSetChanged();
 
@@ -100,6 +113,8 @@ public class BasicMethods {
         }*/
 
         AlertDialog dialog = builder.create();
+        dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        dialog.getWindow().setDimAmount((float) 0.9);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         done.setOnClickListener(view1 -> dialog.dismiss());

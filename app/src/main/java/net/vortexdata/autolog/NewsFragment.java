@@ -1,6 +1,7 @@
 package net.vortexdata.autolog;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -83,7 +85,6 @@ public class NewsFragment extends Fragment {
         newsList.setClickable(true);
         newsList.setOnItemClickListener((parent, view, position, id) -> BasicMethods.readNews(newsFrag, position));
         getNews();
-
 
         if (Cfg.fancyBackground) {
             BasicMethods.setFancyBackground(bg, getContext());
@@ -182,7 +183,7 @@ public class NewsFragment extends Fragment {
         getNews.start();
     }
 
-    public static void getPostExact(News n, TextView by, TextView text) {
+    public static void getPostExact(News n, TextView by, TextView text, ImageView icon) {
 
         if(Cfg.dev) {
             System.out.println("Fetching post exact.. from: "+Cfg.newsFeed+"/"+n.getDisplayID());
@@ -216,12 +217,16 @@ public class NewsFragment extends Fragment {
                     JSONObject o = new JSONObject(response);
                    //n = new News(o.getInt("id"), o.getString("displayID"), o.getString("title"));
                     n.setAuthor(o.getJSONObject("author").getString("username"));
+                    n.setAuthorPic(BitmapFactory.decodeStream(new URL(o.getJSONObject("author").getString("avatarURL")).openConnection().getInputStream()));
+
                     //n.setText();
                     JSONArray paragraphs = o.getJSONArray("paragraphs");
                     n.setText(paragraphs.getJSONObject(0).getString("message"));
 
                     by.setText(n.getAuthor());
                     text.setText(n.getText());
+
+                    //icon.setImageBitmap(BitmapFactory.decodeStream(new URL(n.getAuthorPic()).openConnection().getInputStream()));
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -236,17 +241,26 @@ public class NewsFragment extends Fragment {
         });
 
         getPost.start();
+        try{
+            getPost.join();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void parseMessage(JSONArray arr, int i, boolean saved) {
         Thread parse = new Thread(() -> {
             try {
                 JSONObject o = arr.getJSONObject(i);
+                //News n = new News(o.getInt("id"), o.getString("displayID"), o.getString("title"), BitmapFactory.decodeStream(new URL(o.getJSONObject("author").getString("pictureURL")).openConnection().getInputStream()));
                 News n = new News(o.getInt("id"), o.getString("displayID"), o.getString("title"));
+
+                if(o.has("author")) {
+                    n.setAuthor(o.getJSONObject("author").getString("username"));
+                    n.setAuthorPic(BitmapFactory.decodeStream(new URL(o.getJSONObject("author").getString("avatarURL")).openConnection().getInputStream()));
+                }
+
                 if(NewsFeed.contains(n)) {
-                    if(Cfg.dev) {
-                        System.out.println("contains!! " + n.getTitle());
-                    }
                     if(saved) {
                         int index = NewsFeed.indexOf(n);
                         News feed = NewsFeed.get(index);
@@ -254,10 +268,6 @@ public class NewsFragment extends Fragment {
                         NewsFeed.set(index, feed);
                     }
                 } else {
-                    if(Cfg.dev) {
-                        System.out.println("adding.. " + n.getTitle());
-                        System.out.println("adding.. " + n.getTitle());
-                    }
                     NewsFeed.add(n);
                     Collections.sort(NewsFeed);
                 }

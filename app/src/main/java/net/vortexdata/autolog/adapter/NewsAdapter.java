@@ -13,9 +13,6 @@ import net.vortexdata.autolog.R;
 import net.vortexdata.autolog.home;
 import net.vortexdata.autolog.objects.News;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 public class NewsAdapter extends BaseAdapter {
 
     private NewsFragment n;
@@ -50,17 +47,23 @@ public class NewsAdapter extends BaseAdapter {
         try {
 
             TextView head = view.findViewById(R.id.headline);
-            TextView text = view.findViewById(R.id.text);
+            TextView author = view.findViewById(R.id.author);
             ImageView icon = view.findViewById(R.id.icon);
             TextView date = view.findViewById(R.id.date);
-            TextView newIcon = view.findViewById(R.id.newIcon);
+            //TextView newIcon = view.findViewById(R.id.newIcon);
 
             News news = n.NewsFeed.get(i);
             // Layout
             BasicMethods.setNewsIcons(news, icon, view);
             head.setText(news.getTitle());
+            icon.setImageBitmap(news.getAuthorPic());
+            author.setText("by: "+news.getAuthor());
 
-            if(news.isRead()) {
+
+            date.setVisibility(View.GONE);
+
+
+            /*if(news.isRead()) {
                 newIcon.setVisibility(View.INVISIBLE);
             } else {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -69,7 +72,7 @@ public class NewsAdapter extends BaseAdapter {
                    // LocalDateTime newsDate = LocalDateTime.parse(news.getDate(), formatter);
                    // newsDate.plusDays(2);
 
-                    if(false /*now.isAfter(newsDate)*/) {
+                    if(false /*now.isAfter(newsDate)) {
                         newIcon.setVisibility(View.INVISIBLE);
                     } else {
                         newIcon.setVisibility(View.VISIBLE);
@@ -77,8 +80,8 @@ public class NewsAdapter extends BaseAdapter {
 
                 } else {
                     newIcon.setVisibility(View.INVISIBLE);
-                }
-            }
+                }*/
+            //}
 
             //text.setText(news.getText().length() > 51 ? news.getText().substring(0, 51) + Html.fromHtml( ".... <br/><strong>read more(click me)</strong>") : news.getText());
             //date.setText(news.getDate());
